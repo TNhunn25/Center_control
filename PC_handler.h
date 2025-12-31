@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 #include <ArduinoJson.h>
-#include <MD5Builder.h>
+#include "md5.h" 
 #include "config.h"
 
 class PCHandler
@@ -16,11 +16,10 @@ public:
     void update();
     void onCommandReceived(CommandCallback cb);
     void sendResponse(int id_des, int resp_opcode, uint32_t unix_time, int status);
-    uint32_t getCurrentUnixTime();
 
 private:
     String rxLine;
-    StaticJsonDocument<256> doc;
+    StaticJsonDocument<512> doc;
     CommandCallback commandCallback = nullptr;
 
     void processLine();
