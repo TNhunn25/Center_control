@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <MD5Builder.h>
 
-String calculateMD5(const String &input)
+inline String calculateMD5(const String &input)
 {
     MD5Builder md5;
     md5.begin();

@@ -73,7 +73,7 @@ bool debounceButton(uint8_t i)
 
 void setStatusLed(bool ok, bool err)
 {
-    digitalWrite(LED_OK_PIN, ok ? HIGH : LOW);
+    digitalWrite(LED_OK_PIN, ok ? HIGH : LOW);  
     digitalWrite(LED_ERR_PIN, err ? HIGH : LOW);
 }
 
