@@ -4,17 +4,15 @@
 #include "config.h"
 #include "md5.h"
 #include "ethernet_handler.h"
+#include "auto_man.h"
 
 // ===================== HW PINS =====================
 
 // Input buttons (MAN) - dùng INPUT_PULLUP, nhấn = LOW
-static const uint8_t BTN_PINS[4] = {16, 17, 18, 19};
+static const uint8_t BTN_PINS[4] = {14, 17, 18, 21};
 
 // Output channels
-static const uint8_t OUT_PINS[4] = {25, 26, 27, 32};
-
-// AUTO/MAN switch
-static const uint8_t MODE_PIN = 23; // INPUT_PULLUP: HIGH=AUTO, LOW=MAN (đổi nếu cần)
+static const uint8_t OUT_PINS[4] = {10, 11, 12, 13};
 
 // Status LEDs
 static const uint8_t LED_OK_PIN = 2;  // xanh
@@ -36,10 +34,35 @@ static const uint16_t UDP_PORT = 8888;
 const String SECRET_KEY = "ALTA_MIST_CONTROLLER";
 
 // Nếu bạn đã có nguồn UnixTime thật (RTC/NTP) thì thay hàm này.
-// Tạm thời: không check timeout 60s -> luôn hợp lệ.
-static bool isTimeValid(uint32_t /*requestUnix*/)
+// Tự động đồng bộ thời gian dựa trên gói đầu tiên nhận được.
+static uint32_t unixTimeBase =0; //unix time của gói tin đầu tiên 
+static uint32_t millisBase = 0;  //mốc millis() tương ứng với unixTimeBase 
+
+static uint32_t getUnixTime()
 {
-    return true;
+    //Nếu chưa đồng bộ, trả 0 để báo chưa có thời gian
+    if(unixTimeBase ==0)
+        return 0;
+
+    //Ước lượng unix time bằng cách cộng thêm số giây đã trôi qua
+    uint32_t elapsedSeconds = (millis() - millisBase) /1000;
+    return unixTimeBase + elapsedSeconds;
+}
+
+static bool isTimeValid(uint32_t requestUnix)
+{
+    //Gói đầu tiên dùng để đồng bộ thời gian, luôn hợp lệ
+    if(unixTimeBase == 0)
+    {
+        unixTimeBase = requestUnix;
+        millisBase = millis();
+        return true;
+    }
+
+    uint32_t nowUnix = getUnixTime();
+    //Chấp nhận sai lệnh +_60s 
+    uint32_t diff =(nowUnix > requestUnix) ? (nowUnix - requestUnix) : (requestUnix - nowUnix);
+    return diff <= 60;
 }
 
 // ===================== STATE =====================
@@ -54,6 +77,7 @@ struct ButtonState
 
 ButtonState btn[4];
 bool outState[4] = {false, false, false, false}; // true=ON
+bool nutVuaNhan[4] = {false, false, false, false}; // true=just pressed
 
 EthernetUDPHandler eth;
 
@@ -132,32 +156,58 @@ static bool verifyAuth(const JsonDocument &doc, const String &receivedHash)
     return computedHash.equalsIgnoreCase(receivedHash);
 }
 
-static String buildResponseJson(int id_des, int resp_opcode, uint32_t unix_time, int status)
+static String ResponseJson(int id_des, int resp_opcode, uint32_t unix_time, int status)
 {
-    StaticJsonDocument<256> resp;
-    resp["id_des"] = id_des;
-    resp["opcode"] = resp_opcode;
+    StaticJsonDocument<256> Json;
+    Json["id_des"] = id_des;
+    Json["opcode"] = resp_opcode;
 
-    JsonObject data = resp.createNestedObject("data");
+    JsonObject data = Json.createNestedObject("data");
     data["status"] = status;
 
-    resp["time"] = unix_time;
+    Json["time"] = unix_time;
 
     String data_json;
-    serializeJson(resp["data"], data_json);
+    serializeJson(Json["data"], data_json);
 
     String combined = String(id_des) + String(resp_opcode) + data_json + String(unix_time) + SECRET_KEY;
-    resp["auth"] = calculateMD5(combined);
+    Json["auth"] = calculateMD5(combined);
 
     String out;
-    serializeJson(resp, out);
+    serializeJson(Json, out);
     return out;
 }
 
-static bool isAutoMode()
+static String Goi_trangthai(int id_des, int resp_opcode, uint32_t unix_time)
 {
-    // INPUT_PULLUP: HIGH=AUTO, LOW=MAN
-    return digitalRead(MODE_PIN) == HIGH;
+    StaticJsonDocument<256> Json;
+    Json["id_des"] = id_des;
+    Json["opcode"] = resp_opcode;
+
+    JsonObject data = Json.createNestedObject("data");
+    data["out1"] = outState[0] ? 1 : 0;
+    data["out2"] = outState[1] ? 1 : 0;
+    data["out3"] = outState[2] ? 1 : 0;
+    data["out4"] = outState[3] ? 1 : 0;
+
+    for (int i = 0; i < 4; i++)
+    {
+        bool active = (digitalRead(BTN_PINS[i]) == LOW);
+        int value = nutVuaNhan[i] ? 2 : (active ? 1 : 0);
+        data[String("in") + String(i + 1)] = value;
+    }
+
+    Json["time"] = unix_time;
+
+    String data_json;
+    serializeJson(Json["data"], data_json);
+
+    String combined = String(id_des) + String(resp_opcode) + data_json + String(unix_time) + SECRET_KEY;
+    Json["auth"] = calculateMD5(combined);
+
+    String out;
+    serializeJson(Json, out);
+    return out;
 }
 
 // ===================== SEND RESP VIA RS485 =====================
@@ -215,59 +265,73 @@ static void handleJsonCommand(const char *json, size_t len,
     // chỉ nhận cho center id_des=1 (hoặc id_des=0 broadcast)
     if (!(id_des == 1 || id_des == 0))
     {
-        String resp = buildResponseJson(id_des, resp_opcode, unix_time, 255);
+        String Json = ResponseJson(id_des, resp_opcode, unix_time, 255);
         if (fromRs485)
-            rs485SendLine(resp);
+            rs485SendLine(Json);
         else
-            udpSendResponse(udpIp, udpPort, resp);
+            udpSendResponse(udpIp, udpPort, Json);
         return;
     }
 
-    // opcode chỉ xử lý IO_COMMAND=2 cho center_control
-    if (opcode != 2)
+    // opcode chỉ xử lý IO_COMMAND=2 và GET_INFO cho center_control
+    if (opcode != 2 || opcode !=3)
     {
-        String resp = buildResponseJson(id_des, resp_opcode, unix_time, 255);
+        String Json = ResponseJson(id_des, resp_opcode, unix_time, 255);
         if (fromRs485)
-            rs485SendLine(resp);
+            rs485SendLine(Json);
         else
-            udpSendResponse(udpIp, udpPort, resp);
+            udpSendResponse(udpIp, udpPort, Json);
         return;
     }
 
     // check time validity (nếu bạn dùng)
     if (!isTimeValid(unix_time))
     {
-        String resp = buildResponseJson(id_des, resp_opcode, unix_time, 2);
+        String Json = ResponseJson(id_des, resp_opcode, unix_time, 2);
         if (fromRs485)
-            rs485SendLine(resp);
+            rs485SendLine(Json);
         else
-            udpSendResponse(udpIp, udpPort, resp);
+            udpSendResponse(udpIp, udpPort, Json);
         return;
     }
 
     // auth
     if (!verifyAuth(doc, receivedHash))
     {
-        String resp = buildResponseJson(id_des, resp_opcode, unix_time, 1);
+        String Json = ResponseJson(id_des, resp_opcode, unix_time, 1);
         if (fromRs485)
-            rs485SendLine(resp);
+            rs485SendLine(Json);
         else
-            udpSendResponse(udpIp, udpPort, resp);
+            udpSendResponse(udpIp, udpPort, Json);
         return;
     }
 
     // MAN mode: không cho remote điều khiển
-    if (!isAutoMode())
+    if (opcode ==2 && !isAutoMode())
     {
-        String resp = buildResponseJson(id_des, resp_opcode, unix_time, 255);
+        String Json = ResponseJson(id_des, resp_opcode, unix_time, 255);
         if (fromRs485)
-            rs485SendLine(resp);
+            rs485SendLine(Json);
         else
-            udpSendResponse(udpIp, udpPort, resp);
+            udpSendResponse(udpIp, udpPort, Json);
         return;
     }
 
     // Parse out1..out4 (0/1 hoặc bool đều ok)
+        if (opcode == 3)
+    {
+        String Json = Goi_trangthai(id_des, resp_opcode, unix_time);
+        if (fromRs485)
+            rs485SendLine(Json);
+        else
+            udpSendResponse(udpIp, udpPort, Json);
+
+        for (int i = 0; i < 4; i++)
+            nutVuaNhan[i] = false;
+        return;
+    }
+
+    // opcode == 2: Parse out1..out4 (0/1 hoặc bool đều ok)
     JsonObject dataObj = doc["data"].as<JsonObject>();
     bool o1 = (dataObj["out1"].as<int>() != 0);
     bool o2 = (dataObj["out2"].as<int>() != 0);
@@ -276,11 +340,11 @@ static void handleJsonCommand(const char *json, size_t len,
 
     applyIOCommand(o1, o2, o3, o4);
 
-    String resp = buildResponseJson(id_des, resp_opcode, unix_time, 0);
+    String Json = ResponseJson(id_des, resp_opcode, unix_time, 0);
     if (fromRs485)
-        rs485SendLine(resp);
+        rs485SendLine(Json);
     else
-        udpSendResponse(udpIp, udpPort, resp);
+        udpSendResponse(udpIp, udpPort, Json);
 }
 
 // ===================== UDP CALLBACK =====================
@@ -311,7 +375,7 @@ static void updateRs485()
         }
     }
 }
-
+PCHandler pcHandler;
 // ===================== SETUP/LOOP =====================
 void setup()
 {
@@ -319,8 +383,8 @@ void setup()
     delay(100);
 
     // MODE
-    pinMode(MODE_PIN, INPUT_PULLUP);
-
+    setupAutoManMode();
+    pcHandler.begin();
     // Inputs
     for (int i = 0; i < 4; i++)
     {
@@ -354,9 +418,11 @@ void setup()
     Serial.println(F("{\"center_control\":\"started\"}"));
 }
 
+
 void loop()
 {
     // 1) UDP + RS485 luôn chạy song song
+    pcHandler.update();
     eth.update();
     updateRs485();
 
@@ -368,6 +434,7 @@ void loop()
             if (debouncePress(i))
             {
                 Serial.printf("MAN: Button %d pressed -> toggle out%d\n", i + 1, i + 1);
+                nutVuaNhan[i] = true;
                 toggleOutput(i);
             }
         }

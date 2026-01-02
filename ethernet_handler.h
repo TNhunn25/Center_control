@@ -10,7 +10,7 @@
 #include "config.h"
 #include "md5.h"
 
-extern const SECRET_KEY;
+extern const String SECRET_KEY;
 
 class EthernetUDPHandler
 {
