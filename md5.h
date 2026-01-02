@@ -1,3 +1,4 @@
+#pragma once
 #include <Arduino.h>
 #include <MD5Builder.h>
 

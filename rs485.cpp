@@ -1,6 +1,6 @@
 #include "rs485.h"
 
-static const String SECRET_KEY = "ALTA_MIST_CONTROLLER";
+extern const String SECRET_KEY = "ALTA_MIST_CONTROLLER";
 
 RS485Handler::RS485Handler()
 {

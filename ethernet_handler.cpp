@@ -1,6 +1,6 @@
 #include "ethernet_handler.h"
 
-static const String SECRET_KEY = "ALTA_MIST_CONTROLLER";
+extern const String SECRET_KEY = "ALTA_MIST_CONTROLLER";
 
 EthernetUDPHandler::EthernetUDPHandler()
 {
@@ -9,7 +9,7 @@ EthernetUDPHandler::EthernetUDPHandler()
 
 void EthernetUDPHandler::begin()
 {
-    // Mặc định theo sơ đồ của bạn:
+    // Mặc định theo sơ đồ: 
     // RST=5, CS=6, SCK=7, MISO=8, MOSI=9, port=8888
     begin(6, 5, 7, 8, 9, 8888);
 }
@@ -76,6 +76,16 @@ void EthernetUDPHandler::update()
     handleReceive();
 }
 
+void EthernetUDPHandler::onReceive(ReceiveCallback cb)
+{
+    receiveCallback = cb;
+}
+
+bool EthernetUDPHandler::isLinkUp() const
+{
+    return Ethernet.linkStatus() != LinkOFF;
+}
+
 // Nhận gói UDP từ node
 void EthernetUDPHandler::handleReceive()
 {
@@ -102,6 +112,11 @@ void EthernetUDPHandler::handleReceive()
     Serial.print(F("): "));
     Serial.println(rxBuf);
 
+    if (receiveCallback)
+    {
+        receiveCallback(rxBuf, len, udp.remoteIP(), udp.remotePort());
+    }
+
     // Nếu muốn parse JSON phản hồi từ node thì thêm ở đây:
     // StaticJsonDocument<512> doc;
     // if (!deserializeJson(doc, rxBuf)) { ... }
@@ -110,6 +125,9 @@ void EthernetUDPHandler::handleReceive()
 // Gửi lệnh xuống các node qua UDP - protocol mới
 bool EthernetUDPHandler::sendCommand(const MistCommand &cmd)
 {
+    if (Ethernet.linkStatus() == LinkOFF)
+        return false;
+
     // data
     StaticJsonDocument<256> dataDoc;
 

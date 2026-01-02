@@ -14,6 +14,7 @@ class EthernetUDPHandler
 {
 public:
     EthernetUDPHandler();
+    using ReceiveCallback = void (*)(const char *payload, int len, IPAddress remoteIp, uint16_t remotePort);
 
     // Begin đầy đủ chân (khuyến nghị)
     void begin(uint8_t csPin,
@@ -29,6 +30,8 @@ public:
     void update(); // gọi trong loop() để receive UDP
 
     bool sendCommand(const MistCommand &cmd);
+    void onReceive(ReceiveCallback cb);
+    bool isLinkUp() const;
 
 private:
     static constexpr unsigned long broadcastInterval = 3000; // 3s
@@ -43,6 +46,7 @@ private:
     unsigned long lastSend = 0;
 
     char rxBuf[RX_BUF_SZ];
+    ReceiveCallback receiveCallback = nullptr;
 
     void handleReceive();
 };

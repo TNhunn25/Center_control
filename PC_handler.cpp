@@ -1,5 +1,5 @@
 #include "PC_handler.h"
-const String SECRET_KEY = "ALTA_MIST_CONTROLLER";
+extern const String SECRET_KEY ;
 
 PCHandler::PCHandler()
 {
