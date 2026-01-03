@@ -130,12 +130,19 @@ inline void PCHandler::processLine()
     }
     else if (opcode == 2)
     {
-        auto dataObj = doc["data"].as<JsonObject>();
+        // auto dataObj = doc["data"].as<JsonObject>();
+        JsonObjectConst dataObj = doc["data"].as<JsonObjectConst>();
+        if (dataObj.isNull() || !dataObj.containsKey("out1") || !dataObj.containsKey("out2") ||
+            !dataObj.containsKey("out3") || !dataObj.containsKey("out4"))
+        {
+            sendResponse(id_des, opcode + 100, unix_time, 255);
+            return;
+        }
         cmd.opcode = 2;
-        cmd.out1 = dataObj["out1"].as<int>() !=0;
-        cmd.out2 = dataObj["out2"].as<int>() !=0;
-        cmd.out3 = dataObj["out3"].as<int>() !=0;
-        cmd.out4 = dataObj["out4"].as<int>() !=0;
+        cmd.out1 = dataObj["out1"].as<int>() != 0;
+        cmd.out2 = dataObj["out2"].as<int>() != 0;
+        cmd.out3 = dataObj["out3"].as<int>() != 0;
+        cmd.out4 = dataObj["out4"].as<int>() != 0;
     }
     else if (opcode == 3)
     {
@@ -161,6 +168,13 @@ inline void PCHandler::sendResponse(int id_des, int resp_opcode, uint32_t unix_t
     resp_doc["opcode"] = resp_opcode;
     JsonObject data = resp_doc.createNestedObject("data");
     data["status"] = status;
+    if (cmd && cmd->opcode == 2)
+    {
+        data["out1"] = cmd->out1 ? 1 : 0;
+        data["out2"] = cmd->out2 ? 1 : 0;
+        data["out3"] = cmd->out3 ? 1 : 0;
+        data["out4"] = cmd->out4 ? 1 : 0;
+    }
     resp_doc["time"] = unix_time;
 
     // Tính auth cho phản hồi
