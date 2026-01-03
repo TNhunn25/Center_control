@@ -300,6 +300,7 @@ static void udpSendResponse(IPAddress remoteIp, uint16_t remotePort, const Strin
 //Forward lệnh từ PC xuống các node (RS485 + RJ45)
 static void forwardCommandToNodes(const MistCommand &cmd)
 {
+    Serial.println(F("PC: forward command to nodes"));
     MistCommand forwardCmd = cmd;
     if(cmd.opcode == 1 && cmd.node_id > 0)
     {
@@ -358,8 +359,8 @@ static void handleJsonCommand(const char *json, size_t len,
         return;
     }
 
-    // opcode chỉ xử lý IO_COMMAND=2 và GET_INFO cho center_control
-    if (opcode != 2 || opcode !=3)
+    // opcode chỉ xử lý IO_COMMAND=2 và GET_INFO=3 cho center_control
+    if (opcode != 2 && opcode !=3)
     {
         String Json = ResponseJson(id_des, resp_opcode, unix_time, 255);
         if (fromRs485)
@@ -463,7 +464,20 @@ static void updateRs485()
 
 static void onPcCommand(const MistCommand &cmd)
 {
-    // Khi nhận lệnh từ PC, forward xuống các node
+    Serial.println(F("PC: command received"));
+    Serial.print(F("PC: opcode="));
+    Serial.print(cmd.opcode);
+    Serial.print(F(" id_des="));
+    Serial.println(cmd.id_des);
+    //Khi nhận lệnh từ PC: 
+    //-Opcode 2: Các cổng output điều khiển các node 
+    //-opcode 1: forward xuống các node khác
+    if(cmd.opcode ==2)
+    {
+        // Lệnh từ PC luôn xử lý như AUTO (MAN chỉ áp dụng cho thao tác tay)
+        applyIOCommand(cmd.out1, cmd.out2, cmd.out3, cmd.out4);
+        return;
+    }
     forwardCommandToNodes(cmd);
 }
 
@@ -476,6 +490,7 @@ void setup()
     // MODE
     setupAutoManMode();
     pcHandler.begin();
+    pcHandler.onCommandReceived(onPcCommand);
     // Inputs
     for (int i = 0; i < 4; i++)
     {
@@ -517,7 +532,7 @@ void loop()
     eth.update();
     updateRs485();
 
-    // 2) MAN mode: nút cơ toggle output
+    // 2) MAN mode: nút cơ toggle output  (AUTO thì chặn)
     if (!isAutoMode())
     {
         for (int i = 0; i < 4; i++)
@@ -527,6 +542,16 @@ void loop()
                 Serial.printf("MAN: Button %d pressed -> toggle out%d\n", i + 1, i + 1);
                 nutVuaNhan[i] = true;
                 toggleOutput(i);
+            }
+        }
+    }
+    else
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            if (debouncePress(i))
+            {
+                Serial.printf("AUTO: ignore button %d\n", i + 1);
             }
         }
     }
