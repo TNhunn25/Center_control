@@ -64,30 +64,62 @@ inline void PCHandler::onCommandReceived(CommandCallback cb)
     commandCallback = cb;
 }
 
+// inline void PCHandler::update()
+// {
+//     while (Serial.available())
+//     {
+//         char c = (char)Serial.read();
+//         if (c == '\n')
+//         {
+//             rxLine.trim();
+//             if (rxLine.length() == 0)
+//             {
+//                 rxLine = "";
+//                 continue;
+//             }
+//             processLine();
+//             rxLine = "";
+//         }
+//         else
+//         {
+//             if (rxLine.length() < 512)
+//             {
+//                 rxLine += c;
+//             }
+//         }
+//     }
+// }
+
 inline void PCHandler::update()
 {
-    while (Serial.available())
+    uint16_t bytesProcessed = 0;
+    const uint16_t MAX_BYTES_PER_LOOP = 256;
+
+    while (Serial.available() && bytesProcessed < MAX_BYTES_PER_LOOP)
     {
         char c = (char)Serial.read();
+        bytesProcessed++;
+
+        if (c == '\r') continue; // Windows CRLF
+
         if (c == '\n')
         {
             rxLine.trim();
-            if (rxLine.length() == 0)
-            {
-                rxLine = "";
-                continue;
+            if (rxLine.length() > 0) {
+                processLine();
             }
-            processLine();
             rxLine = "";
         }
         else
         {
-            if (rxLine.length() < 512)
-            {
-                rxLine += c;
-            }
+            if (rxLine.length() < 512) rxLine += c;
+            else rxLine = ""; // quá dài -> drop tránh bơm heap
         }
+
+        if ((bytesProcessed & 0x3F) == 0) yield(); // mỗi 64 byte
     }
+
+    if (Serial.available()) yield();
 }
 
 inline void PCHandler::processLine()

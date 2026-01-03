@@ -9,21 +9,21 @@
 // ===================== HW PINS =====================
 
 // Input buttons (MAN) - dùng INPUT_PULLUP, nhấn = LOW
-static const uint8_t BTN_PINS[4] = {14, 17, 18, 21};
+static const uint8_t OUT_PINS[4] = {11, 10, 14, 17};
 
 // Output channels
-static const uint8_t OUT_PINS[4] = {10, 11, 12, 13};
+static const uint8_t IN_PINS[4] = {12, 13, 18, 21};
 
 // Status LEDs
-static const uint8_t LED_OK_PIN = 2;  // xanh
-static const uint8_t LED_ERR_PIN = 4; // đỏ
+static const uint8_t LED_OK_PIN = -1;  // xanh
+static const uint8_t LED_ERR_PIN = -1; // đỏ
 
 // Relay active low?
 static const bool OUT_ACTIVE_LOW = false;
 
 // RS485 UART + DE/RE
 static const int RS485_RX_PIN = 33;
-static const int RS485_TX_PIN = 14;
+static const int RS485_TX_PIN = 16;
 static const uint8_t RS485_DE_RE = 15; // DE/RE nối chung (HIGH=TX, LOW=RX)
 static const uint32_t RS485_BAUD = 115200;
 
@@ -98,20 +98,24 @@ static void writeOutput(uint8_t ch, bool on)
 
     digitalWrite(OUT_PINS[ch], pinLevel ? HIGH : LOW);
 
-    // Debug: chỉ in log khi trạng thái output thay đổi
-    if (prevState != on)
-    {
-        Serial.printf("OUT%d -> %s\n", ch + 1, on ? "ON" : "OFF");
-    }
+    // // Debug: chỉ in log khi trạng thái output thay đổi
+    // Serial.printf("OUT%d -> %s\n", ch + 1, on ? "ON" : "OFF");
 }
 
 static void applyIOCommand(bool o1, bool o2, bool o3, bool o4)
 {
-    Serial.printf("CMD OUT: o1=%d o2=%d o3=%d o4=%d\n", o1 ? 1 : 0, o2 ? 1 : 0, o3 ? 1 : 0, o4 ? 1 : 0);
+    // Serial.printf("CMD OUT: o1=%d o2=%d o3=%d o4=%d\n", o1 ? 1 : 0, o2 ? 1 : 0, o3 ? 1 : 0, o4 ? 1 : 0);
     writeOutput(0, o1);
     writeOutput(1, o2);
     writeOutput(2, o3);
     writeOutput(3, o4);
+
+    // log 1 lần duy nhất cho 1 gói
+    Serial.printf("RX OUT PACKET: OUT1=%s OUT2=%s OUT3=%s OUT4=%s\n",
+                  o1 ? "ON" : "OFF",
+                  o2 ? "ON" : "OFF",
+                  o3 ? "ON" : "OFF",
+                  o4 ? "ON" : "OFF");
 }
 
 static void toggleOutput(uint8_t ch)
@@ -122,7 +126,7 @@ static void toggleOutput(uint8_t ch)
 // ===================== DEBOUNCE =====================
 static bool debouncePress(uint8_t i)
 {
-    bool reading = digitalRead(BTN_PINS[i]); // nhấn = LOW
+    bool reading = digitalRead(IN_PINS[i]); // nhấn = LOW
     uint32_t now = millis();
 
     if (reading != btn[i].lastReading)
@@ -168,7 +172,7 @@ static bool verifyAuth(const JsonDocument &doc, const String &receivedHash)
 
 static String ResponseJson(int id_des, int resp_opcode, uint32_t unix_time, int status)
 {
-    StaticJsonDocument<320> Json;
+    StaticJsonDocument<520> Json;
     Json["id_des"] = id_des;
     Json["opcode"] = resp_opcode;
 
@@ -249,7 +253,7 @@ static String Goi_trangthai(int id_des, int resp_opcode, uint32_t unix_time)
 
     for (int i = 0; i < 4; i++)
     {
-        bool active = (digitalRead(BTN_PINS[i]) == LOW);
+        bool active = (digitalRead(IN_PINS[i]) == LOW);
         int value = nutVuaNhan[i] ? 2 : (active ? 1 : 0);
         data[String("in") + String(i + 1)] = value;
     }
@@ -524,17 +528,12 @@ void setup()
     // Inputs
     for (int i = 0; i < 4; i++)
     {
-        pinMode(BTN_PINS[i], INPUT_PULLUP);
-        btn[i].stableLevel = digitalRead(BTN_PINS[i]);
-        btn[i].lastReading = btn[i].stableLevel;
-        btn[i].lastChangeMs = millis();
+        pinMode(OUT_PINS[i], OUTPUT);
+        digitalWrite(OUT_PINS[i], LOW); // hoặc mức an toàn của relay
     }
-
-    // Outputs
     for (int i = 0; i < 4; i++)
     {
-        pinMode(OUT_PINS[i], OUTPUT);
-        writeOutput(i, false);
+        pinMode(IN_PINS[i], INPUT_PULLUP); // nếu input kiểu công tắc kéo xuống GND
     }
 
     // LEDs
