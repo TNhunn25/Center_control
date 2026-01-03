@@ -103,7 +103,7 @@ inline void PCHandler::processLine()
     uint32_t unix_time = doc["time"].as<uint32_t>();
     String receivedHash = doc["auth"].as<String>();
 
-    if (id_des < 0 || (opcode != 1 && opcode != 2))
+    if (id_des < 0 || (opcode != 1 && opcode != 2 && opcode != 3))
     {
         sendResponse(id_des, opcode + 100, unix_time, 255);
         return;
@@ -132,14 +132,22 @@ inline void PCHandler::processLine()
     {
         auto dataObj = doc["data"].as<JsonObject>();
         cmd.opcode = 2;
-        cmd.out1 = dataObj["out1"] | false;
-        cmd.out2 = dataObj["out2"] | false;
-        cmd.out3 = dataObj["out3"] | false;
-        cmd.out4 = dataObj["out4"] | false;
+        cmd.out1 = dataObj["out1"].as<int>() !=0;
+        cmd.out2 = dataObj["out2"].as<int>() !=0;
+        cmd.out3 = dataObj["out3"].as<int>() !=0;
+        cmd.out4 = dataObj["out4"].as<int>() !=0;
+    }
+    else if (opcode == 3)
+    {
+        cmd.opcode = 3;
     }
     if (commandCallback)
     {
         commandCallback(cmd);
+    }
+    if(opcode == 3)
+    {
+        return;
     }
     // sendResponse(id_des, opcode + 100, unix_time, 0);
     sendResponse(id_des, opcode + 100, unix_time, 0, &cmd);
@@ -153,16 +161,6 @@ inline void PCHandler::sendResponse(int id_des, int resp_opcode, uint32_t unix_t
     resp_doc["opcode"] = resp_opcode;
     JsonObject data = resp_doc.createNestedObject("data");
     data["status"] = status;
-
-    // Nếu là IO_COMMAND (opcode 2) thì trả kèm trạng thái output để debug
-    if (cmd && cmd->opcode == 2)
-    {
-        data["out1"] = cmd->out1 ? 1 : 0;
-        data["out2"] = cmd->out2 ? 1 : 0;
-        data["out3"] = cmd->out3 ? 1 : 0;
-        data["out4"] = cmd->out4 ? 1 : 0;
-    }
-
     resp_doc["time"] = unix_time;
 
     // Tính auth cho phản hồi

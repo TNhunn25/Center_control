@@ -145,10 +145,11 @@ inline bool RS485Handler::sendCommand(const MistCommand &cmd)
     }
     else if (cmd.opcode == 2)
     {
-        dataDoc["out1"] = cmd.out1;
-        dataDoc["out2"] = cmd.out2;
-        dataDoc["out3"] = cmd.out3;
-        dataDoc["out4"] = cmd.out4;
+        dataDoc["out1"] = cmd.out1 ? 1 : 0;
+        dataDoc["out2"] = cmd.out2 ? 1 : 0;
+        dataDoc["out3"] = cmd.out3 ? 1 : 0;
+        dataDoc["out4"] = cmd.out4 ? 1 : 0;
+
     }
     else
     {

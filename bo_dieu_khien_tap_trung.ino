@@ -201,10 +201,11 @@ static String CommandJson(const MistCommand &cmd)
     else if (cmd.opcode == 2)
     {
         //IO_command
-        dataDoc["out1"] = cmd.out1;
-        dataDoc["out2"] = cmd.out2;
-        dataDoc["out3"] = cmd.out3;
-        dataDoc["out4"] = cmd.out4;
+        dataDoc["out1"] = cmd.out1 ? 1 : 0;
+        dataDoc["out2"] = cmd.out2 ? 1 : 0;
+        dataDoc["out3"] = cmd.out3 ? 1 : 0;
+        dataDoc["out4"] = cmd.out4 ? 1 : 0;
+
     }
     else 
     {
@@ -359,8 +360,8 @@ static void handleJsonCommand(const char *json, size_t len,
         return;
     }
 
-    // opcode chỉ xử lý IO_COMMAND=2 và GET_INFO cho center_control
-    if (opcode != 2 || opcode !=3)
+    // opcode chỉ xử lý IO_COMMAND=2 và GET_INFO=3 cho center_control
+    if (opcode != 2 && opcode !=3)
     {
         String Json = ResponseJson(id_des, resp_opcode, unix_time, 255);
         if (fromRs485)
@@ -403,7 +404,7 @@ static void handleJsonCommand(const char *json, size_t len,
         return;
     }
 
-    // Parse out1..out4 (0/1 hoặc bool đều ok)
+    //opcode == 3: trả trạng thái
         if (opcode == 3)
     {
         String Json = Goi_trangthai(id_des, resp_opcode, unix_time);
@@ -467,7 +468,15 @@ static void onPcCommand(const MistCommand &cmd)
     //Khi nhận lệnh từ PC: 
     //-Opcode 2: Các cổng output điều khiển các node 
     //-opcode 1: forward xuống các node khác
-    if(cmd.opcode ==2)
+    if (cmd.opcode == 3)
+    {
+        String Json = Goi_trangthai(cmd.id_des, cmd.opcode + 100, cmd.unix);
+        Serial.println(Json);
+        for (int i = 0; i < 4; i++)
+            nutVuaNhan[i] = false;
+        return;
+    }
+    if(cmd.opcode == 2 )
     {
         // Lệnh từ PC luôn xử lý như AUTO (MAN chỉ áp dụng cho thao tác tay)
         applyIOCommand(cmd.out1, cmd.out2, cmd.out3, cmd.out4);

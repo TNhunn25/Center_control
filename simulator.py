@@ -47,7 +47,7 @@ def main():
     ap.add_argument("-p", "--port", required=True, help="Cổng serial, ví dụ: COM5")
     ap.add_argument("-b", "--baud", type=int, default=115200, help="Baudrate")
     ap.add_argument("-d", "--id_des", type=int, default=1, help="ID thiết bị đích (0=all, >=1=cụ thể)")
-    ap.add_argument("-o", "--opcode", type=int, required=True, choices=[1, 2], help="Opcode: 1=MIST_COMMAND, 2=IO_COMMAND")
+    ap.add_argument("-o", "--opcode", type=int, required=True, choices=[1, 2, 3], help="Opcode: 1=MIST_COMMAND, 2=IO_COMMAND, 3=GET_INFO")
     ap.add_argument("-i", "--interval", type=float, default=1.0, help="Gửi mỗi bao giây")
     ap.add_argument("--wait", type=float, default=0.5, help="Thời gian chờ phản hồi (giây)")
 
@@ -88,22 +88,34 @@ def main():
             print("Không thể dùng đồng thời --on-all và --off-all", file=sys.stderr)
             sys.exit(2)
 
-        outputs = {"out1": False, "out2": False, "out3": False, "out4": False}
+        outputs = {"out1": 0, "out2": 0, "out3": 0, "out4": 0}
         if args.on_all:
-            outputs = {"out1": True, "out2": True, "out3": True, "out4": True}
+            outputs = {"out1": 1, "out2": 1, "out3": 1, "out4": 1}
         elif args.off_all:
-            outputs = {"out1": False, "out2": False, "out3": False, "out4": False}
+            outputs = {"out1": 0, "out2": 0, "out3": 0, "out4": 0}
 
-        if args.out1: outputs["out1"] = True
-        if args.out2: outputs["out2"] = True
-        if args.out3: outputs["out3"] = True
-        if args.out4: outputs["out4"] = True
-        if args.no_out1: outputs["out1"] = False
-        if args.no_out2: outputs["out2"] = False
-        if args.no_out3: outputs["out3"] = False
-        if args.no_out4: outputs["out4"] = False
+        if args.out1: outputs["out1"] = 1
+        if args.out2: outputs["out2"] = 1
+        if args.out3: outputs["out3"] = 1
+        if args.out4: outputs["out4"] = 1
+        if args.no_out1: outputs["out1"] = 0
+        if args.no_out2: outputs["out2"] = 0
+        if args.no_out3: outputs["out3"] = 0
+        if args.no_out4: outputs["out4"] = 0
 
         data = outputs
+    elif args.opcode == 3:
+        data= {
+            "out1": 0,
+            "out2": 0,
+            "out3": 0,
+            "out4": 0,
+            "in1": 0,
+            "in2": 0,
+            "in3": 0,
+            "in4": 0,
+        }
+        
 
     print(f"Bắt đầu gửi lệnh opcode {args.opcode} mỗi {args.interval}s đến id_des {args.id_des}")
     print(f"   Data: {data}")
