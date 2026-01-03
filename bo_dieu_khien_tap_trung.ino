@@ -359,8 +359,8 @@ static void handleJsonCommand(const char *json, size_t len,
         return;
     }
 
-    // opcode chỉ xử lý IO_COMMAND=2 và GET_INFO=3 cho center_control
-    if (opcode != 2 && opcode !=3)
+    // opcode chỉ xử lý IO_COMMAND=2 và GET_INFO cho center_control
+    if (opcode != 2 || opcode !=3)
     {
         String Json = ResponseJson(id_des, resp_opcode, unix_time, 255);
         if (fromRs485)
@@ -464,11 +464,6 @@ static void updateRs485()
 
 static void onPcCommand(const MistCommand &cmd)
 {
-    Serial.println(F("PC: command received"));
-    Serial.print(F("PC: opcode="));
-    Serial.print(cmd.opcode);
-    Serial.print(F(" id_des="));
-    Serial.println(cmd.id_des);
     //Khi nhận lệnh từ PC: 
     //-Opcode 2: Các cổng output điều khiển các node 
     //-opcode 1: forward xuống các node khác
@@ -542,16 +537,6 @@ void loop()
                 Serial.printf("MAN: Button %d pressed -> toggle out%d\n", i + 1, i + 1);
                 nutVuaNhan[i] = true;
                 toggleOutput(i);
-            }
-        }
-    }
-    else
-    {
-        for (int i = 0; i < 4; i++)
-        {
-            if (debouncePress(i))
-            {
-                Serial.printf("AUTO: ignore button %d\n", i + 1);
             }
         }
     }
