@@ -17,7 +17,8 @@ public:
     void begin();
     void update();
     void onCommandReceived(CommandCallback cb);
-    void sendResponse(int id_des, int resp_opcode, uint32_t unix_time, int status);
+    // void sendResponse(int id_des, int resp_opcode, uint32_t unix_time, int status);
+    void sendResponse(int id_des, int resp_opcode, uint32_t unix_time, int status, const MistCommand *cmd = nullptr);
 
 private:
     String rxLine;
@@ -140,16 +141,28 @@ inline void PCHandler::processLine()
     {
         commandCallback(cmd);
     }
-    sendResponse(id_des, opcode + 100, unix_time, 0);
+    // sendResponse(id_des, opcode + 100, unix_time, 0);
+    sendResponse(id_des, opcode + 100, unix_time, 0, &cmd);
 }
 
-inline void PCHandler::sendResponse(int id_des, int resp_opcode, uint32_t unix_time, int status)
+// inline void PCHandler::sendResponse(int id_des, int resp_opcode, uint32_t unix_time, int status)
+inline void PCHandler::sendResponse(int id_des, int resp_opcode, uint32_t unix_time, int status, const MistCommand *cmd)
 {
     StaticJsonDocument<512> resp_doc;
     resp_doc["id_des"] = id_des;
     resp_doc["opcode"] = resp_opcode;
     JsonObject data = resp_doc.createNestedObject("data");
     data["status"] = status;
+
+    // Nếu là IO_COMMAND (opcode 2) thì trả kèm trạng thái output để debug
+    if (cmd && cmd->opcode == 2)
+    {
+        data["out1"] = cmd->out1 ? 1 : 0;
+        data["out2"] = cmd->out2 ? 1 : 0;
+        data["out3"] = cmd->out3 ? 1 : 0;
+        data["out4"] = cmd->out4 ? 1 : 0;
+    }
+
     resp_doc["time"] = unix_time;
 
     // Tính auth cho phản hồi

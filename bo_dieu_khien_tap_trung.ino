@@ -30,6 +30,8 @@ static const uint32_t RS485_BAUD = 115200;
 // UDP
 static const uint16_t UDP_PORT = 8888;
 
+PCHandler pcHandler;
+
 // ===================== PROTOCOL =====================
 const String SECRET_KEY = "ALTA_MIST_CONTROLLER";
 
@@ -87,6 +89,7 @@ String rs485Line;
 // ===================== OUTPUT CONTROL =====================
 static void writeOutput(uint8_t ch, bool on)
 {
+    bool prevState = outState[ch]; //lưu trạng thái cũ để chỉ log khi có thay đổi thật 
     outState[ch] = on;
 
     bool pinLevel = on;
@@ -94,6 +97,12 @@ static void writeOutput(uint8_t ch, bool on)
         pinLevel = !pinLevel;
 
     digitalWrite(OUT_PINS[ch], pinLevel ? HIGH : LOW);
+
+    //Debug: chỉ in log khi trạng thái output thay đổi
+    if(prevState !=on)
+    {
+        Serial.printf("OUT%d -> %s\n", ch + 1, on ? "ON" : "OFF");
+    }
 }
 
 static void applyIOCommand(bool o1, bool o2, bool o3, bool o4)
@@ -178,6 +187,50 @@ static String ResponseJson(int id_des, int resp_opcode, uint32_t unix_time, int 
     return out;
 }
 
+//Tạo Json lệnh đầy đủ (Kèm auth) để forward xuống node
+static String CommandJson(const MistCommand &cmd)
+{
+    StaticJsonDocument<256> dataDoc;
+    if (cmd.opcode == 1)
+    {
+        //Mist_command
+        dataDoc["node_id"] = cmd.node_id;
+        dataDoc["time_phase1"] = cmd.time_phase1;
+        dataDoc["time_phase2"] = cmd.time_phase2;
+    }
+    else if (cmd.opcode == 2)
+    {
+        //IO_command
+        dataDoc["out1"] = cmd.out1;
+        dataDoc["out2"] = cmd.out2;
+        dataDoc["out3"] = cmd.out3;
+        dataDoc["out4"] = cmd.out4;
+    }
+    else 
+    {
+        return"";
+    }
+
+    String data_json;
+    serializeJson(dataDoc, data_json);
+
+    //Auth: id_des + opcode + data_Json + time + SECRET_KEY
+    String combined = String(cmd.id_des) + String(cmd.opcode) + data_json + String(cmd.unix) + SECRET_KEY;
+    String auth = calculateMD5(combined);
+    
+    StaticJsonDocument<512> doc;
+    doc["id_des"] = cmd.id_des;
+    doc["opcode"] = cmd.opcode;
+    doc["data"] = dataDoc;
+    doc["time"] = cmd.unix;
+    doc["auth"] = auth;
+
+    String out;
+    serializeJson(doc, out);
+    return out;
+    
+}
+
 static String Goi_trangthai(int id_des, int resp_opcode, uint32_t unix_time)
 {
     StaticJsonDocument<256> Json;
@@ -242,6 +295,38 @@ static void udpSendResponse(IPAddress remoteIp, uint16_t remotePort, const Strin
     // mình sẽ chỉnh class EthernetUDPHandler expose sendRaw().
     Serial.print(F("UDP RESP: "));
     Serial.println(line);
+}
+
+//Forward lệnh từ PC xuống các node (RS485 + RJ45)
+static void forwardCommandToNodes(const MistCommand &cmd)
+{
+    MistCommand forwardCmd = cmd;
+    if(cmd.opcode == 1 && cmd.node_id > 0)
+    {
+        //opcode 1: gửi đúng node_id đích
+        forwardCmd.id_des = cmd.node_id;
+    }
+    else if (cmd.opcode == 2 && cmd.id_des == 1)
+    {
+        //opcode 2: lệnh từ center -> broadcast xuống node
+        forwardCmd.id_des = 0;
+    }
+
+    //build payload Json có auth để gửi xuống node
+    String payload = CommandJson(forwardCmd);
+    if(payload.length()== 0)
+    {
+        Serial.println(F("Forward: invalid opcode"));
+    }
+
+    //Gửi cả RS485 và UDP
+    rs485SendLine(payload);
+    bool updOk = eth.sendCommand(forwardCmd);
+
+    Serial.print(F("Forward: "));
+    Serial.print(payload);
+    Serial.print(F(" | UDP = "));
+    Serial.println(updOk ? F("OK") : F("FAIL"));
 }
 
 // ===================== HANDLE ONE JSON COMMAND =====================
@@ -375,7 +460,13 @@ static void updateRs485()
         }
     }
 }
-PCHandler pcHandler;
+
+static void onPcCommand(const MistCommand &cmd)
+{
+    // Khi nhận lệnh từ PC, forward xuống các node
+    forwardCommandToNodes(cmd);
+}
+
 // ===================== SETUP/LOOP =====================
 void setup()
 {
