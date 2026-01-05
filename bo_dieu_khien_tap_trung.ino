@@ -2,8 +2,8 @@
 #include <ArduinoJson.h>
 
 #include "config.h"
-#include "md5.h"
 #include "ethernet_handler.h"
+#include "PC_handler.h"
 #include "auto_man.h"
 
 // ===================== HW PINS =====================
@@ -515,6 +515,111 @@ static void onPcCommand(const MistCommand &cmd)
     forwardCommandToNodes(cmd);
 }
 
+// ===================== AUTO PUSH STATUS TO PC =====================
+// "mốc trạng thái" để so sánh thay đổi
+static bool mocTrangThaiOut[4] = {false, false, false, false};
+static bool mocTrangThaiIn[4]  = {false, false, false, false};
+
+// chống spam push
+static uint32_t lanDayLenPC_ms = 0;
+static const uint32_t CHONG_SPAM_MS = 120;
+
+// opcode center tự phát gửi trạng thái về PC
+static const int OPCODE_DAY_TRANGTHAI = 203;
+
+// Nếu chưa sync NTP/RTC (getUnixTime()=0) thì dùng millis/1000 tạm
+static uint32_t layThoiGianGui()
+{
+    uint32_t t = getUnixTime();
+    if (t == 0) t = millis() / 1000;
+    return t;
+}
+
+// Lưu "mốc trạng thái" hiện tại để lần sau so sánh
+static void luuMocTrangThai()
+{
+    for (int i = 0; i < 4; i++)
+    {
+        mocTrangThaiOut[i] = outState[i];
+        mocTrangThaiIn[i]  = (digitalRead(IN_PINS[i]) == LOW); // active LOW
+    }
+}
+
+// Đẩy trạng thái về PC (tự phát)
+static void dayTrangThaiVePC()
+{
+    uint32_t t = layThoiGianGui();
+
+    // Dùng lại hàm đóng gói trạng thái bạn đang có:
+    // Goi_trangthai(id_des, opcode, time)
+    // id_des: tùy bạn, ở đây giữ 1 cho PC
+    String js = Goi_trangthai(1, OPCODE_DAY_TRANGTHAI, t);
+    Serial.println(js);
+
+    // clear cờ "nút vừa nhấn" để tránh gửi lặp đi lặp lại trạng thái=2
+    for (int i = 0; i < 4; i++) nutVuaNhan[i] = false;
+}
+
+// Kiểm tra thay đổi và tự push
+static void tuDongDayNeuThayDoi()
+{
+    bool thayDoi = false;
+
+    // 1) OUT thay đổi?
+    for (int i = 0; i < 4; i++)
+    {
+        if (outState[i] != mocTrangThaiOut[i])
+        {
+            thayDoi = true;
+            break;
+        }
+    }
+
+    // 2) IN active thay đổi?
+    if (!thayDoi)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            bool inDangActive = (digitalRead(IN_PINS[i]) == LOW);
+            if (inDangActive != mocTrangThaiIn[i])
+            {
+                thayDoi = true;
+                break;
+            }
+        }
+    }
+
+    // 3) Có nút vừa nhấn? (để gửi trạng thái in=2)
+    if (!thayDoi)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            if (nutVuaNhan[i])
+            {
+                thayDoi = true;
+                break;
+            }
+        }
+    }
+
+    if (!thayDoi) return;
+
+    // chống spam
+    uint32_t nowMs = millis();
+    if (nowMs - lanDayLenPC_ms < CHONG_SPAM_MS)
+    {
+        // vẫn cập nhật mốc để khỏi bị push dồn
+        luuMocTrangThai();
+        return;
+    }
+
+    lanDayLenPC_ms = nowMs;
+    dayTrangThaiVePC();
+    luuMocTrangThai();
+}
+
+
+
 // ===================== SETUP/LOOP =====================
 void setup()
 {
@@ -535,6 +640,7 @@ void setup()
     {
         pinMode(IN_PINS[i], INPUT_PULLUP); // nếu input kiểu công tắc kéo xuống GND
     }
+    luuMocTrangThai();
 
     // LEDs
     pinMode(LED_OK_PIN, OUTPUT);
@@ -572,6 +678,7 @@ void loop()
                 toggleOutput(i);
             }
         }
+        tuDongDayNeuThayDoi();
     }
 
     // 3) LED status
