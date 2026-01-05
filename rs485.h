@@ -137,24 +137,30 @@ inline bool RS485Handler::sendCommand(const MistCommand &cmd)
     // Tạo payload dữ liệu theo opcode.
     StaticJsonDocument<256> dataDoc;
 
-    if (cmd.opcode == 1)
+    swith (cmd.opcode)
+    // if (cmd.opcode == 1)
+    case MIST_COMMAND:
     {
         dataDoc["node_id"] = cmd.node_id;
         dataDoc["time_phase1"] = cmd.time_phase1;
         dataDoc["time_phase2"] = cmd.time_phase2;
     }
-    else if (cmd.opcode == 2)
-    {
+    break;
+    // else if (cmd.opcode == 2)
+    case IO_COMMAND:
+    
         dataDoc["out1"] = cmd.out1 ? 1 : 0;
         dataDoc["out2"] = cmd.out2 ? 1 : 0;
         dataDoc["out3"] = cmd.out3 ? 1 : 0;
         dataDoc["out4"] = cmd.out4 ? 1 : 0;
 
-    }
-    else
-    {
+    
+    break;
+    default:
+    // else
+    // {
         return false;
-    }
+    // }
 
     String dataJson;
     dataJson.reserve(256);

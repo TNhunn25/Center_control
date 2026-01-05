@@ -200,14 +200,17 @@ static String ResponseJson(int id_des, int resp_opcode, uint32_t unix_time, int 
 static String CommandJson(const MistCommand &cmd)
 {
     StaticJsonDocument<256> dataDoc;
-    if (cmd.opcode == 1)
+    switch (cmd.opcode)
+    {
+    case MIST_COMMAND:
     {
         // Mist_command
         dataDoc["node_id"] = cmd.node_id;
         dataDoc["time_phase1"] = cmd.time_phase1;
         dataDoc["time_phase2"] = cmd.time_phase2;
     }
-    else if (cmd.opcode == 2)
+    break;
+    case IO_COMMAND:
     {
         // IO_command
         dataDoc["out1"] = cmd.out1 ? 1 : 0;
@@ -215,8 +218,8 @@ static String CommandJson(const MistCommand &cmd)
         dataDoc["out3"] = cmd.out3 ? 1 : 0;
         dataDoc["out4"] = cmd.out4 ? 1 : 0;
     }
-    else
-    {
+    break;
+    default:
         return "";
     }
 
@@ -314,15 +317,34 @@ static void forwardCommandToNodes(const MistCommand &cmd)
 {
     Serial.println(F("PC: forward command to nodes"));
     MistCommand forwardCmd = cmd;
-    if (cmd.opcode == 1 && cmd.node_id > 0)
+    // if (cmd.opcode == 1 && cmd.node_id > 0)
+    // {
+    //     // opcode 1: gửi đúng node_id đích
+    //     forwardCmd.id_des = cmd.node_id;
+    // }
+    // else if (cmd.opcode == 2 && cmd.id_des == 1)
+    // {
+    //     // opcode 2: lệnh từ center -> broadcast xuống node
+    //     forwardCmd.id_des = 0;
+    // }
+    switch (cmd.opcode)
     {
-        // opcode 1: gửi đúng node_id đích
-        forwardCmd.id_des = cmd.node_id;
-    }
-    else if (cmd.opcode == 2 && cmd.id_des == 1)
-    {
-        // opcode 2: lệnh từ center -> broadcast xuống node
-        forwardCmd.id_des = 0;
+    case MIST_COMMAND:
+        if (cmd.node_id > 0)
+        {
+            // opcode 1: gửi đúng node_id đích
+            forwardCmd.id_des = cmd.node_id;
+        }
+        break;
+    case IO_COMMAND:
+        if (cmd.id_des == 1)
+        {
+            // opcode 2: lệnh từ center --> broadcast xuống node
+            forwardCmd.id_des = 0;
+        }
+        break;
+    default:
+        break;
     }
 
     // build payload Json có auth để gửi xuống node
@@ -410,18 +432,37 @@ static void handleJsonCommand(const char *json, size_t len,
     }
 
     // MAN mode: không cho remote điều khiển
-    if (opcode == 2 && !isAutoMode())
+    // if (opcode == 2 && !isAutoMode())
+    // {
+    // String Json = ResponseJson(id_des, resp_opcode, unix_time, 255);
+    // if (fromRs485)
+    //     rs485SendLine(Json);
+    // else
+    //     udpSendResponse(udpIp, udpPort, Json);
+    // return;
+    // }
+
+    switch (opcode)
     {
-        String Json = ResponseJson(id_des, resp_opcode, unix_time, 255);
-        if (fromRs485)
-            rs485SendLine(Json);
-        else
-            udpSendResponse(udpIp, udpPort, Json);
-        return;
+    case IO_COMMAND:
+        if (!isAutoMode())
+        {
+            String Json = ResponseJson(id_des, resp_opcode, unix_time, 255);
+            if (fromRs485)
+                rs485SendLine(Json);
+            else
+                udpSendResponse(udpIp, udpPort, Json);
+            return;
+        }
+        break;
+    default:
+        break;
     }
 
     // opcode == 3: trả trạng thái
-    if (opcode == 3)
+    switch (opcode)
+    {
+    case GET_INFO:
     {
         String Json = Goi_trangthai(id_des, resp_opcode, unix_time);
         if (fromRs485)
@@ -435,29 +476,36 @@ static void handleJsonCommand(const char *json, size_t len,
     }
 
     // opcode == 2: Parse out1..out4 (0/1 hoặc bool đều ok)
-    JsonObjectConst dataObj = doc["data"].as<JsonObjectConst>();
-    if (dataObj.isNull() || !dataObj.containsKey("out1") || !dataObj.containsKey("out2") ||
-        !dataObj.containsKey("out3") || !dataObj.containsKey("out4"))
+    case IO_COMMAND:
     {
-        String Json = ResponseJson(id_des, resp_opcode, unix_time, 255);
+        JsonObjectConst dataObj = doc["data"].as<JsonObjectConst>();
+        if (dataObj.isNull() || !dataObj.containsKey("out1") || !dataObj.containsKey("out2") ||
+            !dataObj.containsKey("out3") || !dataObj.containsKey("out4"))
+        {
+            String Json = ResponseJson(id_des, resp_opcode, unix_time, 255);
+            if (fromRs485)
+                rs485SendLine(Json);
+            else
+                udpSendResponse(udpIp, udpPort, Json);
+            return;
+        }
+        bool o1 = (dataObj["out1"].as<int>() != 0);
+        bool o2 = (dataObj["out2"].as<int>() != 0);
+        bool o3 = (dataObj["out3"].as<int>() != 0);
+        bool o4 = (dataObj["out4"].as<int>() != 0);
+
+        applyIOCommand(o1, o2, o3, o4);
+
+        String Json = ResponseJson(id_des, resp_opcode, unix_time, 0);
         if (fromRs485)
             rs485SendLine(Json);
         else
             udpSendResponse(udpIp, udpPort, Json);
-        return;
+        break;
     }
-    bool o1 = (dataObj["out1"].as<int>() != 0);
-    bool o2 = (dataObj["out2"].as<int>() != 0);
-    bool o3 = (dataObj["out3"].as<int>() != 0);
-    bool o4 = (dataObj["out4"].as<int>() != 0);
-
-    applyIOCommand(o1, o2, o3, o4);
-
-    String Json = ResponseJson(id_des, resp_opcode, unix_time, 0);
-    if (fromRs485)
-        rs485SendLine(Json);
-    else
-        udpSendResponse(udpIp, udpPort, Json);
+    default:
+        break;
+    }
 }
 
 // ===================== UDP CALLBACK =====================
@@ -498,27 +546,32 @@ static void onPcCommand(const MistCommand &cmd)
     // Khi nhận lệnh từ PC:
     //-Opcode 2: Các cổng output điều khiển các node
     //-opcode 1: forward xuống các node khác
-    if (cmd.opcode == 3)
+
+    switch (cmd.opcode)
+    {
+    case GET_INFO:
     {
         String Json = Goi_trangthai(cmd.id_des, cmd.opcode + 100, cmd.unix);
+        Serial.print(F("TX PC RESP: "));
         Serial.println(Json);
         for (int i = 0; i < 4; i++)
             nutVuaNhan[i] = false;
         return;
     }
-    if (cmd.opcode == 2)
-    {
+    case IO_COMMAND:
+
         // Lệnh từ PC luôn xử lý như AUTO (MAN chỉ áp dụng cho thao tác tay)
         applyIOCommand(cmd.out1, cmd.out2, cmd.out3, cmd.out4);
         return;
+    default:
+        forwardCommandToNodes(cmd);
     }
-    forwardCommandToNodes(cmd);
 }
 
 // ===================== AUTO PUSH STATUS TO PC =====================
 // "mốc trạng thái" để so sánh thay đổi
 static bool mocTrangThaiOut[4] = {false, false, false, false};
-static bool mocTrangThaiIn[4]  = {false, false, false, false};
+static bool mocTrangThaiIn[4] = {false, false, false, false};
 
 // chống spam push
 static uint32_t lanDayLenPC_ms = 0;
@@ -531,7 +584,8 @@ static const int OPCODE_DAY_TRANGTHAI = 203;
 static uint32_t layThoiGianGui()
 {
     uint32_t t = getUnixTime();
-    if (t == 0) t = millis() / 1000;
+    if (t == 0)
+        t = millis() / 1000;
     return t;
 }
 
@@ -541,7 +595,7 @@ static void luuMocTrangThai()
     for (int i = 0; i < 4; i++)
     {
         mocTrangThaiOut[i] = outState[i];
-        mocTrangThaiIn[i]  = (digitalRead(IN_PINS[i]) == LOW); // active LOW
+        mocTrangThaiIn[i] = (digitalRead(IN_PINS[i]) == LOW); // active LOW
     }
 }
 
@@ -557,7 +611,8 @@ static void dayTrangThaiVePC()
     Serial.println(js);
 
     // clear cờ "nút vừa nhấn" để tránh gửi lặp đi lặp lại trạng thái=2
-    for (int i = 0; i < 4; i++) nutVuaNhan[i] = false;
+    for (int i = 0; i < 4; i++)
+        nutVuaNhan[i] = false;
 }
 
 // Kiểm tra thay đổi và tự push
@@ -602,7 +657,8 @@ static void tuDongDayNeuThayDoi()
         }
     }
 
-    if (!thayDoi) return;
+    if (!thayDoi)
+        return;
 
     // chống spam
     uint32_t nowMs = millis();
@@ -617,8 +673,6 @@ static void tuDongDayNeuThayDoi()
     dayTrangThaiVePC();
     luuMocTrangThai();
 }
-
-
 
 // ===================== SETUP/LOOP =====================
 void setup()

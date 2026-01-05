@@ -8,7 +8,7 @@
 #include <ArduinoJson.h>
 
 #include "config.h"
-#include "md5.h"
+// #include "md5.h"
 
 extern const String SECRET_KEY;
 

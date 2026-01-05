@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 #include <ArduinoJson.h>
-#include "md5.h" 
+// #include "md5.h" 
 #include "config.h"
 
 extern const String SECRET_KEY;
@@ -130,6 +130,9 @@ inline void PCHandler::processLine()
         return;
     }
 
+    Serial.print(F("RX PC PACKET: "));
+    Serial.println(rxLine);
+
     int id_des = doc["id_des"].as<int>();
     int opcode = doc["opcode"].as<int>();
     uint32_t unix_time = doc["time"].as<uint32_t>();
@@ -224,7 +227,9 @@ inline void PCHandler::sendResponse(int id_des, int resp_opcode, uint32_t unix_t
 
     String output;
     serializeJson(resp_doc, output);
+    Serial.print(F("TX PC RESP: "));
     Serial.println(output);
+    // Serial.println(output);
 }
 
 #endif
