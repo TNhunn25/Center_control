@@ -43,9 +43,9 @@ void EthernetUDPHandler::begin(uint8_t csPin,
     }
 
     // IP tĩnh
-    IPAddress ip(192, 168, 1, 100);
+    IPAddress ip(192, 168, 80, 118);
     IPAddress dns(8, 8, 8, 8);
-    IPAddress gateway(192, 168, 1, 1);
+    IPAddress gateway(192, 168, 80, 255);
     IPAddress subnet(255, 255, 255, 0);
 
     Ethernet.begin(mac, ip, dns, gateway, subnet);
@@ -76,13 +76,34 @@ void EthernetUDPHandler::update()
     handleReceive();
 }
 
+void EthernetUDPHandler::onReceive(UdpReceiveCallback cb)
+{
+    receiveCallback = cb;
+}
+
+bool EthernetUDPHandler::sendResponse(IPAddress remoteIp, uint16_t remotePort, const String &payload)
+{
+    if (payload.length() == 0)
+        return false;
+
+    udp.beginPacket(remoteIp, remotePort);
+    udp.write((const uint8_t *)payload.c_str(), payload.length());
+    return (udp.endPacket() == 1);
+}
+
+bool EthernetUDPHandler::isLinkUp() const
+{
+    return Ethernet.linkStatus() != LinkOFF;
+}
+
 // Nhận gói UDP từ node
 void EthernetUDPHandler::handleReceive()
 {
     if (Ethernet.linkStatus() == LinkOFF)
     {
         Serial.println(F("[ETH] Link OFF"));
-        return false;
+        // return false;
+        return;
     }
     int packetSize = udp.parsePacket();
     if (packetSize <= 0)
@@ -104,6 +125,9 @@ void EthernetUDPHandler::handleReceive()
     Serial.print(udp.remotePort());
     Serial.print(F("): "));
     Serial.println(rxBuf);
+
+     if (receiveCallback)
+        receiveCallback(rxBuf, len, udp.remoteIP(), udp.remotePort());
 
     // ---- NEW: parse JSON để lấy node_id ----
     StaticJsonDocument<512> doc;

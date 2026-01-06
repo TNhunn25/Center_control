@@ -20,6 +20,8 @@ struct NodeWatch
 class EthernetUDPHandler
 {
 public:
+    using UdpReceiveCallback = void (*)(const char *payload, int len, IPAddress rip, uint16_t rport);
+
     EthernetUDPHandler();
 
     // Begin đầy đủ chân (khuyến nghị)
@@ -35,6 +37,11 @@ public:
 
     void update(); // gọi trong loop() để receive UDP
 
+    void onReceive(UdpReceiveCallback cb);
+    bool sendResponse(IPAddress remoteIp, uint16_t remotePort, const String &payload);
+
+    bool isLinkUp() const;
+
     bool sendCommand(const MistCommand &cmd);
     void checkNodeTimeouts();
 
@@ -45,15 +52,15 @@ private:
     uint32_t RX_TIMEOUT_MS = 30000;
     uint32_t lastRxMs = 0;
     bool timeoutTriggered = false;
-    static constexpr uint16_t MAX_NODES = 10; 
-    NodeWatch nodes[MAX_NODES + 1];        
+    static constexpr uint16_t MAX_NODES = 10;
+    NodeWatch nodes[MAX_NODES + 1];
     IPAddress broadcastIP = IPAddress(192, 168, 1, 255);
     EthernetUDP udp;
     uint16_t port = 8888;
     unsigned long lastSend = 0;
     char rxBuf[RX_BUF_SZ];
+    UdpReceiveCallback receiveCallback = nullptr;
     void handleReceive();
- 
 };
 
 #endif

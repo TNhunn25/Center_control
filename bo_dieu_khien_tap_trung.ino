@@ -33,7 +33,8 @@ static const uint16_t UDP_PORT = 8888;
 PCHandler pcHandler;
 
 // ===================== PROTOCOL =====================
-const String SECRET_KEY = "ALTA_MIST_CONTROLLER";
+// const String SECRET_KEY = "ALTA_MIST_CONTROLLER";
+extern const String SECRET_KEY;
 
 // Nếu bạn đã có nguồn UnixTime thật (RTC/NTP) thì thay hàm này.
 // Tự động đồng bộ thời gian dựa trên gói đầu tiên nhận được.

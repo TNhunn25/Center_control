@@ -3,6 +3,8 @@
 #include <ArduinoJson.h>
 #include <MD5Builder.h>
 
+const String SECRET_KEY = "ALTA_MIST_CONTROLLER";
+
 //Các opcode cho các lệnh
 #define MIST_COMMAND 0x01
 #define IO_COMMAND 0x02
@@ -21,7 +23,7 @@ typedef struct
     bool out1, out2, out3, out4; // Chỉ dùng khi opcode=2
 } MistCommand;
 
-String calculateMD5(const String &input)
+inline String calculateMD5(const String &input)
 {
     MD5Builder md5;
     md5.begin();
