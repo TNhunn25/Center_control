@@ -298,18 +298,27 @@ static void udpSendResponse(IPAddress remoteIp, uint16_t remotePort, const Strin
     // dùng udp trực tiếp trong handler: class hiện không expose udp,
     // nên ta gửi broadcast lại cũng được.
     // Ở đây: gửi broadcast (đơn giản, đảm bảo PC nhận nếu nó listen cùng port)
-    MistCommand dummy{};
-    dummy.id_des = 1;
-    dummy.opcode = 2;
-    dummy.unix = 0;
-    (void)remoteIp;
-    (void)remotePort;
+    // MistCommand dummy{};
+    // dummy.id_des = 1;
+    // dummy.opcode = 2;
+    // dummy.unix = 0;
+    // (void)remoteIp;
+    // (void)remotePort;
 
-    // -> cách dễ nhất: print ra Serial để PC đọc qua USB
-    // Nếu bạn muốn trả thẳng UDP unicast đúng remoteIp/remotePort,
-    // mình sẽ chỉnh class EthernetUDPHandler expose sendRaw().
-    Serial.print(F("UDP RESP: "));
-    Serial.println(line);
+    // // -> cách dễ nhất: print ra Serial để PC đọc qua USB
+    // // Nếu bạn muốn trả thẳng UDP unicast đúng remoteIp/remotePort,
+    // // mình sẽ chỉnh class EthernetUDPHandler expose sendRaw().
+    // Serial.print(F("UDP RESP: "));
+    // Serial.println(line);
+
+    // Trả thẳng UDP unicast về IP/port nguồn đã gửi lệnh.
+    if (!eth.sendResponse(remoteIp, remotePort, line))
+    {
+        Serial.print(F("UDP RESP FAILED to "));
+        Serial.print(remoteIp);
+        Serial.print(F(":"));
+        Serial.println(remotePort);
+    }
 }
 
 // Forward lệnh từ PC xuống các node (RS485 + RJ45)
@@ -352,6 +361,7 @@ static void forwardCommandToNodes(const MistCommand &cmd)
     if (payload.length() == 0)
     {
         Serial.println(F("Forward: invalid opcode"));
+        return;
     }
 
     // Gửi cả RS485 và UDP
@@ -562,9 +572,10 @@ static void onPcCommand(const MistCommand &cmd)
 
         // Lệnh từ PC luôn xử lý như AUTO (MAN chỉ áp dụng cho thao tác tay)
         applyIOCommand(cmd.out1, cmd.out2, cmd.out3, cmd.out4);
+        forwardCommandToNodes(cmd);
         return;
     default:
-        forwardCommandToNodes(cmd);
+        forwardCommandToNodes(cmd); 
     }
 }
 
@@ -711,6 +722,7 @@ void setup()
     eth.onReceive(onUdpPacket);
 
     Serial.println(F("{\"center_control\":\"started\"}"));
+    
 }
 
 void loop()

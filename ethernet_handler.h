@@ -34,7 +34,10 @@ public:
     bool sendCommand(const MistCommand &cmd);
     void onReceive(ReceiveCallback cb);
     bool isLinkUp() const;
-
+    //Gửi phản hồi UDP unicast về đúng IP/port nguồn
+    bool sendResponse(IPAddress remoteIp, uint16_t remotePort, const char *payload, size_t len);
+    //Overload nhận String để tiện dùng trong handler
+    bool sendResponse(IPAddress remoteIp, uint16_t remotePort, const String &payload);
 private:
     static constexpr unsigned long broadcastInterval = 3000; // 3s
     static constexpr size_t RX_BUF_SZ = 512;
@@ -135,6 +138,26 @@ inline void EthernetUDPHandler::onReceive(ReceiveCallback cb)
 inline bool EthernetUDPHandler::isLinkUp() const
 {
     return Ethernet.linkStatus() != LinkOFF;
+}
+
+inline bool EthernetUDPHandler::sendResponse(IPAddress remoteIp, uint16_t remotePort, const char *payload, size_t len)
+{
+    // Không gửi nếu link ethernet down hoặc payload rỗng.
+    if (Ethernet.linkStatus() == LinkOFF)
+        return false;
+    if (payload == nullptr || len == 0)
+        return false;
+
+    // Unicast phản hồi về đúng IP/port gửi lên.
+    udp.beginPacket(remoteIp, remotePort);
+    udp.write((const uint8_t *)payload, len);
+    return udp.endPacket() == 1;
+}
+
+inline bool EthernetUDPHandler::sendResponse(IPAddress remoteIp, uint16_t remotePort, const String &payload)
+{
+    // Chuyển String -> buffer để dùng chung logic sendResponse().
+    return sendResponse(remoteIp, remotePort, payload.c_str(), payload.length());
 }
 
 // Nhận gói UDP từ node
