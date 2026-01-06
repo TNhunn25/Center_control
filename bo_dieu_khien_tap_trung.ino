@@ -722,7 +722,6 @@ void setup()
     eth.onReceive(onUdpPacket);
 
     Serial.println(F("{\"center_control\":\"started\"}"));
-    
 }
 
 void loop()
