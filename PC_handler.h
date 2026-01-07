@@ -3,8 +3,8 @@
 
 #include <Arduino.h>
 #include <ArduinoJson.h>
-// #include "md5.h" 
 #include "config.h"
+#include "auto_man.h" 
 
 extern const String SECRET_KEY;
 
@@ -148,6 +148,10 @@ inline void PCHandler::processLine()
     {
         sendResponse(id_des, opcode + 100, unix_time, 1);
         return;
+    }
+    if(opcode == 1 || opcode == 2 & isAutoMode())
+    {
+        sendResponse(id_des, opcode + 100, unix_time, 255);
     }
     // === AUTH OK → Xử lý lệnh ===
     MistCommand cmd{};

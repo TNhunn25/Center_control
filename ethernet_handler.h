@@ -35,15 +35,15 @@ public:
     // Begin đơn giản: mặc định theo sơ đồ bạn gửi RST=5 CS=6 SCK=7 MISO=8 MOSI=9
     void begin();
 
-    void update(); // gọi trong loop() để receive UDP
+    // void update(); // gọi trong loop() để receive UDP
 
-    void onReceive(UdpReceiveCallback cb);
-    bool sendResponse(IPAddress remoteIp, uint16_t remotePort, const String &payload);
+    // void onReceive(UdpReceiveCallback cb);
+    // bool sendResponse(IPAddress remoteIp, uint16_t remotePort, const String &payload);
 
     bool isLinkUp() const;
 
     bool sendCommand(const MistCommand &cmd);
-    void checkNodeTimeouts();
+    // void checkNodeTimeouts();
 
 private:
     static constexpr unsigned long broadcastInterval = 3000; // 3s
@@ -54,7 +54,7 @@ private:
     bool timeoutTriggered = false;
     static constexpr uint16_t MAX_NODES = 10;
     NodeWatch nodes[MAX_NODES + 1];
-    IPAddress broadcastIP = IPAddress(192, 168, 1, 255);
+    IPAddress broadcastIP = IPAddress(192, 168, 80, 255);
     EthernetUDP udp;
     uint16_t port = 8888;
     unsigned long lastSend = 0;

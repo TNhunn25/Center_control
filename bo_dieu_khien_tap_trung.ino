@@ -2,7 +2,7 @@
 #include <ArduinoJson.h>
 
 #include "config.h"
-#include "ethernet_handler.h"
+// #include "ethernet_handler.h"
 #include "PC_handler.h"
 #include "auto_man.h"
 
@@ -22,13 +22,13 @@ static const uint8_t LED_ERR_PIN = -1; // đỏ
 static const bool OUT_ACTIVE_LOW = false;
 
 // RS485 UART + DE/RE
-static const int RS485_RX_PIN = 33;
-static const int RS485_TX_PIN = 16;
-static const uint8_t RS485_DE_RE = 15; // DE/RE nối chung (HIGH=TX, LOW=RX)
-static const uint32_t RS485_BAUD = 115200;
+// static const int RS485_RX_PIN = 33;
+// static const int RS485_TX_PIN = 16;
+// static const uint8_t RS485_DE_RE = 15; // DE/RE nối chung (HIGH=TX, LOW=RX)
+// static const uint32_t RS485_BAUD = 115200;
 
 // UDP
-static const uint16_t UDP_PORT = 8888;
+// static const uint16_t UDP_PORT = 8888;
 
 PCHandler pcHandler;
 
@@ -82,10 +82,10 @@ ButtonState btn[4];
 bool outState[4] = {false, false, false, false};   // true=ON
 bool nutVuaNhan[4] = {false, false, false, false}; // true=just pressed
 
-EthernetUDPHandler eth;
+// EthernetUDPHandler eth;
 
 // RX buffer RS485 line-based
-String rs485Line;
+// String rs485Line;
 
 // ===================== OUTPUT CONTROL =====================
 static void writeOutput(uint8_t ch, bool on)
@@ -112,7 +112,7 @@ static void applyIOCommand(bool o1, bool o2, bool o3, bool o4)
     writeOutput(3, o4);
 
     // log 1 lần duy nhất cho 1 gói
-    Serial.printf("RX OUT PACKET: OUT1=%s OUT2=%s OUT3=%s OUT4=%s\n",
+    Serial.printf("RX OUT PACKET: OUT1= %s OUT2= %s OUT3= %s OUT4= %s\n",
                   o1 ? "ON" : "OFF",
                   o2 ? "ON" : "OFF",
                   o3 ? "ON" : "OFF",
@@ -276,57 +276,61 @@ static String Goi_trangthai(int id_des, int resp_opcode, uint32_t unix_time)
 }
 
 // ===================== SEND RESP VIA RS485 =====================
-static void rs485SendLine(const String &line)
-{
-    Serial.print(F("TX RS485: "));
-    Serial.println(line);
-    digitalWrite(RS485_DE_RE, HIGH); // TX enable
-    delayMicroseconds(100);
+// static void rs485SendLine(const String &line)
+// {
+//     Serial.print(F("TX RS485: "));
+//     Serial.println(line);
+//     digitalWrite(RS485_DE_RE, HIGH); // TX enable
+//     delayMicroseconds(100);
 
-    Serial2.print(line);
-    Serial2.print("\n");
-    Serial2.flush();
+//     Serial2.print(line);
+//     Serial2.print("\n");
+//     Serial2.flush();
 
-    delayMicroseconds(200);
-    digitalWrite(RS485_DE_RE, LOW); // back to RX
-}
+//     delayMicroseconds(200);
+//     digitalWrite(RS485_DE_RE, LOW); // back to RX
+// }
 
 // ===================== UDP SEND RESP =====================
-static void udpSendResponse(IPAddress remoteIp, uint16_t remotePort, const String &line)
-{
-    Serial.print(F("TX UDP RESP: "));
-    Serial.println(line);
-    // dùng udp trực tiếp trong handler: class hiện không expose udp,
-    // nên ta gửi broadcast lại cũng được.
-    // Ở đây: gửi broadcast (đơn giản, đảm bảo PC nhận nếu nó listen cùng port)
-    // MistCommand dummy{};
-    // dummy.id_des = 1;
-    // dummy.opcode = 2;
-    // dummy.unix = 0;
-    // (void)remoteIp;
-    // (void)remotePort;
+// static void udpSendResponse(IPAddress remoteIp, uint16_t remotePort, const String &line)
+// {
+//     Serial.print(F("TX UDP RESP: "));
+//     Serial.println(line);
+/*
+// dùng udp trực tiếp trong handler: class hiện không expose udp,
+// nên ta gửi broadcast lại cũng được.
+// Ở đây: gửi broadcast (đơn giản, đảm bảo PC nhận nếu nó listen cùng port)
+// MistCommand dummy{};
+// dummy.id_des = 1;
+// dummy.opcode = 2;
+// dummy.unix = 0;
+// (void)remoteIp;
+// (void)remotePort;
 
-    // // -> cách dễ nhất: print ra Serial để PC đọc qua USB
-    // // Nếu bạn muốn trả thẳng UDP unicast đúng remoteIp/remotePort,
-    // // mình sẽ chỉnh class EthernetUDPHandler expose sendRaw().
-    // Serial.print(F("UDP RESP: "));
-    // Serial.println(line);
+// // -> cách dễ nhất: print ra Serial để PC đọc qua USB
+// // Nếu bạn muốn trả thẳng UDP unicast đúng remoteIp/remotePort,
+// // mình sẽ chỉnh class EthernetUDPHandler expose sendRaw().
+// Serial.print(F("UDP RESP: "));
+// Serial.println(line);
+
+*/
 
     // Trả thẳng UDP unicast về IP/port nguồn đã gửi lệnh.
-    if (!eth.sendResponse(remoteIp, remotePort, line))
-    {
-        Serial.print(F("UDP RESP FAILED to "));
-        Serial.print(remoteIp);
-        Serial.print(F(":"));
-        Serial.println(remotePort);
-    }
-}
+//     if (!eth.sendResponse(remoteIp, remotePort, line))
+//     {
+//         Serial.print(F("UDP RESP FAILED to "));
+//         Serial.print(remoteIp);
+//         Serial.print(F(":"));
+//         Serial.println(remotePort);
+//     }
+// }
 
 // Forward lệnh từ PC xuống các node (RS485 + RJ45)
 static void forwardCommandToNodes(const MistCommand &cmd)
 {
     Serial.println(F("PC: forward command to nodes"));
     MistCommand forwardCmd = cmd;
+    /*
     // if (cmd.opcode == 1 && cmd.node_id > 0)
     // {
     //     // opcode 1: gửi đúng node_id đích
@@ -338,215 +342,220 @@ static void forwardCommandToNodes(const MistCommand &cmd)
     //     forwardCmd.id_des = 0;
     // }
     switch (cmd.opcode)
-    {
-    case MIST_COMMAND:
-        if (cmd.node_id > 0)
-        {
-            // opcode 1: gửi đúng node_id đích
-            forwardCmd.id_des = cmd.node_id;
-        }
-        break;
-    case IO_COMMAND:
-        if (cmd.id_des == 1)
-        {
-            // opcode 2: lệnh từ center --> broadcast xuống node
-            forwardCmd.id_des = 0;
-        }
-        break;
-    default:
-        break;
-    }
+    
+    */
+    // {
+    // case MIST_COMMAND:
+    //     if (cmd.node_id > 0)
+    //     {
+    //         // opcode 1: gửi đúng node_id đích
+    //         forwardCmd.id_des = cmd.node_id;
+    //     }
+    //     break;
+    // case IO_COMMAND:
+    //     if (cmd.id_des == 1)
+    //     {
+    //         // opcode 2: lệnh từ center --> broadcast xuống node
+    //         forwardCmd.id_des = 0;
+    //     }
+    //     break;
+    // default:
+    //     break;
+    // }
 
-    // build payload Json có auth để gửi xuống node
-    String payload = CommandJson(forwardCmd);
-    if (payload.length() == 0)
-    {
-        Serial.println(F("Forward: invalid opcode"));
-        return;
-    }
+    // // build payload Json có auth để gửi xuống node
+    // String payload = CommandJson(forwardCmd);
+    // if (payload.length() == 0)
+    // {
+    //     Serial.println(F("Forward: invalid opcode"));
+    //     return;
+    // }
 
-    // Gửi cả RS485 và UDP
-    rs485SendLine(payload);
-    bool updOk = eth.sendCommand(forwardCmd);
+    // // Gửi cả RS485 và UDP
+    // rs485SendLine(payload);
+    // bool updOk = eth.sendCommand(forwardCmd);
 
-    Serial.print(F("Forward payload: "));
-    Serial.print(payload);
-    Serial.print(F(" | UDP = "));
-    Serial.println(updOk ? F("OK") : F("FAIL"));
+    // Serial.print(F("Forward payload: "));
+    // Serial.print(payload);
+    // Serial.print(F(" | UDP = "));
+    // Serial.println(updOk ? F("OK") : F("FAIL"));
+
+    (void)cmd;
+    Serial.println(F("PC: ethernet/RS485 disable, skip forward"));
 }
 
 // ===================== HANDLE ONE JSON COMMAND =====================
-static void handleJsonCommand(const char *json, size_t len,
-                              bool fromRs485,
-                              IPAddress udpIp = IPAddress(0, 0, 0, 0),
-                              uint16_t udpPort = 0)
-{
-    Serial.print(F("RX "));
-    Serial.print(fromRs485 ? F("RS485") : F("UDP"));
-    Serial.print(F(": "));
-    Serial.write(json, len);
-    Serial.println();
-    StaticJsonDocument<512> doc;
-    DeserializationError err = deserializeJson(doc, json, len);
-    if (err)
-        return;
+// static void handleJsonCommand(const char *json, size_t len,
+//                               bool fromRs485,
+//                               IPAddress udpIp = IPAddress(0, 0, 0, 0),
+//                               uint16_t udpPort = 0)
+// {
+//     Serial.print(F("RX "));
+//     Serial.print(fromRs485 ? F("RS485") : F("UDP"));
+//     Serial.print(F(": "));
+//     Serial.write(json, len);
+//     Serial.println();
+//     StaticJsonDocument<512> doc;
+//     DeserializationError err = deserializeJson(doc, json, len);
+//     if (err)
+//         return;
 
-    int id_des = doc["id_des"].as<int>();
-    int opcode = doc["opcode"].as<int>();
-    uint32_t unix_time = doc["time"].as<uint32_t>();
-    String receivedHash = doc["auth"].as<String>();
+//     int id_des = doc["id_des"].as<int>();
+//     int opcode = doc["opcode"].as<int>();
+//     uint32_t unix_time = doc["time"].as<uint32_t>();
+//     String receivedHash = doc["auth"].as<String>();
 
-    int resp_opcode = opcode + 100;
+//     int resp_opcode = opcode + 100;
 
-    // chỉ nhận cho center id_des=1 (hoặc id_des=0 broadcast)
-    if (!(id_des == 1 || id_des == 0))
-    {
-        String Json = ResponseJson(id_des, resp_opcode, unix_time, 255);
-        if (fromRs485)
-            rs485SendLine(Json);
-        else
-            udpSendResponse(udpIp, udpPort, Json);
-        return;
-    }
+//     // chỉ nhận cho center id_des=1 (hoặc id_des=0 broadcast)
+//     if (!(id_des == 1 || id_des == 0))
+//     {
+//         String Json = ResponseJson(id_des, resp_opcode, unix_time, 255);
+//         if (fromRs485)
+//             rs485SendLine(Json);
+//         else
+//             udpSendResponse(udpIp, udpPort, Json);
+//         return;
+//     }
 
-    // opcode chỉ xử lý IO_COMMAND=2 và GET_INFO=3 cho center_control
-    if (opcode != 2 && opcode != 3)
-    {
-        String Json = ResponseJson(id_des, resp_opcode, unix_time, 255);
-        if (fromRs485)
-            rs485SendLine(Json);
-        else
-            udpSendResponse(udpIp, udpPort, Json);
-        return;
-    }
+//     // opcode chỉ xử lý IO_COMMAND=2 và GET_INFO=3 cho center_control
+//     if (opcode != 2 && opcode != 3)
+//     {
+//         String Json = ResponseJson(id_des, resp_opcode, unix_time, 255);
+//         if (fromRs485)
+//             rs485SendLine(Json);
+//         else
+//             udpSendResponse(udpIp, udpPort, Json);
+//         return;
+//     }
 
-    // check time validity (nếu bạn dùng)
-    if (!isTimeValid(unix_time))
-    {
-        String Json = ResponseJson(id_des, resp_opcode, unix_time, 2);
-        if (fromRs485)
-            rs485SendLine(Json);
-        else
-            udpSendResponse(udpIp, udpPort, Json);
-        return;
-    }
+//     // check time validity (nếu bạn dùng)
+//     if (!isTimeValid(unix_time))
+//     {
+//         String Json = ResponseJson(id_des, resp_opcode, unix_time, 2);
+//         if (fromRs485)
+//             rs485SendLine(Json);
+//         else
+//             udpSendResponse(udpIp, udpPort, Json);
+//         return;
+//     }
 
-    // auth
-    if (!verifyAuth(doc, receivedHash))
-    {
-        String Json = ResponseJson(id_des, resp_opcode, unix_time, 1);
-        if (fromRs485)
-            rs485SendLine(Json);
-        else
-            udpSendResponse(udpIp, udpPort, Json);
-        return;
-    }
+//     // auth
+//     if (!verifyAuth(doc, receivedHash))
+//     {
+//         String Json = ResponseJson(id_des, resp_opcode, unix_time, 1);
+//         if (fromRs485)
+//             rs485SendLine(Json);
+//         else
+//             udpSendResponse(udpIp, udpPort, Json);
+//         return;
+//     }
 
-    // MAN mode: không cho remote điều khiển
-    // if (opcode == 2 && !isAutoMode())
-    // {
-    // String Json = ResponseJson(id_des, resp_opcode, unix_time, 255);
-    // if (fromRs485)
-    //     rs485SendLine(Json);
-    // else
-    //     udpSendResponse(udpIp, udpPort, Json);
-    // return;
-    // }
+//     // MAN mode: không cho remote điều khiển
+//     // if (opcode == 2 && !isAutoMode())
+//     // {
+//     // String Json = ResponseJson(id_des, resp_opcode, unix_time, 255);
+//     // if (fromRs485)
+//     //     rs485SendLine(Json);
+//     // else
+//     //     udpSendResponse(udpIp, udpPort, Json);
+//     // return;
+//     // }
 
-    switch (opcode)
-    {
-    case IO_COMMAND:
-        if (!isAutoMode())
-        {
-            String Json = ResponseJson(id_des, resp_opcode, unix_time, 255);
-            if (fromRs485)
-                rs485SendLine(Json);
-            else
-                udpSendResponse(udpIp, udpPort, Json);
-            return;
-        }
-        break;
-    default:
-        break;
-    }
+//     switch (opcode)
+//     {
+//     case IO_COMMAND:
+//         if (!isAutoMode())
+//         {
+//             String Json = ResponseJson(id_des, resp_opcode, unix_time, 255);
+//             if (fromRs485)
+//                 rs485SendLine(Json);
+//             else
+//                 udpSendResponse(udpIp, udpPort, Json);
+//             return;
+//         }
+//         break;
+//     default:
+//         break;
+//     }
 
-    // opcode == 3: trả trạng thái
-    switch (opcode)
-    {
-    case GET_INFO:
-    {
-        String Json = Goi_trangthai(id_des, resp_opcode, unix_time);
-        if (fromRs485)
-            rs485SendLine(Json);
-        else
-            udpSendResponse(udpIp, udpPort, Json);
+//     // opcode == 3: trả trạng thái
+//     switch (opcode)
+//     {
+//     case GET_INFO:
+//     {
+//         String Json = Goi_trangthai(id_des, resp_opcode, unix_time);
+//         if (fromRs485)
+//             rs485SendLine(Json);
+//         else
+//             udpSendResponse(udpIp, udpPort, Json);
 
-        for (int i = 0; i < 4; i++)
-            nutVuaNhan[i] = false;
-        return;
-    }
+//         for (int i = 0; i < 4; i++)
+//             nutVuaNhan[i] = false;
+//         return;
+//     }
 
-    // opcode == 2: Parse out1..out4 (0/1 hoặc bool đều ok)
-    case IO_COMMAND:
-    {
-        JsonObjectConst dataObj = doc["data"].as<JsonObjectConst>();
-        if (dataObj.isNull() || !dataObj.containsKey("out1") || !dataObj.containsKey("out2") ||
-            !dataObj.containsKey("out3") || !dataObj.containsKey("out4"))
-        {
-            String Json = ResponseJson(id_des, resp_opcode, unix_time, 255);
-            if (fromRs485)
-                rs485SendLine(Json);
-            else
-                udpSendResponse(udpIp, udpPort, Json);
-            return;
-        }
-        bool o1 = (dataObj["out1"].as<int>() != 0);
-        bool o2 = (dataObj["out2"].as<int>() != 0);
-        bool o3 = (dataObj["out3"].as<int>() != 0);
-        bool o4 = (dataObj["out4"].as<int>() != 0);
+//     // opcode == 2: Parse out1..out4 (0/1 hoặc bool đều ok)
+//     case IO_COMMAND:
+//     {
+//         JsonObjectConst dataObj = doc["data"].as<JsonObjectConst>();
+//         if (dataObj.isNull() || !dataObj.containsKey("out1") || !dataObj.containsKey("out2") ||
+//             !dataObj.containsKey("out3") || !dataObj.containsKey("out4"))
+//         {
+//             String Json = ResponseJson(id_des, resp_opcode, unix_time, 255);
+//             if (fromRs485)
+//                 rs485SendLine(Json);
+//             else
+//                 udpSendResponse(udpIp, udpPort, Json);
+//             return;
+//         }
+//         bool o1 = (dataObj["out1"].as<int>() != 0);
+//         bool o2 = (dataObj["out2"].as<int>() != 0);
+//         bool o3 = (dataObj["out3"].as<int>() != 0);
+//         bool o4 = (dataObj["out4"].as<int>() != 0);
 
-        applyIOCommand(o1, o2, o3, o4);
+//         applyIOCommand(o1, o2, o3, o4);
 
-        String Json = ResponseJson(id_des, resp_opcode, unix_time, 0);
-        if (fromRs485)
-            rs485SendLine(Json);
-        else
-            udpSendResponse(udpIp, udpPort, Json);
-        break;
-    }
-    default:
-        break;
-    }
-}
+//         String Json = ResponseJson(id_des, resp_opcode, unix_time, 0);
+//         if (fromRs485)
+//             rs485SendLine(Json);
+//         else
+//             udpSendResponse(udpIp, udpPort, Json);
+//         break;
+//     }
+//     default:
+//         break;
+//     }
+// }
 
 // ===================== UDP CALLBACK =====================
-static void onUdpPacket(const char *payload, int len, IPAddress rip, uint16_t rport)
-{
-    handleJsonCommand(payload, (size_t)len, false, rip, rport);
-}
+// static void onUdpPacket(const char *payload, int len, IPAddress rip, uint16_t rport)
+// {
+//     handleJsonCommand(payload, (size_t)len, false, rip, rport);
+// }
 
 // ===================== RS485 UPDATE =====================
-static void updateRs485()
-{
-    while (Serial2.available())
-    {
-        char c = (char)Serial2.read();
-        if (c == '\n')
-        {
-            rs485Line.trim();
-            if (rs485Line.length() > 0)
-            {
-                handleJsonCommand(rs485Line.c_str(), rs485Line.length(), true);
-            }
-            rs485Line = "";
-        }
-        else
-        {
-            if (rs485Line.length() < 512)
-                rs485Line += c;
-        }
-    }
-}
+// static void updateRs485()
+// {
+//     while (Serial2.available())
+//     {
+//         char c = (char)Serial2.read();
+//         if (c == '\n')
+//         {
+//             rs485Line.trim();
+//             if (rs485Line.length() > 0)
+//             {
+//                 handleJsonCommand(rs485Line.c_str(), rs485Line.length(), true);
+//             }
+//             rs485Line = "";
+//         }
+//         else
+//         {
+//             if (rs485Line.length() < 512)
+//                 rs485Line += c;
+//         }
+//     }
+// }
 
 static void onPcCommand(const MistCommand &cmd)
 {
@@ -713,24 +722,24 @@ void setup()
     pinMode(LED_ERR_PIN, OUTPUT);
     setStatusLed(true, false);
 
-    // RS485
-    pinMode(RS485_DE_RE, OUTPUT);
-    digitalWrite(RS485_DE_RE, LOW); // RX
-    Serial2.begin(RS485_BAUD, SERIAL_8N1, RS485_RX_PIN, RS485_TX_PIN);
+    // // RS485
+    // pinMode(RS485_DE_RE, OUTPUT);
+    // digitalWrite(RS485_DE_RE, LOW); // RX
+    // Serial2.begin(RS485_BAUD, SERIAL_8N1, RS485_RX_PIN, RS485_TX_PIN);
 
     // Ethernet UDP
-    eth.begin(); // default pins (CS=6,RST=5,SCK=7,MISO=8,MOSI=9)
-    eth.onReceive(onUdpPacket);
+    // eth.begin(); // default pins (CS=6,RST=5,SCK=7,MISO=8,MOSI=9)
+    // eth.onReceive(onUdpPacket);
 
     Serial.println(F("{\"center_control\":\"started\"}"));
 }
 
 void loop()
 {
-    // 1) UDP + RS485 luôn chạy song song
+    // 1) Chỉ nhận lệnh từ PC qua Serial
     pcHandler.update();
-    eth.update();
-    updateRs485();
+    // eth.update();
+    // updateRs485();
 
     // 2) MAN mode: nút cơ toggle output  (AUTO thì chặn)
     if (!isAutoMode())
@@ -753,9 +762,9 @@ void loop()
         if (outState[i])
             anyOn = true;
 
-    // OK LED = có output ON, ERR LED = link ethernet down (chỉ báo)
-    bool err = !eth.isLinkUp();
-    setStatusLed(anyOn, err);
+    // OK LED = có output ON, ERR LED = không dùng khi ethernet/rs485 tắt
+    // bool err = !eth.isLinkUp();
+    setStatusLed(anyOn, false);
 
     delay(5);
 }
