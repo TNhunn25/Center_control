@@ -207,13 +207,7 @@ inline void PCHandler::sendResponse(int id_des, int resp_opcode, uint32_t unix_t
     resp_doc["opcode"] = resp_opcode;
     JsonObject data = resp_doc.createNestedObject("data");
     data["status"] = status;
-    if (cmd && cmd->opcode == 2)
-    {
-        data["out1"] = cmd->out1 ? 1 : 0;
-        data["out2"] = cmd->out2 ? 1 : 0;
-        data["out3"] = cmd->out3 ? 1 : 0;
-        data["out4"] = cmd->out4 ? 1 : 0;
-    }
+    (void)cmd;
     resp_doc["time"] = unix_time;
 
     // Tính auth cho phản hồi

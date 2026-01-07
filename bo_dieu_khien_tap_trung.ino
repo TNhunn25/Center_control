@@ -35,6 +35,8 @@ PCHandler pcHandler;
 // ===================== PROTOCOL =====================
 // const String SECRET_KEY = "ALTA_MIST_CONTROLLER";
 extern const String SECRET_KEY;
+// Last PC packet time for auto-push correlation.
+static uint32_t lastPcUnixTime = 0;
 
 // Nếu bạn đã có nguồn UnixTime thật (RTC/NTP) thì thay hàm này.
 // Tự động đồng bộ thời gian dựa trên gói đầu tiên nhận được.
@@ -600,15 +602,16 @@ static uint32_t lanDayLenPC_ms = 0;
 static const uint32_t CHONG_SPAM_MS = 120;
 
 // opcode center tự phát gửi trạng thái về PC
-static const int OPCODE_DAY_TRANGTHAI = IO_COMMAND;
+static const int OPCODE_DAY_TRANGTHAI = GET_INFO + 100;
 
 // Nếu chưa sync NTP/RTC (getUnixTime()=0) thì dùng millis/1000 tạm
 static uint32_t layThoiGianGui()
 {
-    uint32_t t = getUnixTime();
-    if (t == 0)
-        t = millis() / 1000;
-    return t;
+    // Use the last PC time to keep packet ids consistent.
+    // If PC time is unknown, return 0 to signal unsynced.
+    if (lastPcUnixTime != 0)
+        return lastPcUnixTime;
+    return 0;
 }
 
 // Lưu "mốc trạng thái" hiện tại để lần sau so sánh
@@ -625,6 +628,8 @@ static void luuMocTrangThai()
 static void dayTrangThaiVePC()
 {
     uint32_t t = layThoiGianGui();
+    if (t == 0)
+        return;
 
     // Dùng lại hàm đóng gói trạng thái bạn đang có:
     // Goi_trangthai(id_des, opcode, time)
@@ -769,3 +774,4 @@ void loop()
 
     delay(5);
 }
+
