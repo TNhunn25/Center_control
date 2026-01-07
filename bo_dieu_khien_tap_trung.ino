@@ -315,7 +315,7 @@ static String Goi_trangthai(int id_des, int resp_opcode, uint32_t unix_time)
 
 */
 
-    // Trả thẳng UDP unicast về IP/port nguồn đã gửi lệnh.
+// Trả thẳng UDP unicast về IP/port nguồn đã gửi lệnh.
 //     if (!eth.sendResponse(remoteIp, remotePort, line))
 //     {
 //         Serial.print(F("UDP RESP FAILED to "));
@@ -326,63 +326,63 @@ static String Goi_trangthai(int id_des, int resp_opcode, uint32_t unix_time)
 // }
 
 // Forward lệnh từ PC xuống các node (RS485 + RJ45)
-static void forwardCommandToNodes(const MistCommand &cmd)
-{
-    Serial.println(F("PC: forward command to nodes"));
-    MistCommand forwardCmd = cmd;
-    /*
-    // if (cmd.opcode == 1 && cmd.node_id > 0)
-    // {
-    //     // opcode 1: gửi đúng node_id đích
-    //     forwardCmd.id_des = cmd.node_id;
-    // }
-    // else if (cmd.opcode == 2 && cmd.id_des == 1)
-    // {
-    //     // opcode 2: lệnh từ center -> broadcast xuống node
-    //     forwardCmd.id_des = 0;
-    // }
-    switch (cmd.opcode)
-    
-    */
-    // {
-    // case MIST_COMMAND:
-    //     if (cmd.node_id > 0)
-    //     {
-    //         // opcode 1: gửi đúng node_id đích
-    //         forwardCmd.id_des = cmd.node_id;
-    //     }
-    //     break;
-    // case IO_COMMAND:
-    //     if (cmd.id_des == 1)
-    //     {
-    //         // opcode 2: lệnh từ center --> broadcast xuống node
-    //         forwardCmd.id_des = 0;
-    //     }
-    //     break;
-    // default:
-    //     break;
-    // }
+// static void forwardCommandToNodes(const MistCommand &cmd)
+// {
+//     Serial.println(F("PC: forward command to nodes"));
+//     MistCommand forwardCmd = cmd;
+/*
+// if (cmd.opcode == 1 && cmd.node_id > 0)
+// {
+//     // opcode 1: gửi đúng node_id đích
+//     forwardCmd.id_des = cmd.node_id;
+// }
+// else if (cmd.opcode == 2 && cmd.id_des == 1)
+// {
+//     // opcode 2: lệnh từ center -> broadcast xuống node
+//     forwardCmd.id_des = 0;
+// }
+switch (cmd.opcode)
 
-    // // build payload Json có auth để gửi xuống node
-    // String payload = CommandJson(forwardCmd);
-    // if (payload.length() == 0)
-    // {
-    //     Serial.println(F("Forward: invalid opcode"));
-    //     return;
-    // }
+*/
+// {
+// case MIST_COMMAND:
+//     if (cmd.node_id > 0)
+//     {
+//         // opcode 1: gửi đúng node_id đích
+//         forwardCmd.id_des = cmd.node_id;
+//     }
+//     break;
+// case IO_COMMAND:
+//     if (cmd.id_des == 1)
+//     {
+//         // opcode 2: lệnh từ center --> broadcast xuống node
+//         forwardCmd.id_des = 0;
+//     }
+//     break;
+// default:
+//     break;
+// }
 
-    // // Gửi cả RS485 và UDP
-    // rs485SendLine(payload);
-    // bool updOk = eth.sendCommand(forwardCmd);
+// // build payload Json có auth để gửi xuống node
+// String payload = CommandJson(forwardCmd);
+// if (payload.length() == 0)
+// {
+//     Serial.println(F("Forward: invalid opcode"));
+//     return;
+// }
 
-    // Serial.print(F("Forward payload: "));
-    // Serial.print(payload);
-    // Serial.print(F(" | UDP = "));
-    // Serial.println(updOk ? F("OK") : F("FAIL"));
+// // Gửi cả RS485 và UDP
+// rs485SendLine(payload);
+// bool updOk = eth.sendCommand(forwardCmd);
 
-    (void)cmd;
-    Serial.println(F("PC: ethernet/RS485 disable, skip forward"));
-}
+// Serial.print(F("Forward payload: "));
+// Serial.print(payload);
+// Serial.print(F(" | UDP = "));
+// Serial.println(updOk ? F("OK") : F("FAIL"));
+
+//     (void)cmd;
+//     Serial.println(F("PC: ethernet/RS485 disable, skip forward"));
+// }
 
 // ===================== HANDLE ONE JSON COMMAND =====================
 // static void handleJsonCommand(const char *json, size_t len,
@@ -564,8 +564,8 @@ static void onPcCommand(const MistCommand &cmd)
     Serial.print(F(" id_des="));
     Serial.println(cmd.id_des);
     // Khi nhận lệnh từ PC:
-    //-Opcode 2: Các cổng output điều khiển các node
-    //-opcode 1: forward xuống các node khác
+    //- Opcode 2: Điều khiển output + trả trạng thái qua Serial
+    //- Opcode khác: bỏ qua (serial- only)
 
     switch (cmd.opcode)
     {
@@ -582,10 +582,11 @@ static void onPcCommand(const MistCommand &cmd)
 
         // Lệnh từ PC luôn xử lý như AUTO (MAN chỉ áp dụng cho thao tác tay)
         applyIOCommand(cmd.out1, cmd.out2, cmd.out3, cmd.out4);
-        forwardCommandToNodes(cmd);
+        dayTrangThaiVePC();
         return;
     default:
-        forwardCommandToNodes(cmd); 
+        Serial.println(F("PC: unsupported opcode for serial-only mode"));
+        // break;
     }
 }
 
@@ -599,7 +600,7 @@ static uint32_t lanDayLenPC_ms = 0;
 static const uint32_t CHONG_SPAM_MS = 120;
 
 // opcode center tự phát gửi trạng thái về PC
-static const int OPCODE_DAY_TRANGTHAI = 203;
+static const int OPCODE_DAY_TRANGTHAI = IO_COMMAND;
 
 // Nếu chưa sync NTP/RTC (getUnixTime()=0) thì dùng millis/1000 tạm
 static uint32_t layThoiGianGui()
