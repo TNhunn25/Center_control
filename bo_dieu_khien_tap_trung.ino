@@ -5,6 +5,7 @@
 // #include "ethernet_handler.h"
 #include "PC_handler.h"
 #include "auto_man.h"
+#include "eeprom_state.h"
 
 // ===================== HW PINS =====================
 
@@ -93,6 +94,9 @@ static void writeOutput(uint8_t ch, bool on)
         pinLevel = !pinLevel;
 
     digitalWrite(OUT_PINS[ch], pinLevel ? HIGH : LOW);
+
+    if (prevState != on)
+        eepromStateMarkDirty();
 
     // // Debug: chỉ in log khi trạng thái output thay đổi
     // Serial.printf("OUT%d -> %s\n", ch + 1, on ? "ON" : "OFF");
@@ -430,6 +434,7 @@ void setup()
     setupAutoManMode();
     pcHandler.begin();
     pcHandler.onCommandReceived(onPcCommand);
+    eepromStateBegin();
     // Inputs
     for (int i = 0; i < 4; i++)
     {
@@ -440,6 +445,7 @@ void setup()
     {
         pinMode(IN_PINS[i], INPUT_PULLUP); // nếu input kiểu công tắc kéo xuống GND
     }
+    eepromStateLoad(writeOutput);
     luuMocTrangThai();
 
     // LEDs
@@ -489,6 +495,8 @@ void loop()
     // OK LED = có output ON, ERR LED = không dùng khi ethernet/rs485 tắt
     // bool err = !eth.isLinkUp();
     setStatusLed(anyOn, false);
+
+    eepromStateUpdate(outState);
 
     delay(5);
 }
