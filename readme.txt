@@ -30,3 +30,9 @@ python simulator.py -p COM10 -o 1 -n 3 --phase1 2 --phase2 12 -i 1
 
 
 {"id_des":1,"opcode":2,"data":{"out1":1,"out2":0,"out3":1,"out4":0},"time":1767838338,"auth":"c5ee94ad4c238b2f19d860844d8ac372"}
+
+
+{"id_des": 1,"opcode": 4,"data": {"m3": {"run": 1, "dir": 0, "speed": 0}},"time": 1760000001,"auth": "97725122c43ebb1e4fb34c613bb97cc1"}
+
+{"id_des": 1,"opcode": 4,"data": {"m1": {"run": 1, "dir": 0, "speed": 200},"m2": {"run": 1, "dir": 1, "speed": 128},"m3": {"run": 0, "dir": 0, "speed": 0},"m4": {"run": 1, "dir": 0, "speed": 255},"m5": {"run": 1, "dir": 1, "speed": 40}},"time": 1760000000,"auth": " 94aadd4ad767a91b87aacc5351856e54"}	
+

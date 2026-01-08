@@ -7,9 +7,9 @@
 
 // External state owned by the main sketch.
 extern const String SECRET_KEY;
-extern bool outState[4];
-extern bool nutVuaNhan[4];
-extern const uint8_t IN_PINS[4];
+extern bool outState[OUT_COUNT];
+extern bool nutVuaNhan[IN_COUNT];
+extern const uint8_t IN_PINS[IN_COUNT];
 
 inline bool verifyAuth(const JsonDocument &doc, const String &receivedHash)
 {
@@ -38,7 +38,6 @@ inline String ResponseJson(int id_des, int resp_opcode, uint32_t unix_time, int 
     data["out2"] = outState[1] ? 1 : 0;
     data["out3"] = outState[2] ? 1 : 0;
     data["out4"] = outState[3] ? 1 : 0;
-
     Json["time"] = unix_time;
 
     String data_json;
@@ -73,6 +72,20 @@ inline String CommandJson(const MistCommand &cmd)
         dataDoc["out4"] = cmd.out4 ? 1 : 0;
     }
     break;
+    case MOTOR_COMMAND:
+{
+    for (uint8_t i = 0; i < MOTOR_COUNT; i++)
+    {
+        if ((cmd.motor_mask & (1u << i)) == 0)
+            continue;
+
+        JsonObject m = dataDoc.createNestedObject(String("m") + String(i + 1));
+        m["run"] = cmd.motors[i].run;
+        m["dir"] = cmd.motors[i].dir;
+        m["speed"] = cmd.motors[i].speed;
+    }
+}
+break;
     default:
         return "";
     }
@@ -107,7 +120,7 @@ inline String Goi_trangthai(int id_des, int resp_opcode, uint32_t unix_time)
     data["out3"] = outState[2] ? 1 : 0;
     data["out4"] = outState[3] ? 1 : 0;
 
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < IN_COUNT; i++)
     {
         bool active = (digitalRead(IN_PINS[i]) == LOW);
         int value = nutVuaNhan[i] ? 2 : (active ? 1 : 0);

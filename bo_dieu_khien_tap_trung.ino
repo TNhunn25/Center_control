@@ -10,10 +10,10 @@
 // ===================== HW PINS =====================
 
 // Input buttons (MAN) - dùng INPUT_PULLUP, nhấn = LOW
-static const uint8_t OUT_PINS[4] = {11, 10, 14, 17};
+static const uint8_t OUT_PINS[OUT_COUNT] = {11, 10, 14, 17}; // TODO: update motor pins
 
 // Output channels
-static const uint8_t IN_PINS[4] = {12, 13, 18, 21};
+static const uint8_t IN_PINS[IN_COUNT] = {12, 13, 18, 21};
 
 // Status LEDs
 static const uint8_t LED_OK_PIN = -1;  // xanh
@@ -74,10 +74,11 @@ struct ButtonState
     uint32_t lastChangeMs;
 };
 
-ButtonState btn[4];
-bool outState[4] = {false, false, false, false};   // true=ON
-bool nutVuaNhan[4] = {false, false, false, false}; // true=just pressed
+ButtonState btn[IN_COUNT];
+bool outState[OUT_COUNT] = {false, false, false, false};   // true=ON
+bool nutVuaNhan[IN_COUNT] = {false, false, false, false}; // true=just pressed
 
+static MotorCommand motorState[MOTOR_COUNT] = {};
 // EthernetUDPHandler eth;
 
 // RX buffer RS485 line-based
@@ -116,6 +117,19 @@ static void applyIOCommand(bool o1, bool o2, bool o3, bool o4)
     //               o2 ? "ON" : "OFF",
     //               o3 ? "ON" : "OFF",
     //               o4 ? "ON" : "OFF");
+}
+
+static void applyMotorCommand(const MistCommand &cmd)
+{
+    for (uint8_t i = 0; i < MOTOR_COUNT; i++)
+    {
+        if ((cmd.motor_mask & (1u << i)) == 0)
+            continue;
+
+        motorState[i] = cmd.motors[i];
+
+        // TODO: map motorState[i] -> pins (run/dir/speed)
+    }
 }
 
 static void toggleOutput(uint8_t ch)
@@ -182,7 +196,6 @@ static String ResponseJson(int id_des, int resp_opcode, uint32_t unix_time, int 
     data["out2"] = outState[1] ? 1 : 0;
     data["out3"] = outState[2] ? 1 : 0;
     data["out4"] = outState[3] ? 1 : 0;
-
     Json["time"] = unix_time;
 
     String data_json;
@@ -219,6 +232,20 @@ static String CommandJson(const MistCommand &cmd)
         dataDoc["out4"] = cmd.out4 ? 1 : 0;
     }
     break;
+    case MOTOR_COMMAND:
+{
+    for (uint8_t i = 0; i < MOTOR_COUNT; i++)
+    {
+        if ((cmd.motor_mask & (1u << i)) == 0)
+            continue;
+
+        JsonObject m = dataDoc.createNestedObject(String("m") + String(i + 1));
+        m["run"] = cmd.motors[i].run;
+        m["dir"] = cmd.motors[i].dir;
+        m["speed"] = cmd.motors[i].speed;
+    }
+}
+break;
     default:
         return "";
     }
@@ -254,7 +281,7 @@ static String Goi_trangthai(int id_des, int resp_opcode, uint32_t unix_time)
     data["out3"] = outState[2] ? 1 : 0;
     data["out4"] = outState[3] ? 1 : 0;
 
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < IN_COUNT; i++)
     {
         bool active = (digitalRead(IN_PINS[i]) == LOW);
         int value = nutVuaNhan[i] ? 2 : (active ? 1 : 0);
@@ -295,7 +322,7 @@ static void onPcCommand(const MistCommand &cmd)
         String Json = Goi_trangthai(cmd.id_des, cmd.opcode + 100, cmd.unix);
         // Serial.print(F("TX PC RESP: "));
         Serial.println(Json);
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < IN_COUNT; i++)
             nutVuaNhan[i] = false;
         return;
     }
@@ -307,6 +334,11 @@ static void onPcCommand(const MistCommand &cmd)
         applyIOCommand(cmd.out1, cmd.out2, cmd.out3, cmd.out4);
         pendingPushAfterAck = true;
         return;
+    case MOTOR_COMMAND:
+
+        lastPcUnixTime = cmd.unix;
+        applyMotorCommand(cmd);
+        return;
     default:
         Serial.println(F("PC: unsupported opcode for serial-only mode"));
         // break;
@@ -315,8 +347,8 @@ static void onPcCommand(const MistCommand &cmd)
 
 // ===================== AUTO PUSH STATUS TO PC =====================
 // "mốc trạng thái" để so sánh thay đổi
-static bool mocTrangThaiOut[4] = {false, false, false, false};
-static bool mocTrangThaiIn[4] = {false, false, false, false};
+static bool mocTrangThaiOut[OUT_COUNT] = {false, false, false, false};
+static bool mocTrangThaiIn[IN_COUNT] = {false, false, false, false};
 
 // chống spam push
 static uint32_t lanDayLenPC_ms = 0;
@@ -338,7 +370,7 @@ static uint32_t layThoiGianGui()
 // Lưu "mốc trạng thái" hiện tại để lần sau so sánh
 static void luuMocTrangThai()
 {
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < OUT_COUNT; i++)
     {
         mocTrangThaiOut[i] = outState[i];
         mocTrangThaiIn[i] = (digitalRead(IN_PINS[i]) == LOW); // active LOW
@@ -359,7 +391,7 @@ static void dayTrangThaiVePC()
     Serial.println(js);
 
     // clear cờ "nút vừa nhấn" để tránh gửi lặp đi lặp lại trạng thái=2
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < IN_COUNT; i++)
         nutVuaNhan[i] = false;
 }
 
@@ -371,7 +403,7 @@ static void tuDongDayNeuThayDoi()
     bool thayDoi = false;
 
     // 1) OUT thay đổi?
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < OUT_COUNT; i++)
     {
         if (outState[i] != mocTrangThaiOut[i])
         {
@@ -383,7 +415,7 @@ static void tuDongDayNeuThayDoi()
     // 2) IN active thay đổi?
     if (!thayDoi)
     {
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < IN_COUNT; i++)
         {
             bool inDangActive = (digitalRead(IN_PINS[i]) == LOW);
             if (inDangActive != mocTrangThaiIn[i])
@@ -397,7 +429,7 @@ static void tuDongDayNeuThayDoi()
     // 3) Có nút vừa nhấn? (để gửi trạng thái in=2)
     if (!thayDoi)
     {
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < IN_COUNT; i++)
         {
             if (nutVuaNhan[i])
             {
@@ -436,12 +468,12 @@ void setup()
     pcHandler.onCommandReceived(onPcCommand);
     eepromStateBegin();
     // Inputs
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < OUT_COUNT; i++)
     {
         pinMode(OUT_PINS[i], OUTPUT);
         digitalWrite(OUT_PINS[i], LOW); // hoặc mức an toàn của relay
     }
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < IN_COUNT; i++)
     {
         pinMode(IN_PINS[i], INPUT_PULLUP); // nếu input kiểu công tắc kéo xuống GND
     }
@@ -472,7 +504,7 @@ void loop()
     // 2) MAN mode: nút cơ toggle output  (AUTO thì chặn)
     if (!isAutoMode())
     {
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < IN_COUNT; i++)
         {
             if (debouncePress(i))
             {
@@ -488,7 +520,7 @@ void loop()
 
     // 3) LED status
     bool anyOn = false;
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < OUT_COUNT; i++)
         if (outState[i])
             anyOn = true;
 
