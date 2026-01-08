@@ -130,7 +130,7 @@ inline void PCHandler::processLine()
         return;
     }
 
-    Serial.print(F("RX PC PACKET: "));
+    // Serial.print(F("RX PC PACKET: "));
     Serial.println(rxLine);
 
     int id_des = doc["id_des"].as<int>();
@@ -152,6 +152,7 @@ inline void PCHandler::processLine()
     if(opcode == 1 || opcode == 2 & isAutoMode())
     {
         sendResponse(id_des, opcode + 100, unix_time, 255);
+        return;
     }
     // === AUTH OK → Xử lý lệnh ===
     MistCommand cmd{};
@@ -225,7 +226,7 @@ inline void PCHandler::sendResponse(int id_des, int resp_opcode, uint32_t unix_t
 
     String output;
     serializeJson(resp_doc, output);
-    Serial.print(F("TX PC RESP: "));
+    // Serial.print(F("TX PC RESP: "));
     Serial.println(output);
     // Serial.println(output);
 }

@@ -29,4 +29,4 @@ python simulator.py -p COM10 -o 3 --repeat 10 -i 1 --wait 0.5
 python simulator.py -p COM10 -o 1 -n 3 --phase1 2 --phase2 12 -i 1
 
 
-{"id_des":1,"opcode":102,"data":{"status":0,"out1":1,"out2":0,"out3":0,"out4":0},"time":1760000000,"auth":"7d1523b976}
+{"id_des":1,"opcode":2,"data":{"out1":1,"out2":0,"out3":1,"out4":0},"time":1767838338,"auth":"c5ee94ad4c238b2f19d860844d8ac372"}
