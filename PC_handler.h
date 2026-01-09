@@ -138,7 +138,7 @@ inline void PCHandler::processLine()
     uint32_t unix_time = doc["time"].as<uint32_t>();
     String receivedHash = doc["auth"].as<String>();
 
-    if (id_des < 0 || (opcode != 1 && opcode != 2 && opcode != 3 && opcode != 4))
+    if (id_des < 0 || (opcode != 1 && opcode != 2 && opcode != 3 && opcode != 4 && opcode !=5))
     {
         sendResponse(id_des, opcode + 100, unix_time, 255);
         return;
@@ -233,11 +233,15 @@ inline void PCHandler::processLine()
     {
         cmd.opcode = 3;
     }
+    else if (opcode == 5)
+    {
+        cmd.opcode = 5; //data rỗng{}
+    }
     if (commandCallback)
     {
         commandCallback(cmd);
     }
-    if(opcode == 3)
+    if(opcode == 3 || opcode == 5)
     {
         return;
     }

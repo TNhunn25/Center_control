@@ -31,6 +31,7 @@ extern const String SECRET_KEY;
 static uint32_t lastPcUnixTime = 0;
 static bool pendingPushAfterAck = false;
 static bool autoPushEnabled = false;
+static String Goi_VOC(int id_des, int resp_opcode, uint32_t unix_time);
 
 // Nếu bạn đã có nguồn UnixTime thật (RTC/NTP) thì thay hàm này.
 // Tự động đồng bộ thời gian dựa trên gói đầu tiên nhận được.
@@ -332,18 +333,27 @@ static void onPcCommand(const MistCommand &cmd)
         return;
     }
     case IO_COMMAND:
-
+    {
         lastPcUnixTime = cmd.unix; // reuse latest PC time for auto-push id
 
         // Lệnh từ PC luôn xử lý như AUTO (MAN chỉ áp dụng cho thao tác tay)
         applyIOCommand(cmd.out1, cmd.out2, cmd.out3, cmd.out4);
         pendingPushAfterAck = true;
         return;
+    }
     case MOTOR_COMMAND:
-
+    {
         lastPcUnixTime = cmd.unix;
         applyMotorCommand(cmd);
         return;
+    }
+    case SENSOR_VOC:
+    {
+        lastPcUnixTime = cmd.unix;                                   // đồng bộ thời gian packet id
+        String js = Goi_VOC(cmd.id_des, SENSOR_VOC + 100, cmd.unix); // 105
+        Serial.println(js);
+        return;
+    }
     default:
         break;
     }
