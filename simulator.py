@@ -236,6 +236,7 @@ def build_data_from_args(args: argparse.Namespace) -> dict:
     - opcode 1: MIST_COMMAND
     - opcode 2: IO_COMMAND
     - opcode 3: GET_INFO => data rỗng {}
+    opcode 4: MOTOR_COMMAND
     """
     if args.opcode == 1:
         if args.node_id is None:
@@ -278,6 +279,50 @@ def build_data_from_args(args: argparse.Namespace) -> dict:
             outputs["out4"] = 0
 
         return outputs
+    
+    if args.opcode == 4:
+        motor_args = [spec for group in args.motors for spec in group]
+        if args.motor_all_run is not None and motor_args:
+            raise ValueError("Khong dung chung --motor-all-run va --motor")
+
+        if args.motor_all_run is not None:
+            return {f"m{i}": args.motor_all_run for i in range(1, 6)}
+
+        if not motor_args:
+            raise ValueError("Bat buoc --motor cho opcode 4")
+
+        motors: dict[str, object] = {}
+        for spec in motor_args:
+            normalized = spec.replace(":", ",")
+            parts = [part.strip() for part in normalized.split(",") if part.strip()]
+            if len(parts) not in (2, 4):
+                raise ValueError(
+                    "Sai format --motor. Vi du: --motor m1,1 hoac --motor m1,1,0,200"
+                )
+
+            motor_id = parts[0].lower()
+            if motor_id.startswith("m"):
+                motor_id = motor_id[1:]
+            if not motor_id.isdigit():
+                raise ValueError("Motor ID không hợp lệ (m1..m5)")
+
+            motor_index = int(motor_id)
+            if motor_index < 1 or motor_index > 5:
+                raise ValueError("Motor ID phải từ 1 đến 5")
+
+            try:
+                run = int(parts[1])
+                if len(parts) == 2:
+                    motors[f"m{motor_index}"] = run
+                    continue
+                direction = int(parts[2])
+                speed = int(parts[3])
+            except ValueError as exc:
+                raise ValueError("run/dir/speed phai la so nguyen") from exc
+
+            motors[f"m{motor_index}"] = {"run": run, "dir": direction, "speed": speed}
+
+        return motors
 
     # opcode 3: GET_INFO
     return {}
@@ -296,8 +341,8 @@ def main() -> None:
         "--opcode",
         type=int,
         required=True,
-        choices=[1, 2, 3],
-        help="Opcode: 1=MIST_COMMAND, 2=IO_COMMAND, 3=GET_INFO",
+        choices=[1, 2, 3, 4],
+        help="Opcode: 1=MIST_COMMAND, 2=IO_COMMAND, 3=GET_INFO, 4=MOTOR_COMMAND",
     )
 
     # Mặc định gửi 1 lần. Nếu muốn lặp, dùng --repeat.
@@ -333,6 +378,28 @@ def main() -> None:
     ap.add_argument("--out2-off", action="store_true", help="Tắt output 2 (opcode 2)")
     ap.add_argument("--out3-off", action="store_true", help="Tắt output 3 (opcode 2)")
     ap.add_argument("--out4-off", action="store_true", help="Tắt output 4 (opcode 2)")
+
+    # Opcode 4
+    ap.add_argument(
+        "--motor-all-run",
+        type=int,
+        choices=[0, 1],
+        help="Bat/tat dong loat 5 motor (opcode 4). 0=STOP, 1=RUN",
+    )
+
+    ap.add_argument(
+        "--motor",
+        dest="motors",
+        action="append",
+        nargs="+",
+        default=[],
+        help=(
+            "Motor command (opcode 4). Vi du: --motor m1,1 m2,0 "
+            "hoac --motor m1,1,0,200 --motor m2,1,1,128. "
+            "Ho tro format m1:1,0,200. Toi da m1..m5. "
+            "Dung --motor-all-run 0|1 de bat/tat dong loat 5 motor."
+        ),
+    )
 
     args = ap.parse_args()
 

@@ -10,6 +10,7 @@ const String SECRET_KEY = "ALTA_MIST_CONTROLLER";
 #define IO_COMMAND 0x02
 #define GET_INFO 0x03
 #define MOTOR_COMMAND 0x04
+#define SENSOR_VOC 0x05
 #define RESPONSE_OFFSET 0x64 //+100
 
 static const uint8_t OUT_COUNT = 4;

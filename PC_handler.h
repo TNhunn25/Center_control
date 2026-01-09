@@ -149,7 +149,8 @@ inline void PCHandler::processLine()
         sendResponse(id_des, opcode + 100, unix_time, 1);
         return;
     }
-    if (opcode == 1 || ((opcode == 2 || opcode == 4) && isAutoMode()))
+    //Man chặn auto
+    if ((opcode == 1 || opcode == 2 || opcode == 4) && isAutoMode())
     {
         sendResponse(id_des, opcode + 100, unix_time, 255);
         return;
@@ -200,7 +201,17 @@ inline void PCHandler::processLine()
             String key = String("m") + String(idx + 1);
             if (!dataObj.containsKey(key)) return;
 
-            JsonObjectConst m = dataObj[key].as<JsonObjectConst>();
+            JsonVariantConst v = dataObj[key];
+            if (v.is<int>())
+            {
+                cmd.motors[idx].run = (uint8_t)v.as<int>();
+                cmd.motors[idx].dir = 0;
+                cmd.motors[idx].speed = 0;
+                cmd.motor_mask |= (1u << idx);
+                return;
+            }
+
+            JsonObjectConst m = v.as<JsonObjectConst>();
             if (m.isNull() || !m.containsKey("run") || !m.containsKey("dir") || !m.containsKey("speed"))
                 return;
 
@@ -237,7 +248,7 @@ inline void PCHandler::processLine()
 // inline void PCHandler::sendResponse(int id_des, int resp_opcode, uint32_t unix_time, int status)
 inline void PCHandler::sendResponse(int id_des, int resp_opcode, uint32_t unix_time, int status, const MistCommand *cmd)
 {
-    StaticJsonDocument<512> resp_doc;
+    StaticJsonDocument<1024> resp_doc;
     resp_doc["id_des"] = id_des;
     resp_doc["opcode"] = resp_opcode;
     JsonObject data = resp_doc.createNestedObject("data");

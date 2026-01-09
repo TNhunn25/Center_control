@@ -75,7 +75,7 @@ struct ButtonState
 };
 
 ButtonState btn[IN_COUNT];
-bool outState[OUT_COUNT] = {false, false, false, false};   // true=ON
+bool outState[OUT_COUNT] = {false, false, false, false};  // true=ON
 bool nutVuaNhan[IN_COUNT] = {false, false, false, false}; // true=just pressed
 
 static MotorCommand motorState[MOTOR_COUNT] = {};
@@ -233,19 +233,23 @@ static String CommandJson(const MistCommand &cmd)
     }
     break;
     case MOTOR_COMMAND:
-{
-    for (uint8_t i = 0; i < MOTOR_COUNT; i++)
     {
-        if ((cmd.motor_mask & (1u << i)) == 0)
-            continue;
+        for (uint8_t i = 0; i < MOTOR_COUNT; i++)
+        {
+            if ((cmd.motor_mask & (1u << i)) == 0)
+                continue;
 
-        JsonObject m = dataDoc.createNestedObject(String("m") + String(i + 1));
-        m["run"] = cmd.motors[i].run;
-        m["dir"] = cmd.motors[i].dir;
-        m["speed"] = cmd.motors[i].speed;
+            JsonObject m = dataDoc.createNestedObject(String("m") + String(i + 1));
+            m["run"] = cmd.motors[i].run;
+            m["dir"] = cmd.motors[i].dir;
+            m["speed"] = cmd.motors[i].speed;
+        }
     }
-}
-break;
+    break;
+    case SENSOR_VOC:
+    {
+    }
+    break;
     default:
         return "";
     }
@@ -305,6 +309,7 @@ static void onPcCommand(const MistCommand &cmd)
 {
     // Serial.print(F("RX PC: opcode="));
     // Serial.print(cmd.opcode);
+
     // Serial.print(F(" id_des="));
     // Serial.println(cmd.id_des);
     // Khi nhận lệnh từ PC:
@@ -321,7 +326,7 @@ static void onPcCommand(const MistCommand &cmd)
         luuMocTrangThai();
         String Json = Goi_trangthai(cmd.id_des, cmd.opcode + 100, cmd.unix);
         // Serial.print(F("TX PC RESP: "));
-        Serial.println(Json);
+        // Serial.println(Json);
         for (int i = 0; i < IN_COUNT; i++)
             nutVuaNhan[i] = false;
         return;
@@ -340,8 +345,7 @@ static void onPcCommand(const MistCommand &cmd)
         applyMotorCommand(cmd);
         return;
     default:
-        Serial.println(F("PC: unsupported opcode for serial-only mode"));
-        // break;
+        break;
     }
 }
 
@@ -532,4 +536,3 @@ void loop()
 
     delay(5);
 }
-
