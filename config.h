@@ -21,7 +21,6 @@ typedef struct
 {
     uint8_t run;
     uint8_t dir;
-    uint8_t speed;
 } MotorCommand;
 
 typedef struct
@@ -36,6 +35,14 @@ typedef struct
     MotorCommand motors[MOTOR_COUNT]; // Chi dung khi opcode=4
     uint8_t motor_mask;              // bit i=1 neu mi co trong data
 } MistCommand;
+
+struct VocReading {
+  float temp;
+  float humi;
+  float nh3;
+  float co;
+  float no2;
+};
 
 inline String calculateMD5(const String &input)
 {

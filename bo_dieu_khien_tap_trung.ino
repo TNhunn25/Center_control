@@ -2,18 +2,21 @@
 #include <ArduinoJson.h>
 
 #include "config.h"
-// #include "ethernet_handler.h"
 #include "PC_handler.h"
 #include "auto_man.h"
 #include "eeprom_state.h"
+#include "serial_control.h"
+
+struct VocReading;
+static String Goi_VOC(int id_des, int resp_opcode, uint32_t unix_time, const VocReading &voc);
 
 // ===================== HW PINS =====================
 
 // Input buttons (MAN) - dùng INPUT_PULLUP, nhấn = LOW
-static const uint8_t OUT_PINS[OUT_COUNT] = {11, 10, 14, 17}; // TODO: update motor pins
+const uint8_t OUT_PINS[OUT_COUNT] = {11, 10, 14, 17}; // TODO: update motor pins
 
 // Output channels
-static const uint8_t IN_PINS[IN_COUNT] = {12, 13, 18, 21};
+const uint8_t IN_PINS[IN_COUNT] = {12, 13, 18, 21};
 
 // Status LEDs
 static const uint8_t LED_OK_PIN = -1;  // xanh
@@ -31,7 +34,10 @@ extern const String SECRET_KEY;
 static uint32_t lastPcUnixTime = 0;
 static bool pendingPushAfterAck = false;
 static bool autoPushEnabled = false;
-static String Goi_VOC(int id_des, int resp_opcode, uint32_t unix_time);
+static String lastTrangthaiDataJson;
+bool serialTextPushRequested = false;
+bool serialTextPushForce = false;
+// static String Goi_VOC(int id_des, int resp_opcode, uint32_t unix_time);
 
 // Nếu bạn đã có nguồn UnixTime thật (RTC/NTP) thì thay hàm này.
 // Tự động đồng bộ thời gian dựa trên gói đầu tiên nhận được.
@@ -80,6 +86,9 @@ bool outState[OUT_COUNT] = {false, false, false, false};  // true=ON
 bool nutVuaNhan[IN_COUNT] = {false, false, false, false}; // true=just pressed
 
 static MotorCommand motorState[MOTOR_COUNT] = {};
+
+static VocReading vocReading = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
+
 // EthernetUDPHandler eth;
 
 // RX buffer RS485 line-based
@@ -104,7 +113,7 @@ static void writeOutput(uint8_t ch, bool on)
     // Serial.printf("OUT%d -> %s\n", ch + 1, on ? "ON" : "OFF");
 }
 
-static void applyIOCommand(bool o1, bool o2, bool o3, bool o4)
+void applyIOCommand(bool o1, bool o2, bool o3, bool o4)
 {
     // Serial.printf("CMD OUT: o1=%d o2=%d o3=%d o4=%d\n", o1 ? 1 : 0, o2 ? 1 : 0, o3 ? 1 : 0, o4 ? 1 : 0);
     writeOutput(0, o1);
@@ -129,7 +138,7 @@ static void applyMotorCommand(const MistCommand &cmd)
 
         motorState[i] = cmd.motors[i];
 
-        // TODO: map motorState[i] -> pins (run/dir/speed)
+        // TODO: map motorState[i] -> pins (run/dir)
     }
 }
 
@@ -243,12 +252,12 @@ static String CommandJson(const MistCommand &cmd)
             JsonObject m = dataDoc.createNestedObject(String("m") + String(i + 1));
             m["run"] = cmd.motors[i].run;
             m["dir"] = cmd.motors[i].dir;
-            m["speed"] = cmd.motors[i].speed;
         }
     }
     break;
     case SENSOR_VOC:
     {
+        // SENSOR_VOC has empty data payload.
     }
     break;
     default:
@@ -274,24 +283,19 @@ static String CommandJson(const MistCommand &cmd)
     return out;
 }
 
-static String Goi_trangthai(int id_des, int resp_opcode, uint32_t unix_time)
+
+String Goi_VOC(int id_des, int resp_opcode, uint32_t unix_time, const VocReading &voc)
 {
     StaticJsonDocument<256> Json;
     Json["id_des"] = id_des;
     Json["opcode"] = resp_opcode;
 
     JsonObject data = Json.createNestedObject("data");
-    data["out1"] = outState[0] ? 1 : 0;
-    data["out2"] = outState[1] ? 1 : 0;
-    data["out3"] = outState[2] ? 1 : 0;
-    data["out4"] = outState[3] ? 1 : 0;
-
-    for (int i = 0; i < IN_COUNT; i++)
-    {
-        bool active = (digitalRead(IN_PINS[i]) == LOW);
-        int value = nutVuaNhan[i] ? 2 : (active ? 1 : 0);
-        data[String("in") + String(i + 1)] = value;
-    }
+    data["temp"] = voc.temp;
+    data["humi"] = voc.humi;
+    data["nh3"] = voc.nh3;
+    data["co"] = voc.co;
+    data["no2"] = voc.no2;
 
     Json["time"] = unix_time;
 
@@ -304,6 +308,90 @@ static String Goi_trangthai(int id_des, int resp_opcode, uint32_t unix_time)
     String out;
     serializeJson(Json, out);
     return out;
+}
+
+static String buildTrangthaiDataJson()
+{
+    StaticJsonDocument<512> dataDoc;
+    JsonObject data = dataDoc.to<JsonObject>();
+
+    JsonObject sanban = data.createNestedObject("sanban");
+    JsonObject motor = sanban.createNestedObject("motor");
+    for (int i = 0; i < MOTOR_COUNT; i++)
+    {
+        JsonObject m = motor.createNestedObject(String("m") + String(i + 1));
+        m["run"] = motorState[i].run;
+        m["dir"] = motorState[i].dir;
+    }
+
+    JsonObject input = sanban.createNestedObject("input");
+    for (int i = 0; i < IN_COUNT; i++)
+    {
+        bool active = (digitalRead(IN_PINS[i]) == LOW);
+        input[String("in") + String(i + 1)] = active ? 1 : 0;
+    }
+
+    JsonObject sensor_voc = data.createNestedObject("sensor_voc");
+    sensor_voc["temp"] = vocReading.temp;
+    sensor_voc["humi"] = vocReading.humi;
+    sensor_voc["nh3"] = vocReading.nh3;
+    sensor_voc["co"] = vocReading.co;
+    sensor_voc["no2"] = vocReading.no2;
+
+    JsonObject io_command = data.createNestedObject("io_command");
+    io_command["out1"] = outState[0] ? 1 : 0;
+    io_command["out2"] = outState[1] ? 1 : 0;
+    io_command["out3"] = outState[2] ? 1 : 0;
+    io_command["out4"] = outState[3] ? 1 : 0;
+    for (int i = 0; i < IN_COUNT; i++)
+    {
+        bool active = (digitalRead(IN_PINS[i]) == LOW);
+        io_command[String("in") + String(i + 1)] = active ? 1 : 0;
+    }
+
+    String data_json;
+    serializeJson(data, data_json);
+    return data_json;
+}
+
+static String Goi_trangthai(int id_des, int resp_opcode, uint32_t unix_time, const String &data_json)
+{
+    StaticJsonDocument<768> Json;
+    Json["id_des"] = id_des;
+    Json["opcode"] = resp_opcode;
+
+    DeserializationError err = deserializeJson(Json["data"], data_json);
+    if (err)
+    {
+        Json["data"] = serialized(data_json);
+    }
+
+    Json["time"] = unix_time;
+
+    String combined = String(id_des) + String(resp_opcode) + data_json + String(unix_time) + SECRET_KEY;
+    Json["auth"] = calculateMD5(combined);
+
+    String out;
+    serializeJson(Json, out);
+    return out;
+}
+
+static bool sendTrangthaiIfChanged(int id_des, int resp_opcode, uint32_t unix_time)
+{
+    String data_json = buildTrangthaiDataJson();
+    if (data_json == lastTrangthaiDataJson)
+        return false;
+
+    Serial.println(Goi_trangthai(id_des, resp_opcode, unix_time, data_json));
+    lastTrangthaiDataJson = data_json;
+    return true;
+}
+
+static void sendTrangthaiForce(int id_des, int resp_opcode, uint32_t unix_time)
+{
+    String data_json = buildTrangthaiDataJson();
+    Serial.println(Goi_trangthai(id_des, resp_opcode, unix_time, data_json));
+    lastTrangthaiDataJson = data_json;
 }
 
 static void onPcCommand(const MistCommand &cmd)
@@ -325,9 +413,7 @@ static void onPcCommand(const MistCommand &cmd)
         lastPcUnixTime = cmd.unix;
         autoPushEnabled = true;
         luuMocTrangThai();
-        String Json = Goi_trangthai(cmd.id_des, cmd.opcode + 100, cmd.unix);
-        // Serial.print(F("TX PC RESP: "));
-        // Serial.println(Json);
+        sendTrangthaiIfChanged(cmd.id_des, cmd.opcode + 100, cmd.unix);
         for (int i = 0; i < IN_COUNT; i++)
             nutVuaNhan[i] = false;
         return;
@@ -345,13 +431,17 @@ static void onPcCommand(const MistCommand &cmd)
     {
         lastPcUnixTime = cmd.unix;
         applyMotorCommand(cmd);
+        autoPushEnabled = true;
+        pendingPushAfterAck = true;
         return;
     }
     case SENSOR_VOC:
     {
-        lastPcUnixTime = cmd.unix;                                   // đồng bộ thời gian packet id
-        String js = Goi_VOC(cmd.id_des, SENSOR_VOC + 100, cmd.unix); // 105
+        lastPcUnixTime = cmd.unix;
+        autoPushEnabled = true;
+        String js = Goi_VOC(cmd.id_des, SENSOR_VOC + 100, cmd.unix, vocReading); // 105
         Serial.println(js);
+        pendingPushAfterAck = true;
         return;
     }
     default:
@@ -401,8 +491,7 @@ static void dayTrangThaiVePC()
     // Dùng lại hàm đóng gói trạng thái bạn đang có:
     // Goi_trangthai(id_des, opcode, time)
     // id_des: tùy bạn, ở đây giữ 1 cho PC
-    String js = Goi_trangthai(1, OPCODE_DAY_TRANGTHAI, t);
-    Serial.println(js);
+    sendTrangthaiIfChanged(1, OPCODE_DAY_TRANGTHAI, t);
 
     // clear cờ "nút vừa nhấn" để tránh gửi lặp đi lặp lại trạng thái=2
     for (int i = 0; i < IN_COUNT; i++)
@@ -415,6 +504,7 @@ static void tuDongDayNeuThayDoi()
     if (!autoPushEnabled)
         return;
     bool thayDoi = false;
+    bool isAuto = getEffectiveAutoMode();
 
     // 1) OUT thay đổi?
     for (int i = 0; i < OUT_COUNT; i++)
@@ -427,7 +517,7 @@ static void tuDongDayNeuThayDoi()
     }
 
     // 2) IN active thay đổi?
-    if (!thayDoi)
+    if (!thayDoi && !isAuto)
     {
         for (int i = 0; i < IN_COUNT; i++)
         {
@@ -441,7 +531,7 @@ static void tuDongDayNeuThayDoi()
     }
 
     // 3) Có nút vừa nhấn? (để gửi trạng thái in=2)
-    if (!thayDoi)
+    if (!thayDoi && !isAuto)
     {
         for (int i = 0; i < IN_COUNT; i++)
         {
@@ -470,11 +560,20 @@ static void tuDongDayNeuThayDoi()
     luuMocTrangThai();
 }
 
+ bool swModeOverride = false;
+ bool swAutoMode = false;
+ inline bool getEffectiveAutoMode()
+{
+    return swModeOverride ? swAutoMode : isAutoMode();
+}
+
 // ===================== SETUP/LOOP =====================
 void setup()
 {
     Serial.begin(115200);
     delay(100);
+
+    // serialTextControlInit();
 
     // MODE
     setupAutoManMode();
@@ -512,19 +611,43 @@ void loop()
         dayTrangThaiVePC();
         luuMocTrangThai();
     }
+    if (serialTextPushRequested)
+    {
+        serialTextPushRequested = false;
+        autoPushEnabled = true;
+        if (lastPcUnixTime == 0)
+            lastPcUnixTime = getUnixTime();
+        if (serialTextPushForce)
+        {
+            serialTextPushForce = false;
+            sendTrangthaiForce(1, OPCODE_DAY_TRANGTHAI, lastPcUnixTime);
+        }
+        else
+        {
+            sendTrangthaiIfChanged(1, OPCODE_DAY_TRANGTHAI, lastPcUnixTime);
+        }
+        luuMocTrangThai();
+        for (int i = 0; i < IN_COUNT; i++)
+            nutVuaNhan[i] = false;
+    }
     // eth.update();
     // updateRs485();
 
     // 2) MAN mode: nút cơ toggle output  (AUTO thì chặn)
-    if (!isAutoMode())
+    if (!getEffectiveAutoMode())
     {
         for (int i = 0; i < IN_COUNT; i++)
         {
             if (debouncePress(i))
             {
-                Serial.printf("MAN: Button %d pressed -> toggle out%d\n", i + 1, i + 1);
                 nutVuaNhan[i] = true;
-                toggleOutput(i);
+                autoPushEnabled = true;
+                if (lastPcUnixTime == 0)
+                    lastPcUnixTime = millis() / 1000;
+                sendTrangthaiIfChanged(1, OPCODE_DAY_TRANGTHAI, lastPcUnixTime);
+                luuMocTrangThai();
+                for (int j = 0; j < IN_COUNT; j++)
+                    nutVuaNhan[j] = false;
             }
         }
     }

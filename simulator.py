@@ -316,15 +316,14 @@ def build_data_from_args(args: argparse.Namespace) -> dict:
                     motors[f"m{motor_index}"] = run
                     continue
                 direction = int(parts[2])
-                speed = int(parts[3])
             except ValueError as exc:
-                raise ValueError("run/dir/speed phai la so nguyen") from exc
+                raise ValueError("run/dir phai la so nguyen") from exc
 
-            motors[f"m{motor_index}"] = {"run": run, "dir": direction, "speed": speed}
+            motors[f"m{motor_index}"] = {"run": run, "dir": direction}
 
         return motors
 
-    # opcode 3: GET_INFO
+    # opcode 3/5: GET_INFO or SENSOR_VOC
     return {}
 
 
@@ -341,8 +340,8 @@ def main() -> None:
         "--opcode",
         type=int,
         required=True,
-        choices=[1, 2, 3, 4],
-        help="Opcode: 1=MIST_COMMAND, 2=IO_COMMAND, 3=GET_INFO, 4=MOTOR_COMMAND",
+        choices=[1, 2, 3, 4, 5],
+        help="Opcode: 1=MIST_COMMAND, 2=IO_COMMAND, 3=GET_INFO, 4=MOTOR_COMMAND, 5=SENSOR_VOC",
     )
 
     # Mặc định gửi 1 lần. Nếu muốn lặp, dùng --repeat.

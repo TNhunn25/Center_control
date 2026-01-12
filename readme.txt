@@ -6,6 +6,10 @@ python simulator.py -p COM10 -o 2 --out1-on --out3-on --wait 0.8
 
 python simulator.py -p COM10 -o 4 --motor m1,1 m2,1 m3,0 m4,0 m5,0
 
+python simulator.py -p COM10 -o 4 --motor m1,1,1
+
+python simulator.py -p COM10 -o 5 --wait 1.0
+
 IO_COMMAND bật tất cả (gửi 1 lần)----------------------------------
 
 python simulator.py -p COM10 -o 2 -A --wait 0.8
@@ -25,7 +29,7 @@ Lệnh opcode 2
 Lệnh opcode 4:
 {"id_des": 1,"opcode": 4,"data": {"m1": 1,"m2": 1,"m3": 0,"m4": 1,"m5": 1},"time": 1760000000,"auth":"2df11e5016f6c9867775e7250e7851a4"}
 
-{"id_des": 1,"opcode": 4,"data": {"m3": {"run": 1, "dir": 0, "speed": 60}},"time": 1760000001,"auth": "d94468587cca5a4aae96759505a4ca76"}
+{"id_des": 1,"opcode": 4,"data": {"m3": {"run": 1, "dir": 0},"time": 1760000001,"auth": "d94468587cca5a4aae96759505a4ca76"}
 -----------------------------------------------------------------------
 
 

@@ -4,7 +4,18 @@
 #include <Arduino.h>
 #include <ArduinoJson.h>
 #include "config.h"
-#include "auto_man.h" 
+#include "auto_man.h"
+
+#include "serial_control.h"
+
+// if (error)
+// {
+//     if (!handleSerialTextLine(rxLine))
+//     {
+//         Serial.println("[ERR]"); // không phải JSON, cũng không phải lệnh text hợp lệ
+//     }
+//     return;
+// }
 
 extern const String SECRET_KEY;
 
@@ -64,32 +75,6 @@ inline void PCHandler::onCommandReceived(CommandCallback cb)
     commandCallback = cb;
 }
 
-// inline void PCHandler::update()
-// {
-//     while (Serial.available())
-//     {
-//         char c = (char)Serial.read();
-//         if (c == '\n')
-//         {
-//             rxLine.trim();
-//             if (rxLine.length() == 0)
-//             {
-//                 rxLine = "";
-//                 continue;
-//             }
-//             processLine();
-//             rxLine = "";
-//         }
-//         else
-//         {
-//             if (rxLine.length() < 512)
-//             {
-//                 rxLine += c;
-//             }
-//         }
-//     }
-// }
-
 inline void PCHandler::update()
 {
     uint16_t bytesProcessed = 0;
@@ -100,26 +85,32 @@ inline void PCHandler::update()
         char c = (char)Serial.read();
         bytesProcessed++;
 
-        if (c == '\r') continue; // Windows CRLF
+        if (c == '\r')
+            continue; // Windows CRLF
 
         if (c == '\n')
         {
             rxLine.trim();
-            if (rxLine.length() > 0) {
+            if (rxLine.length() > 0)
+            {
                 processLine();
             }
             rxLine = "";
         }
         else
         {
-            if (rxLine.length() < 512) rxLine += c;
-            else rxLine = ""; // quá dài -> drop tránh bơm heap
+            if (rxLine.length() < 512)
+                rxLine += c;
+            else
+                rxLine = ""; // quá dài -> drop tránh bơm heap
         }
 
-        if ((bytesProcessed & 0x3F) == 0) yield(); // mỗi 64 byte
+        if ((bytesProcessed & 0x3F) == 0)
+            yield(); // mỗi 64 byte
     }
 
-    if (Serial.available()) yield();
+    if (Serial.available())
+        yield();
 }
 
 inline void PCHandler::processLine()
@@ -127,6 +118,10 @@ inline void PCHandler::processLine()
     DeserializationError error = deserializeJson(doc, rxLine);
     if (error)
     {
+        if (!handleSerialTextLine(rxLine))
+        {
+            Serial.println("[ERR]");
+        }
         return;
     }
 
@@ -138,7 +133,7 @@ inline void PCHandler::processLine()
     uint32_t unix_time = doc["time"].as<uint32_t>();
     String receivedHash = doc["auth"].as<String>();
 
-    if (id_des < 0 || (opcode != 1 && opcode != 2 && opcode != 3 && opcode != 4 && opcode !=5))
+    if (id_des < 0 || (opcode != 1 && opcode != 2 && opcode != 3 && opcode != 4 && opcode != 5))
     {
         sendResponse(id_des, opcode + 100, unix_time, 255);
         return;
@@ -149,13 +144,13 @@ inline void PCHandler::processLine()
         sendResponse(id_des, opcode + 100, unix_time, 1);
         return;
     }
-    //Man chặn auto
-    if ((opcode == 1 || opcode == 2 || opcode == 4) && isAutoMode())
-    {
-        sendResponse(id_des, opcode + 100, unix_time, 255);
-        return;
-    }
-    // === AUTH OK → Xử lý lệnh ===
+    // Man chặn auto
+    //  if ((opcode == 1 || opcode == 2 || opcode == 4) && isAutoMode())
+    //  {
+    //      sendResponse(id_des, opcode + 100, unix_time, 255);
+    //      return;
+    //  }
+    //  === AUTH OK → Xử lý lệnh ===
     MistCommand cmd{};
     cmd.unix = unix_time;
     cmd.id_des = (int8_t)id_des;
@@ -197,31 +192,32 @@ inline void PCHandler::processLine()
         cmd.opcode = 4;
         cmd.motor_mask = 0;
 
-        auto parseMotor = [&](uint8_t idx) {
+        auto parseMotor = [&](uint8_t idx)
+        {
             String key = String("m") + String(idx + 1);
-            if (!dataObj.containsKey(key)) return;
+            if (!dataObj.containsKey(key))
+                return;
 
             JsonVariantConst v = dataObj[key];
             if (v.is<int>())
             {
                 cmd.motors[idx].run = (uint8_t)v.as<int>();
                 cmd.motors[idx].dir = 0;
-                cmd.motors[idx].speed = 0;
                 cmd.motor_mask |= (1u << idx);
                 return;
             }
 
             JsonObjectConst m = v.as<JsonObjectConst>();
-            if (m.isNull() || !m.containsKey("run") || !m.containsKey("dir") || !m.containsKey("speed"))
+            if (m.isNull() || !m.containsKey("run") || !m.containsKey("dir"))
                 return;
 
             cmd.motors[idx].run = (uint8_t)m["run"].as<int>();
             cmd.motors[idx].dir = (uint8_t)m["dir"].as<int>();
-            cmd.motors[idx].speed = (uint8_t)m["speed"].as<int>();
             cmd.motor_mask |= (1u << idx);
         };
 
-        for (uint8_t i = 0; i < MOTOR_COUNT; i++) parseMotor(i);
+        for (uint8_t i = 0; i < MOTOR_COUNT; i++)
+            parseMotor(i);
 
         if (cmd.motor_mask == 0)
         {
@@ -235,13 +231,13 @@ inline void PCHandler::processLine()
     }
     else if (opcode == 5)
     {
-        cmd.opcode = 5; //data rỗng{}
+        cmd.opcode = 5; // data rỗng{}
     }
     if (commandCallback)
     {
         commandCallback(cmd);
     }
-    if(opcode == 3 || opcode == 5)
+    if (opcode == 3 || opcode == 5)
     {
         return;
     }
