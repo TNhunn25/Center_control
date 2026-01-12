@@ -635,14 +635,20 @@ void loop()
     // updateRs485();
 
     // 2) MAN mode: nút cơ toggle output  (AUTO thì chặn)
-    if (!isAutoMode())
+    if (!getEffectiveAutoMode())
     {
         for (int i = 0; i < IN_COUNT; i++)
         {
             if (debouncePress(i))
             {
                 nutVuaNhan[i] = true;
-                Serial.printf("MAN: Button %d pressed -> toggle out%d\n", i + 1, i + 1);
+                autoPushEnabled = true;
+                if (lastPcUnixTime == 0)
+                    lastPcUnixTime = millis() / 1000;
+                sendTrangthaiIfChanged(1, OPCODE_DAY_TRANGTHAI, lastPcUnixTime);
+                luuMocTrangThai();
+                for (int j = 0; j < IN_COUNT; j++)
+                    nutVuaNhan[j] = false;
             }
         }
     }

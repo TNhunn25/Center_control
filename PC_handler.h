@@ -118,6 +118,10 @@ inline void PCHandler::processLine()
     DeserializationError error = deserializeJson(doc, rxLine);
     if (error)
     {
+        if (!handleSerialTextLine(rxLine))
+        {
+            Serial.println("[ERR]");
+        }
         return;
     }
 
@@ -129,7 +133,7 @@ inline void PCHandler::processLine()
     uint32_t unix_time = doc["time"].as<uint32_t>();
     String receivedHash = doc["auth"].as<String>();
 
-    if (id_des < 0 || (opcode != 1 && opcode != 2 && opcode != 3 && opcode != 4 && opcode != 5))
+    if (id_des < 0 || (opcode != 1 && opcode != 2 && opcode != 3 && opcode != 5))
     {
         sendResponse(id_des, opcode + 100, unix_time, 255);
         return;
@@ -175,53 +179,6 @@ inline void PCHandler::processLine()
         cmd.out2 = dataObj["out2"].as<int>() != 0;
         cmd.out3 = dataObj["out3"].as<int>() != 0;
         cmd.out4 = dataObj["out4"].as<int>() != 0;
-    }
-    else if (opcode == 4)
-    {
-        JsonObjectConst dataObj = doc["data"].as<JsonObjectConst>();
-        if (dataObj.isNull())
-        {
-            sendResponse(id_des, opcode + 100, unix_time, 255);
-            return;
-        }
-
-        cmd.opcode = 4;
-        cmd.motor_mask = 0;
-
-        auto parseMotor = [&](uint8_t idx)
-        {
-            String key = String("m") + String(idx + 1);
-            if (!dataObj.containsKey(key))
-                return;
-
-            JsonVariantConst v = dataObj[key];
-            if (v.is<int>())
-            {
-                cmd.motors[idx].run = (uint8_t)v.as<int>();
-                cmd.motors[idx].dir = 0;
-                cmd.motors[idx].speed = 0;
-                cmd.motor_mask |= (1u << idx);
-                return;
-            }
-
-            JsonObjectConst m = v.as<JsonObjectConst>();
-            if (m.isNull() || !m.containsKey("run") || !m.containsKey("dir") || !m.containsKey("speed"))
-                return;
-
-            cmd.motors[idx].run = (uint8_t)m["run"].as<int>();
-            cmd.motors[idx].dir = (uint8_t)m["dir"].as<int>();
-            cmd.motors[idx].speed = (uint8_t)m["speed"].as<int>();
-            cmd.motor_mask |= (1u << idx);
-        };
-
-        for (uint8_t i = 0; i < MOTOR_COUNT; i++)
-            parseMotor(i);
-
-        if (cmd.motor_mask == 0)
-        {
-            sendResponse(id_des, opcode + 100, unix_time, 255);
-            return;
-        }
     }
     else if (opcode == 3)
     {
