@@ -118,10 +118,6 @@ inline void PCHandler::processLine()
     DeserializationError error = deserializeJson(doc, rxLine);
     if (error)
     {
-        if (!handleSerialTextLine(rxLine))
-        {
-            Serial.println("[ERR]");
-        }
         return;
     }
 
@@ -203,16 +199,18 @@ inline void PCHandler::processLine()
             {
                 cmd.motors[idx].run = (uint8_t)v.as<int>();
                 cmd.motors[idx].dir = 0;
+                cmd.motors[idx].speed = 0;
                 cmd.motor_mask |= (1u << idx);
                 return;
             }
 
             JsonObjectConst m = v.as<JsonObjectConst>();
-            if (m.isNull() || !m.containsKey("run") || !m.containsKey("dir"))
+            if (m.isNull() || !m.containsKey("run") || !m.containsKey("dir") || !m.containsKey("speed"))
                 return;
 
             cmd.motors[idx].run = (uint8_t)m["run"].as<int>();
             cmd.motors[idx].dir = (uint8_t)m["dir"].as<int>();
+            cmd.motors[idx].speed = (uint8_t)m["speed"].as<int>();
             cmd.motor_mask |= (1u << idx);
         };
 

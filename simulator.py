@@ -237,6 +237,7 @@ def build_data_from_args(args: argparse.Namespace) -> dict:
     - opcode 2: IO_COMMAND
     - opcode 3: GET_INFO => data rỗng {}
     opcode 4: MOTOR_COMMAND
+    opcode 5: SENSOR_VOC => data r ¯-ng {}
     """
     if args.opcode == 1:
         if args.node_id is None:
@@ -316,14 +317,18 @@ def build_data_from_args(args: argparse.Namespace) -> dict:
                     motors[f"m{motor_index}"] = run
                     continue
                 direction = int(parts[2])
+                speed = int(parts[3])
             except ValueError as exc:
-                raise ValueError("run/dir phai la so nguyen") from exc
+                raise ValueError("run/dir/speed phai la so nguyen") from exc
 
-            motors[f"m{motor_index}"] = {"run": run, "dir": direction}
+            motors[f"m{motor_index}"] = {"run": run, "dir": direction, "speed": speed}
 
         return motors
 
-    # opcode 3/5: GET_INFO or SENSOR_VOC
+    if args.opcode == 5:
+        return {}
+
+    # opcode 3: GET_INFO
     return {}
 
 

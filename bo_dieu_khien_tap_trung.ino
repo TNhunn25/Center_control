@@ -138,7 +138,7 @@ static void applyMotorCommand(const MistCommand &cmd)
 
         motorState[i] = cmd.motors[i];
 
-        // TODO: map motorState[i] -> pins (run/dir)
+        // TODO: map motorState[i] -> pins (run/dir/speed)
     }
 }
 
@@ -252,6 +252,7 @@ static String CommandJson(const MistCommand &cmd)
             JsonObject m = dataDoc.createNestedObject(String("m") + String(i + 1));
             m["run"] = cmd.motors[i].run;
             m["dir"] = cmd.motors[i].dir;
+            m["speed"] = cmd.motors[i].speed;
         }
     }
     break;
@@ -322,6 +323,7 @@ static String buildTrangthaiDataJson()
         JsonObject m = motor.createNestedObject(String("m") + String(i + 1));
         m["run"] = motorState[i].run;
         m["dir"] = motorState[i].dir;
+        m["speed"] = motorState[i].speed;
     }
 
     JsonObject input = sanban.createNestedObject("input");
@@ -504,7 +506,6 @@ static void tuDongDayNeuThayDoi()
     if (!autoPushEnabled)
         return;
     bool thayDoi = false;
-    bool isAuto = getEffectiveAutoMode();
 
     // 1) OUT thay đổi?
     for (int i = 0; i < OUT_COUNT; i++)
@@ -517,7 +518,7 @@ static void tuDongDayNeuThayDoi()
     }
 
     // 2) IN active thay đổi?
-    if (!thayDoi && !isAuto)
+    if (!thayDoi)
     {
         for (int i = 0; i < IN_COUNT; i++)
         {
@@ -531,7 +532,7 @@ static void tuDongDayNeuThayDoi()
     }
 
     // 3) Có nút vừa nhấn? (để gửi trạng thái in=2)
-    if (!thayDoi && !isAuto)
+    if (!thayDoi)
     {
         for (int i = 0; i < IN_COUNT; i++)
         {
@@ -634,20 +635,14 @@ void loop()
     // updateRs485();
 
     // 2) MAN mode: nút cơ toggle output  (AUTO thì chặn)
-    if (!getEffectiveAutoMode())
+    if (!isAutoMode())
     {
         for (int i = 0; i < IN_COUNT; i++)
         {
             if (debouncePress(i))
             {
                 nutVuaNhan[i] = true;
-                autoPushEnabled = true;
-                if (lastPcUnixTime == 0)
-                    lastPcUnixTime = millis() / 1000;
-                sendTrangthaiIfChanged(1, OPCODE_DAY_TRANGTHAI, lastPcUnixTime);
-                luuMocTrangThai();
-                for (int j = 0; j < IN_COUNT; j++)
-                    nutVuaNhan[j] = false;
+                Serial.printf("MAN: Button %d pressed -> toggle out%d\n", i + 1, i + 1);
             }
         }
     }

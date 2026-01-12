@@ -82,6 +82,7 @@ inline String CommandJson(const MistCommand &cmd)
         JsonObject m = dataDoc.createNestedObject(String("m") + String(i + 1));
         m["run"] = cmd.motors[i].run;
         m["dir"] = cmd.motors[i].dir;
+        m["speed"] = cmd.motors[i].speed;
     }
 }
 break;

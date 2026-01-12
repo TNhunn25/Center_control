@@ -21,6 +21,7 @@ typedef struct
 {
     uint8_t run;
     uint8_t dir;
+    uint8_t speed;
 } MotorCommand;
 
 typedef struct
