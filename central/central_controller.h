@@ -101,13 +101,19 @@ public:
     {
         _capNhatDebounce();
 
+        if (!isAutoMode())
+            _dongBoOutputTheoInput();
+
         // ===== MAN MODE: nhấn nút tay thì vẫn coi là thay đổi để auto_push đẩy =====
         if (!isAutoMode())
         {
             for (uint8_t i = 0; i < IN_COUNT; i++)
             {
                 if (_debouncePress(i))
+                {
                     _nutVuaNhan[i] = true;
+                    _writeOutput(i, !_outState[i]); // toggle output for matching button
+                }
             }
         }
         else
@@ -210,6 +216,13 @@ private:
         bool evt = (!prev[i] && _btn[i].stable);
         prev[i] = _btn[i].stable;
         return evt;
+    }
+
+    void _dongBoOutputTheoInput()
+    {
+        uint8_t count = OUT_COUNT < IN_COUNT ? OUT_COUNT : IN_COUNT;
+        for (uint8_t i = 0; i < count; i++)
+            _writeOutput(i, _btn[i].stable);
     }
 
     // ================= SNAPSHOT / CHANGE =================

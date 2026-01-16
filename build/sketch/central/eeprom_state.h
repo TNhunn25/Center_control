@@ -1,4 +1,4 @@
-#line 1 "D:\\phunsuong\\master\\master\\central\\eeprom_state.h"
+#line 1 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\phunsuong\\master\\master\\central\\eeprom_state.h"
 #pragma once
 #include <Arduino.h>
 #include <EEPROM.h>

@@ -1,4 +1,4 @@
-#line 1 "D:\\phunsuong\\master\\master\\get_info.h"
+#line 1 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\phunsuong\\master\\master\\get_info.h"
 #ifndef GET_INFO_H
 #define GET_INFO_H
 #include <Arduino.h>

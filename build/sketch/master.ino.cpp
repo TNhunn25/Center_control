@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#line 1 "D:\\phunsuong\\master\\master\\master.ino"
+#line 1 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\phunsuong\\master\\master\\master.ino"
 #include "PC_handler.h"
 #include "ethernet_handler.h"
 #include "rs485_handler.h"
@@ -14,13 +14,13 @@ LedStatus led_status;
 CentralController centralController;
 GetInfoAggregator getInfo;
 // Rs485Handler rs485(Serial1, RS485_RX_PIN, RS485_TX_PIN, 115200);
-#line 15 "D:\\phunsuong\\master\\master\\master.ino"
+#line 15 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\phunsuong\\master\\master\\master.ino"
 void onNewCommand(const MistCommand &cmd);
-#line 31 "D:\\phunsuong\\master\\master\\master.ino"
+#line 31 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\phunsuong\\master\\master\\master.ino"
 void setup();
-#line 44 "D:\\phunsuong\\master\\master\\master.ino"
+#line 44 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\phunsuong\\master\\master\\master.ino"
 void loop();
-#line 15 "D:\\phunsuong\\master\\master\\master.ino"
+#line 15 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\phunsuong\\master\\master\\master.ino"
 void onNewCommand(const MistCommand &cmd)
 {
     getInfo.syncUnixFromPc(cmd.unix);

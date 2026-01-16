@@ -1,4 +1,4 @@
-#line 1 "D:\\phunsuong\\master\\master\\get_info.cpp"
+#line 1 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\phunsuong\\master\\master\\get_info.cpp"
 #include "get_info.h"
 #include <math.h>
 

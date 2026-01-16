@@ -1,4 +1,4 @@
-#line 1 "D:\\phunsuong\\master\\master\\config.h"
+#line 1 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\phunsuong\\master\\master\\config.h"
 #pragma once
 #ifndef CONFIG_H // ← Tên phải UNIQUE, thường viết hoa + _H
 #define CONFIG_H
@@ -10,9 +10,10 @@
 #define PIN_NH3 18
 #define PIN_DHT 21
 #define MOTOR_COUNT 5
-#define OUT_COUNT 5
-#define IN_COUNT 5
+#define OUT_COUNT 4
+#define IN_COUNT 4
 extern const String SECRET_KEY;
+// Not used when IO is handled via PCF8575; kept for compatibility.
 extern const uint8_t OUT_PINS[4];
 extern const uint8_t IN_PINS[4];
 extern bool has_connect_link;

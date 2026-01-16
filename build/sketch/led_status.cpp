@@ -1,4 +1,4 @@
-#line 1 "D:\\phunsuong\\master\\master\\led_status.cpp"
+#line 1 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\phunsuong\\master\\master\\led_status.cpp"
 #include "led_status.h"
 
 LedStatus::LedStatus()
