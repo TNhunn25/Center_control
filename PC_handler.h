@@ -146,6 +146,12 @@ inline void PCHandler::processLine()
     //      sendResponse(id_des, opcode + 100, unix_time, 255);
     //      return;
     //  }
+
+    if (opcode == 2 && !isAutoMode())
+    {
+        sendResponse(id_des, opcode + 100, unix_time, 255);
+        return;
+    }
     //  === AUTH OK → Xử lý lệnh ===
     MistCommand cmd{};
     cmd.unix = unix_time;

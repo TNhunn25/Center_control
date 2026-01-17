@@ -2,7 +2,7 @@ Code chạy giả lập PC
 
 python simulator.py -p COM10 -o 1 -n 3 --phase1 2 --phase2 12 -i 1
 
-python simulator.py -p COM10 -o 2 --out1-on --out3-on --wait 0.8
+python simulator.py -p COM21 -o 2 --out1-on --out3-on --wait 0.8
 
 python simulator.py -p COM10 -o 4 --motor m1,1 m2,1 m3,0 m4,0 m5,0
 
@@ -16,7 +16,7 @@ python simulator.py -p COM10 -o 2 -A --wait 0.8
 
 GET_INFO (gửi 1 lần)----------------------------------------------
 
-python simulator.py -p COM10 -o 3 --wait 1.0
+python simulator.py -p COM21 -o 3 --wait 1.0
 
 Nếu cần lặp 10 lần (không còn while true “cứng”)------------------
 
