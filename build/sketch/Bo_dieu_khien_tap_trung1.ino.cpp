@@ -682,11 +682,11 @@ void loop()
                 if (pressed)
                     nutVuaNhan[i] = true;
                 writeOutput(i, pressed);
-                Serial.printf("MAN: Button %d %s -> out%d %s\n",
-                              i + 1,
-                              pressed ? "pressed" : "released",
-                              i + 1,
-                              pressed ? "ON" : "OFF"); // released OFF Pressed ON
+                // Serial.printf("MAN: Button %d %s -> out%d %s\n",
+                //               i + 1,
+                //               pressed ? "pressed" : "released",
+                //               i + 1,
+                //               pressed ? "ON" : "OFF"); // released OFF Pressed ON
             }
         }
     }

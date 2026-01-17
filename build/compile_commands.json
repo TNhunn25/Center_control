@@ -353,11 +353,11 @@
    "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build/build_opt.h",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build/file_opts",
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\FirmwareMSC.cpp",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\HEXBuilder.cpp",
    "-o",
-   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build\\core\\FirmwareMSC.cpp.o"
+   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build\\core\\HEXBuilder.cpp.o"
   ],
-  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\FirmwareMSC.cpp"
+  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\HEXBuilder.cpp"
  },
  {
   "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
@@ -396,11 +396,11 @@
    "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build/build_opt.h",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build/file_opts",
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\HEXBuilder.cpp",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\FirmwareMSC.cpp",
    "-o",
-   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build\\core\\HEXBuilder.cpp.o"
+   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build\\core\\FirmwareMSC.cpp.o"
   ],
-  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\HEXBuilder.cpp"
+  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\FirmwareMSC.cpp"
  },
  {
   "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
@@ -740,11 +740,11 @@
    "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build/build_opt.h",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build/file_opts",
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\Stream.cpp",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\StreamString.cpp",
    "-o",
-   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build\\core\\Stream.cpp.o"
+   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build\\core\\StreamString.cpp.o"
   ],
-  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\Stream.cpp"
+  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\StreamString.cpp"
  },
  {
   "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
@@ -783,11 +783,11 @@
    "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build/build_opt.h",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build/file_opts",
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\StreamString.cpp",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\Stream.cpp",
    "-o",
-   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build\\core\\StreamString.cpp.o"
+   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build\\core\\Stream.cpp.o"
   ],
-  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\StreamString.cpp"
+  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\Stream.cpp"
  },
  {
   "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
@@ -912,11 +912,11 @@
    "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build/build_opt.h",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build/file_opts",
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\USBCDC.cpp",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\USBMSC.cpp",
    "-o",
-   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build\\core\\USBCDC.cpp.o"
+   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build\\core\\USBMSC.cpp.o"
   ],
-  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\USBCDC.cpp"
+  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\USBMSC.cpp"
  },
  {
   "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
@@ -955,11 +955,11 @@
    "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build/build_opt.h",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build/file_opts",
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\USBMSC.cpp",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\USBCDC.cpp",
    "-o",
-   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build\\core\\USBMSC.cpp.o"
+   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build\\core\\USBCDC.cpp.o"
   ],
-  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\USBMSC.cpp"
+  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\USBCDC.cpp"
  },
  {
   "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
@@ -1084,11 +1084,11 @@
    "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build/build_opt.h",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build/file_opts",
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\base64.cpp",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\cbuf.cpp",
    "-o",
-   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build\\core\\base64.cpp.o"
+   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build\\core\\cbuf.cpp.o"
   ],
-  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\base64.cpp"
+  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\cbuf.cpp"
  },
  {
   "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
@@ -1127,11 +1127,11 @@
    "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build/build_opt.h",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build/file_opts",
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\cbuf.cpp",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\base64.cpp",
    "-o",
-   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build\\core\\cbuf.cpp.o"
+   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build\\core\\base64.cpp.o"
   ],
-  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\cbuf.cpp"
+  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\base64.cpp"
  },
  {
   "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
@@ -1385,11 +1385,11 @@
    "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build/build_opt.h",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build/file_opts",
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-gpio.c",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-i2c-ng.c",
    "-o",
-   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build\\core\\esp32-hal-gpio.c.o"
+   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build\\core\\esp32-hal-i2c-ng.c.o"
   ],
-  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-gpio.c"
+  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-i2c-ng.c"
  },
  {
   "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
@@ -1428,11 +1428,11 @@
    "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build/build_opt.h",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build/file_opts",
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-i2c-ng.c",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-gpio.c",
    "-o",
-   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build\\core\\esp32-hal-i2c-ng.c.o"
+   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build\\core\\esp32-hal-gpio.c.o"
   ],
-  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-i2c-ng.c"
+  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-gpio.c"
  },
  {
   "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
@@ -1901,11 +1901,11 @@
    "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build/build_opt.h",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build/file_opts",
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-spi.c",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-time.c",
    "-o",
-   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build\\core\\esp32-hal-spi.c.o"
+   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build\\core\\esp32-hal-time.c.o"
   ],
-  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-spi.c"
+  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-time.c"
  },
  {
   "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
@@ -1944,11 +1944,11 @@
    "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build/build_opt.h",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build/file_opts",
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-time.c",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-spi.c",
    "-o",
-   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build\\core\\esp32-hal-time.c.o"
+   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build\\core\\esp32-hal-spi.c.o"
   ],
-  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-time.c"
+  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-spi.c"
  },
  {
   "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
@@ -2073,6 +2073,49 @@
    "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build/build_opt.h",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build/file_opts",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-touch.c",
+   "-o",
+   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build\\core\\esp32-hal-touch.c.o"
+  ],
+  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-touch.c"
+ },
+ {
+  "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
+  "arguments": [
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp-x32\\2411/bin/xtensa-esp32s3-elf-gcc",
+   "-MMD",
+   "-c",
+   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/c_flags",
+   "-w",
+   "-Os",
+   "-Werror=return-type",
+   "-DF_CPU=240000000L",
+   "-DARDUINO=10607",
+   "-DARDUINO_ESP32S3_DEV",
+   "-DARDUINO_ARCH_ESP32",
+   "-DARDUINO_BOARD=\"ESP32S3_DEV\"",
+   "-DARDUINO_VARIANT=\"esp32s3\"",
+   "-DARDUINO_PARTITION_default",
+   "-DARDUINO_HOST_OS=\"windows\"",
+   "-DARDUINO_FQBN=\"esp32:esp32:esp32s3:UploadSpeed=921600,USBMode=hwcdc,CDCOnBoot=cdc,MSCOnBoot=default,DFUOnBoot=default,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=4M,PartitionScheme=default,DebugLevel=none,PSRAM=disabled,LoopCore=1,EventsCore=1,EraseFlash=none,JTAGAdapter=default,ZigbeeMode=default\"",
+   "-DESP32=ESP32",
+   "-DCORE_DEBUG_LEVEL=0",
+   "-DARDUINO_RUNNING_CORE=1",
+   "-DARDUINO_EVENT_RUNNING_CORE=1",
+   "-DARDUINO_USB_MODE=1",
+   "-DARDUINO_USB_CDC_ON_BOOT=1",
+   "-DARDUINO_USB_MSC_ON_BOOT=0",
+   "-DARDUINO_USB_DFU_ON_BOOT=0",
+   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/defines",
+   "-IC:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1",
+   "-iprefix",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/include/",
+   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/includes",
+   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/qio_qspi/include",
+   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32",
+   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
+   "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build/build_opt.h",
+   "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build/file_opts",
    "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-touch-ng.c",
    "-o",
    "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build\\core\\esp32-hal-touch-ng.c.o"
@@ -2121,49 +2164,6 @@
    "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build\\core\\esp32-hal-uart.c.o"
   ],
   "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-uart.c"
- },
- {
-  "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
-  "arguments": [
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp-x32\\2411/bin/xtensa-esp32s3-elf-gcc",
-   "-MMD",
-   "-c",
-   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/c_flags",
-   "-w",
-   "-Os",
-   "-Werror=return-type",
-   "-DF_CPU=240000000L",
-   "-DARDUINO=10607",
-   "-DARDUINO_ESP32S3_DEV",
-   "-DARDUINO_ARCH_ESP32",
-   "-DARDUINO_BOARD=\"ESP32S3_DEV\"",
-   "-DARDUINO_VARIANT=\"esp32s3\"",
-   "-DARDUINO_PARTITION_default",
-   "-DARDUINO_HOST_OS=\"windows\"",
-   "-DARDUINO_FQBN=\"esp32:esp32:esp32s3:UploadSpeed=921600,USBMode=hwcdc,CDCOnBoot=cdc,MSCOnBoot=default,DFUOnBoot=default,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=4M,PartitionScheme=default,DebugLevel=none,PSRAM=disabled,LoopCore=1,EventsCore=1,EraseFlash=none,JTAGAdapter=default,ZigbeeMode=default\"",
-   "-DESP32=ESP32",
-   "-DCORE_DEBUG_LEVEL=0",
-   "-DARDUINO_RUNNING_CORE=1",
-   "-DARDUINO_EVENT_RUNNING_CORE=1",
-   "-DARDUINO_USB_MODE=1",
-   "-DARDUINO_USB_CDC_ON_BOOT=1",
-   "-DARDUINO_USB_MSC_ON_BOOT=0",
-   "-DARDUINO_USB_DFU_ON_BOOT=0",
-   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/defines",
-   "-IC:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1",
-   "-iprefix",
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/include/",
-   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/includes",
-   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/qio_qspi/include",
-   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32",
-   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
-   "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build/build_opt.h",
-   "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build/file_opts",
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-touch.c",
-   "-o",
-   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build\\core\\esp32-hal-touch.c.o"
-  ],
-  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-touch.c"
  },
  {
   "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
@@ -2288,19 +2288,19 @@
    "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build/build_opt.h",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build/file_opts",
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\firmware_msc_fat.c",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\libb64\\cencode.c",
    "-o",
-   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build\\core\\firmware_msc_fat.c.o"
+   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build\\core\\libb64\\cencode.c.o"
   ],
-  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\firmware_msc_fat.c"
+  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\libb64\\cencode.c"
  },
  {
   "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
   "arguments": [
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp-x32\\2411/bin/xtensa-esp32s3-elf-g++",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp-x32\\2411/bin/xtensa-esp32s3-elf-gcc",
    "-MMD",
    "-c",
-   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/cpp_flags",
+   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/c_flags",
    "-w",
    "-Os",
    "-Werror=return-type",
@@ -2331,11 +2331,11 @@
    "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build/build_opt.h",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build/file_opts",
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\main.cpp",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\firmware_msc_fat.c",
    "-o",
-   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build\\core\\main.cpp.o"
+   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build\\core\\firmware_msc_fat.c.o"
   ],
-  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\main.cpp"
+  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\firmware_msc_fat.c"
  },
  {
   "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
@@ -2417,96 +2417,96 @@
    "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build/build_opt.h",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build/file_opts",
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\wiring_shift.c",
-   "-o",
-   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build\\core\\wiring_shift.c.o"
-  ],
-  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\wiring_shift.c"
- },
- {
-  "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
-  "arguments": [
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp-x32\\2411/bin/xtensa-esp32s3-elf-gcc",
-   "-MMD",
-   "-c",
-   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/c_flags",
-   "-w",
-   "-Os",
-   "-Werror=return-type",
-   "-DF_CPU=240000000L",
-   "-DARDUINO=10607",
-   "-DARDUINO_ESP32S3_DEV",
-   "-DARDUINO_ARCH_ESP32",
-   "-DARDUINO_BOARD=\"ESP32S3_DEV\"",
-   "-DARDUINO_VARIANT=\"esp32s3\"",
-   "-DARDUINO_PARTITION_default",
-   "-DARDUINO_HOST_OS=\"windows\"",
-   "-DARDUINO_FQBN=\"esp32:esp32:esp32s3:UploadSpeed=921600,USBMode=hwcdc,CDCOnBoot=cdc,MSCOnBoot=default,DFUOnBoot=default,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=4M,PartitionScheme=default,DebugLevel=none,PSRAM=disabled,LoopCore=1,EventsCore=1,EraseFlash=none,JTAGAdapter=default,ZigbeeMode=default\"",
-   "-DESP32=ESP32",
-   "-DCORE_DEBUG_LEVEL=0",
-   "-DARDUINO_RUNNING_CORE=1",
-   "-DARDUINO_EVENT_RUNNING_CORE=1",
-   "-DARDUINO_USB_MODE=1",
-   "-DARDUINO_USB_CDC_ON_BOOT=1",
-   "-DARDUINO_USB_MSC_ON_BOOT=0",
-   "-DARDUINO_USB_DFU_ON_BOOT=0",
-   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/defines",
-   "-IC:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1",
-   "-iprefix",
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/include/",
-   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/includes",
-   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/qio_qspi/include",
-   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32",
-   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
-   "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build/build_opt.h",
-   "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build/file_opts",
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\libb64\\cencode.c",
-   "-o",
-   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build\\core\\libb64\\cencode.c.o"
-  ],
-  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\libb64\\cencode.c"
- },
- {
-  "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
-  "arguments": [
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp-x32\\2411/bin/xtensa-esp32s3-elf-gcc",
-   "-MMD",
-   "-c",
-   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/c_flags",
-   "-w",
-   "-Os",
-   "-Werror=return-type",
-   "-DF_CPU=240000000L",
-   "-DARDUINO=10607",
-   "-DARDUINO_ESP32S3_DEV",
-   "-DARDUINO_ARCH_ESP32",
-   "-DARDUINO_BOARD=\"ESP32S3_DEV\"",
-   "-DARDUINO_VARIANT=\"esp32s3\"",
-   "-DARDUINO_PARTITION_default",
-   "-DARDUINO_HOST_OS=\"windows\"",
-   "-DARDUINO_FQBN=\"esp32:esp32:esp32s3:UploadSpeed=921600,USBMode=hwcdc,CDCOnBoot=cdc,MSCOnBoot=default,DFUOnBoot=default,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=4M,PartitionScheme=default,DebugLevel=none,PSRAM=disabled,LoopCore=1,EventsCore=1,EraseFlash=none,JTAGAdapter=default,ZigbeeMode=default\"",
-   "-DESP32=ESP32",
-   "-DCORE_DEBUG_LEVEL=0",
-   "-DARDUINO_RUNNING_CORE=1",
-   "-DARDUINO_EVENT_RUNNING_CORE=1",
-   "-DARDUINO_USB_MODE=1",
-   "-DARDUINO_USB_CDC_ON_BOOT=1",
-   "-DARDUINO_USB_MSC_ON_BOOT=0",
-   "-DARDUINO_USB_DFU_ON_BOOT=0",
-   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/defines",
-   "-IC:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1",
-   "-iprefix",
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/include/",
-   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/includes",
-   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/qio_qspi/include",
-   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32",
-   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
-   "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build/build_opt.h",
-   "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build/file_opts",
    "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\wiring_pulse.c",
    "-o",
    "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build\\core\\wiring_pulse.c.o"
   ],
   "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\wiring_pulse.c"
+ },
+ {
+  "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
+  "arguments": [
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp-x32\\2411/bin/xtensa-esp32s3-elf-g++",
+   "-MMD",
+   "-c",
+   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/cpp_flags",
+   "-w",
+   "-Os",
+   "-Werror=return-type",
+   "-DF_CPU=240000000L",
+   "-DARDUINO=10607",
+   "-DARDUINO_ESP32S3_DEV",
+   "-DARDUINO_ARCH_ESP32",
+   "-DARDUINO_BOARD=\"ESP32S3_DEV\"",
+   "-DARDUINO_VARIANT=\"esp32s3\"",
+   "-DARDUINO_PARTITION_default",
+   "-DARDUINO_HOST_OS=\"windows\"",
+   "-DARDUINO_FQBN=\"esp32:esp32:esp32s3:UploadSpeed=921600,USBMode=hwcdc,CDCOnBoot=cdc,MSCOnBoot=default,DFUOnBoot=default,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=4M,PartitionScheme=default,DebugLevel=none,PSRAM=disabled,LoopCore=1,EventsCore=1,EraseFlash=none,JTAGAdapter=default,ZigbeeMode=default\"",
+   "-DESP32=ESP32",
+   "-DCORE_DEBUG_LEVEL=0",
+   "-DARDUINO_RUNNING_CORE=1",
+   "-DARDUINO_EVENT_RUNNING_CORE=1",
+   "-DARDUINO_USB_MODE=1",
+   "-DARDUINO_USB_CDC_ON_BOOT=1",
+   "-DARDUINO_USB_MSC_ON_BOOT=0",
+   "-DARDUINO_USB_DFU_ON_BOOT=0",
+   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/defines",
+   "-IC:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1",
+   "-iprefix",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/include/",
+   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/includes",
+   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/qio_qspi/include",
+   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32",
+   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
+   "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build/build_opt.h",
+   "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build/file_opts",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\main.cpp",
+   "-o",
+   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build\\core\\main.cpp.o"
+  ],
+  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\main.cpp"
+ },
+ {
+  "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
+  "arguments": [
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp-x32\\2411/bin/xtensa-esp32s3-elf-gcc",
+   "-MMD",
+   "-c",
+   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/c_flags",
+   "-w",
+   "-Os",
+   "-Werror=return-type",
+   "-DF_CPU=240000000L",
+   "-DARDUINO=10607",
+   "-DARDUINO_ESP32S3_DEV",
+   "-DARDUINO_ARCH_ESP32",
+   "-DARDUINO_BOARD=\"ESP32S3_DEV\"",
+   "-DARDUINO_VARIANT=\"esp32s3\"",
+   "-DARDUINO_PARTITION_default",
+   "-DARDUINO_HOST_OS=\"windows\"",
+   "-DARDUINO_FQBN=\"esp32:esp32:esp32s3:UploadSpeed=921600,USBMode=hwcdc,CDCOnBoot=cdc,MSCOnBoot=default,DFUOnBoot=default,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=4M,PartitionScheme=default,DebugLevel=none,PSRAM=disabled,LoopCore=1,EventsCore=1,EraseFlash=none,JTAGAdapter=default,ZigbeeMode=default\"",
+   "-DESP32=ESP32",
+   "-DCORE_DEBUG_LEVEL=0",
+   "-DARDUINO_RUNNING_CORE=1",
+   "-DARDUINO_EVENT_RUNNING_CORE=1",
+   "-DARDUINO_USB_MODE=1",
+   "-DARDUINO_USB_CDC_ON_BOOT=1",
+   "-DARDUINO_USB_MSC_ON_BOOT=0",
+   "-DARDUINO_USB_DFU_ON_BOOT=0",
+   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/defines",
+   "-IC:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1",
+   "-iprefix",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/include/",
+   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/includes",
+   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/qio_qspi/include",
+   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32",
+   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
+   "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build/build_opt.h",
+   "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build/file_opts",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\wiring_shift.c",
+   "-o",
+   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\build\\core\\wiring_shift.c.o"
+  ],
+  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\wiring_shift.c"
  }
 ]
