@@ -32,6 +32,6 @@ inline void ledStatusUpdate(PCF8575IO &pcf)
         }
     }
 
-    bool isManMode = (pcf.readAutoMan() == LOW); // INPUT_PULLUP: LOW = MAN
-    setStatusLed(anyPressed, isManMode);
+    bool isAutoMode = (pcf.readAutoMan() == HIGH); // INPUT_PULLUP: LOW = MAN
+    setStatusLed(anyPressed, isAutoMode);
 }
