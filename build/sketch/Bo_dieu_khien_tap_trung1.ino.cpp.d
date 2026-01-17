@@ -177,4 +177,5 @@ C:\Users\Tuyet\ Nhung-RD\Desktop\Project_He_thong_khuech_tan\code\Bo_dieu_khien_
  C:\Users\Tuyet\ Nhung-RD\Documents\Arduino\libraries\PCF8575_library/PCF8575.h \
  C:\Users\Tuyet\ Nhung-RD\Desktop\Project_He_thong_khuech_tan\code\Bo_dieu_khien_tap_trung1\build\sketch\serial_control.h \
  C:\Users\Tuyet\ Nhung-RD\Desktop\Project_He_thong_khuech_tan\code\Bo_dieu_khien_tap_trung1\build\sketch\eeprom_state.h \
- C:\Users\Tuyet\ Nhung-RD\AppData\Local\Arduino15\packages\esp32\hardware\esp32\3.2.1\libraries\EEPROM\src/EEPROM.h
+ C:\Users\Tuyet\ Nhung-RD\AppData\Local\Arduino15\packages\esp32\hardware\esp32\3.2.1\libraries\EEPROM\src/EEPROM.h \
+ C:\Users\Tuyet\ Nhung-RD\Desktop\Project_He_thong_khuech_tan\code\Bo_dieu_khien_tap_trung1\build\sketch\led_status.h

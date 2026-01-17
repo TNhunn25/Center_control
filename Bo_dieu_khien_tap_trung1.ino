@@ -7,6 +7,7 @@
 #include "eeprom_state.h"
 #include "serial_control.h"
 #include "pcf8575_io.h"
+#include "led_status.h"
 
 struct VocReading;
 static String Goi_VOC(int id_des, int resp_opcode, uint32_t unix_time, const VocReading &voc);
@@ -15,10 +16,6 @@ static String Goi_VOC(int id_des, int resp_opcode, uint32_t unix_time, const Voc
 
 // Input buttons (MAN) - dùng INPUT_PULLUP, nhấn = LOW
 PCF8575IO pcf;
-
-// Status LEDs
-static const uint8_t LED_OK_PIN = -1;  // xanh
-static const uint8_t LED_ERR_PIN = -1; // đỏ
 
 // Relay active low?
 static const bool OUT_ACTIVE_LOW = false;
@@ -168,13 +165,6 @@ static bool debounceUpdate(uint8_t i, bool &stableLevel)
     }
     stableLevel = btn[i].stableLevel;
     return false;
-}
-
-// ===================== LED =====================
-static void setStatusLed(bool ok, bool err)
-{
-    digitalWrite(LED_OK_PIN, ok ? HIGH : LOW);
-    digitalWrite(LED_ERR_PIN, err ? HIGH : LOW);
 }
 
 // ===================== AUTH / PARSE =====================
@@ -422,9 +412,16 @@ static void onPcCommand(const MistCommand &cmd)
     {
         lastPcUnixTime = cmd.unix; // reuse latest PC time for auto-push id
 
-        // Lệnh từ PC luôn xử lý như AUTO (MAN chỉ áp dụng cho thao tác tay)
-        applyIOCommand(cmd.out1, cmd.out2, cmd.out3, cmd.out4);
-        pendingPushAfterAck = true;
+        if (isAutoMode())
+        {
+            // Lệnh từ PC chỉ áp dụng khi AUTO
+            applyIOCommand(cmd.out1, cmd.out2, cmd.out3, cmd.out4);
+            pendingPushAfterAck = true;
+        }
+        else
+        {
+            // MAN: bỏ qua lệnh PC, không phản hồi để tránh chặn loop
+        }
         return;
     }
     case MOTOR_COMMAND:
@@ -589,8 +586,7 @@ void setup()
     luuMocTrangThai();
 
     // LEDs
-    pinMode(LED_OK_PIN, OUTPUT);
-    pinMode(LED_ERR_PIN, OUTPUT);
+    ledStatusBegin();
     setStatusLed(true, false);
 
     // Serial.println(F("{\"center_control\":\"started\"}"));
@@ -633,13 +629,13 @@ void loop()
     {
         for (int i = 0; i < IN_COUNT; i++)
         {
-            bool stableLevel = HIGH;
+            bool stableLevel = LOW;
             if (debounceUpdate(i, stableLevel))
             {
-                bool pressed = (stableLevel == LOW);
+                bool pressed = (stableLevel == HIGH);
                 if (pressed)
                     nutVuaNhan[i] = true;
-                writeOutput(i, !pressed);
+                writeOutput(i, pressed);
                 Serial.printf("MAN: Button %d %s -> out%d %s\n",
                               i + 1,
                               pressed ? "pressed" : "released",
@@ -653,14 +649,7 @@ void loop()
     tuDongDayNeuThayDoi();
 
     // 3) LED status
-    bool anyOn = false;
-    for (int i = 0; i < OUT_COUNT; i++)
-        if (outState[i])
-            anyOn = true;
-
-    // OK LED = có output ON, ERR LED = không dùng khi ethernet/rs485 tắt
-    // bool err = !eth.isLinkUp();
-    setStatusLed(anyOn, false);
+    ledStatusUpdate(pcf);
 
     eepromStateUpdate(outState);
 

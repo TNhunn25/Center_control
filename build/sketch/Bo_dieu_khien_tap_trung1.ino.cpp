@@ -8,6 +8,7 @@
 #include "eeprom_state.h"
 #include "serial_control.h"
 #include "pcf8575_io.h"
+#include "led_status.h"
 
 struct VocReading;
 static String Goi_VOC(int id_des, int resp_opcode, uint32_t unix_time, const VocReading &voc);
@@ -16,10 +17,6 @@ static String Goi_VOC(int id_des, int resp_opcode, uint32_t unix_time, const Voc
 
 // Input buttons (MAN) - dùng INPUT_PULLUP, nhấn = LOW
 PCF8575IO pcf;
-
-// Status LEDs
-static const uint8_t LED_OK_PIN = -1;  // xanh
-static const uint8_t LED_ERR_PIN = -1; // đỏ
 
 // Relay active low?
 static const bool OUT_ACTIVE_LOW = false;
@@ -43,53 +40,51 @@ bool serialTextPushForce = false;
 static uint32_t unixTimeBase = 0; // unix time của gói tin đầu tiên
 static uint32_t millisBase = 0;   // mốc millis() tương ứng với unixTimeBase
 
-#line 45 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
+#line 42 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
 static uint32_t getUnixTime();
-#line 56 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
+#line 53 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
 static bool isTimeValid(uint32_t requestUnix);
-#line 96 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
+#line 93 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
 static void writeOutput(uint8_t ch, bool on);
-#line 114 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
+#line 111 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
 void applyIOCommand(bool o1, bool o2, bool o3, bool o4);
-#line 130 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
+#line 127 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
 static void applyMotorCommand(const MistCommand &cmd);
-#line 143 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
+#line 140 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
 static void toggleOutput(uint8_t ch);
-#line 149 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
+#line 146 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
 static bool debounceUpdate(uint8_t i, bool &stableLevel);
-#line 174 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
-static void setStatusLed(bool ok, bool err);
-#line 181 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
+#line 171 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
 static bool verifyAuth(const JsonDocument &doc, const String &receivedHash);
-#line 196 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
+#line 186 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
 static String ResponseJson(int id_des, int resp_opcode, uint32_t unix_time, int status);
-#line 222 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
+#line 212 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
 static String CommandJson(const MistCommand &cmd);
-#line 313 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
+#line 302 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
 static String buildTrangthaiDataJson();
-#line 358 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
+#line 347 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
 static String Goi_trangthai(int id_des, int resp_opcode, uint32_t unix_time, const String &data_json);
-#line 380 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
+#line 369 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
 static bool sendTrangthaiIfChanged(int id_des, int resp_opcode, uint32_t unix_time);
-#line 391 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
+#line 380 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
 static void sendTrangthaiForce(int id_des, int resp_opcode, uint32_t unix_time);
-#line 398 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
+#line 387 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
 static void onPcCommand(const MistCommand &cmd);
-#line 466 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
+#line 462 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
 static uint32_t layThoiGianGui();
-#line 476 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
+#line 472 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
 static void luuMocTrangThai();
-#line 486 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
+#line 482 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
 static void dayTrangThaiVePC();
-#line 503 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
+#line 499 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
 static void tuDongDayNeuThayDoi();
-#line 565 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
+#line 561 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
 bool getEffectiveAutoMode();
-#line 571 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
+#line 567 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
 void setup();
-#line 600 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
+#line 595 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
 void loop();
-#line 45 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
+#line 42 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\code\\Bo_dieu_khien_tap_trung1\\Bo_dieu_khien_tap_trung1.ino"
 static uint32_t getUnixTime()
 {
     // Nếu chưa đồng bộ, trả 0 để báo chưa có thời gian
@@ -218,13 +213,6 @@ static bool debounceUpdate(uint8_t i, bool &stableLevel)
     return false;
 }
 
-// ===================== LED =====================
-static void setStatusLed(bool ok, bool err)
-{
-    digitalWrite(LED_OK_PIN, ok ? HIGH : LOW);
-    digitalWrite(LED_ERR_PIN, err ? HIGH : LOW);
-}
-
 // ===================== AUTH / PARSE =====================
 static bool verifyAuth(const JsonDocument &doc, const String &receivedHash)
 {
@@ -330,7 +318,6 @@ static String CommandJson(const MistCommand &cmd)
     serializeJson(doc, out);
     return out;
 }
-
 
 String Goi_VOC(int id_des, int resp_opcode, uint32_t unix_time, const VocReading &voc)
 {
@@ -471,9 +458,16 @@ static void onPcCommand(const MistCommand &cmd)
     {
         lastPcUnixTime = cmd.unix; // reuse latest PC time for auto-push id
 
-        // Lệnh từ PC luôn xử lý như AUTO (MAN chỉ áp dụng cho thao tác tay)
-        applyIOCommand(cmd.out1, cmd.out2, cmd.out3, cmd.out4);
-        pendingPushAfterAck = true;
+        if (isAutoMode())
+        {
+            // Lệnh từ PC chỉ áp dụng khi AUTO
+            applyIOCommand(cmd.out1, cmd.out2, cmd.out3, cmd.out4);
+            pendingPushAfterAck = true;
+        }
+        else
+        {
+            // MAN: bỏ qua lệnh PC, không phản hồi để tránh chặn loop
+        }
         return;
     }
     case MOTOR_COMMAND:
@@ -608,9 +602,9 @@ static void tuDongDayNeuThayDoi()
     luuMocTrangThai();
 }
 
- bool swModeOverride = false;
- bool swAutoMode = false;
- inline bool getEffectiveAutoMode()
+bool swModeOverride = false;
+bool swAutoMode = false;
+inline bool getEffectiveAutoMode()
 {
     return swModeOverride ? swAutoMode : isAutoMode();
 }
@@ -638,8 +632,7 @@ void setup()
     luuMocTrangThai();
 
     // LEDs
-    pinMode(LED_OK_PIN, OUTPUT);
-    pinMode(LED_ERR_PIN, OUTPUT);
+    ledStatusBegin();
     setStatusLed(true, false);
 
     // Serial.println(F("{\"center_control\":\"started\"}"));
@@ -682,18 +675,18 @@ void loop()
     {
         for (int i = 0; i < IN_COUNT; i++)
         {
-            bool stableLevel = HIGH;
+            bool stableLevel = LOW;
             if (debounceUpdate(i, stableLevel))
             {
-                bool pressed = (stableLevel == LOW);
+                bool pressed = (stableLevel == HIGH);
                 if (pressed)
                     nutVuaNhan[i] = true;
-                writeOutput(i, !pressed);
+                writeOutput(i, pressed);
                 Serial.printf("MAN: Button %d %s -> out%d %s\n",
                               i + 1,
                               pressed ? "pressed" : "released",
                               i + 1,
-                              pressed ? "ON" : "OFF");
+                              pressed ? "ON" : "OFF"); // released OFF Pressed ON
             }
         }
     }
@@ -702,14 +695,7 @@ void loop()
     tuDongDayNeuThayDoi();
 
     // 3) LED status
-    bool anyOn = false;
-    for (int i = 0; i < OUT_COUNT; i++)
-        if (outState[i])
-            anyOn = true;
-
-    // OK LED = có output ON, ERR LED = không dùng khi ethernet/rs485 tắt
-    // bool err = !eth.isLinkUp();
-    setStatusLed(anyOn, false);
+    ledStatusUpdate(pcf);
 
     eepromStateUpdate(outState);
 

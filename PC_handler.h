@@ -235,7 +235,7 @@ inline void PCHandler::processLine()
     {
         commandCallback(cmd);
     }
-    if (opcode == 3 || opcode == 5)
+    if (opcode == 2 || opcode == 3 || opcode == 5)
     {
         return;
     }
