@@ -1,340 +1,4 @@
-#line 1 "D:\\phunsuong\\master\\master\\central\\central_controller.h"
-// #pragma once
-// #include <Arduino.h>
-// #include <ArduinoJson.h>
-
-// #include "config.h"
-// #include "auto_man.h"
-// #include "eeprom_state.h"
-// #include "get_info.h"
-// #define GET_INFO 0x03
-// #define IO_COMMAND 0x02
-
-// class CentralController
-// {
-// public:
-//     CentralController() {}
-//     // ================= BEGIN =================
-//     void begin(Stream &pcStream = Serial)
-//     {
-//         _pc = &pcStream;
-
-//         // AUTO / MAN
-//         setupAutoManMode();
-
-//         // OUT
-//         for (uint8_t i = 0; i < OUT_COUNT; i++)
-//         {
-//             pinMode(OUT_PINS[i], OUTPUT);
-//             _outState[i] = false;
-//             _writePin(i, false);
-//         }
-
-//         // IN + debounce init
-//         uint32_t now = millis();
-//         for (uint8_t i = 0; i < IN_COUNT; i++)
-//         {
-//             pinMode(IN_PINS[i], INPUT_PULLUP);
-//             bool v = (digitalRead(IN_PINS[i]) == LOW);
-//             _btn[i].stable = v;
-//             _btn[i].last = v;
-//             _btn[i].lastChangeMs = now;
-//             _nutVuaNhan[i] = false;
-//         }
-
-//         // EEPROM
-//         eepromStateBegin();
-//         _instance = this;
-//         eepromStateLoad(_eepromThunk);
-
-//         // snapshot ban đầu
-//         _luuMocTrangThai();
-//         _lastDataJson = _buildDataJson();
-//     }
-
-//     // ================= HANDLE PC COMMAND =================
-//     void handleCommand(const MistCommand &cmd)
-//     {
-//         if (cmd.unix != 0)
-//             _lastPcUnix = cmd.unix;
-
-//         // GET_INFO -> trả trạng thái ngay
-//         if (cmd.opcode == GET_INFO)
-//         {
-//             _sendTrangThai(cmd.id_des, GET_INFO + 100, _getSendTime());
-//             _luuMocTrangThai();
-//             _clearNutNhan();
-//             return;
-//         }
-
-//         // IO_COMMAND -> điều khiển output
-//         if (cmd.opcode == IO_COMMAND)
-//         {
-//             Serial.println("co data");
-//             _applyIO(cmd.out1, cmd.out2, cmd.out3, cmd.out4);
-//             sendResponse(cmd.id_des, IO_COMMAND + 100, cmd.unix, 0);
-//             _sendTrangThai(cmd.id_des, GET_INFO + 100, _getSendTime());
-//             _luuMocTrangThai();
-//             _clearNutNhan();
-//             return;
-//         }
-//     }
-//     void getInforCommand(GetInfoAggregator &getInfo)
-//     {
-//         _getInfo = &getInfo;
-//     }
-
-//     // ================= LOOP =================
-//     void update()
-//     {
-//         _capNhatDebounce();
-
-//         // ===== MAN MODE =====
-//         if (!isAutoMode())
-//         {
-//             bool coNhan = false;
-//             for (uint8_t i = 0; i < IN_COUNT; i++)
-//             {
-//                 if (_debouncePress(i))
-//                 {
-//                     _nutVuaNhan[i] = true;
-//                     coNhan = true;
-//                 }
-//             }
-
-//             if (coNhan)
-//             {
-//                 _sendTrangThai(1, GET_INFO + 100, _getSendTime());
-//                 _luuMocTrangThai();
-//                 _clearNutNhan();
-//             }
-//         }
-//         else
-//         {
-//             // AUTO mode: chặn thao tác tay
-//             _clearNutNhan();
-//         }
-
-//         // ===== AUTO_PUSH (luôn chạy) =====
-//         _autoPushNeuThayDoi();
-
-//         // EEPROM
-//         eepromStateUpdate(_outState);
-//     }
-
-// private:
-//     // ================= HW =================
-//     static constexpr uint8_t OUT_PINS[OUT_COUNT] = {21, 18, 255, 255};
-//     static constexpr uint8_t IN_PINS[IN_COUNT] = {12, 13, 255, 255};
-
-//     static constexpr uint32_t DEBOUNCE_MS = 35;
-//     static constexpr uint32_t CHONG_SPAM_MS = 120;
-
-//     GetInfoAggregator *_getInfo = nullptr;
-//     struct ButtonState
-//     {
-//         bool stable;
-//         bool last;
-//         uint32_t lastChangeMs;
-//     };
-
-// private:
-//     Stream *_pc = nullptr;
-
-//     bool _outState[OUT_COUNT]{};
-//     ButtonState _btn[IN_COUNT]{};
-//     bool _nutVuaNhan[IN_COUNT]{};
-
-//     // mốc trạng thái
-//     bool _mocOut[OUT_COUNT]{};
-//     bool _mocIn[IN_COUNT]{};
-
-//     uint32_t _lastPushMs = 0;
-//     uint32_t _lastPcUnix = 0;
-//     String _lastDataJson;
-
-//     static CentralController *_instance;
-
-//     // ================= EEPROM =================
-//     static void _eepromThunk(uint8_t ch, bool on)
-//     {
-//         if (_instance)
-//             _instance->_writeOutput(ch, on);
-//     }
-
-//     // ================= OUTPUT =================
-//     void _writePin(uint8_t ch, bool on)
-//     {
-// #if OUT_ACTIVE_LOW
-//         digitalWrite(OUT_PINS[ch], on ? LOW : HIGH);
-// #else
-//         digitalWrite(OUT_PINS[ch], on ? HIGH : LOW);
-// #endif
-//     }
-
-//     void _writeOutput(uint8_t ch, bool on)
-//     {
-//         bool prev = _outState[ch];
-//         _outState[ch] = on;
-//         _writePin(ch, on);
-//         if (prev != on)
-//             eepromStateMarkDirty();
-//     }
-
-//     void _applyIO(bool o1, bool o2, bool o3, bool o4)
-//     {
-//         _writeOutput(0, o1);
-//         _writeOutput(1, o2);
-//         _writeOutput(2, o3);
-//         _writeOutput(3, o4);
-//     }
-
-//     // ================= DEBOUNCE =================
-//     void _capNhatDebounce()
-//     {
-//         uint32_t now = millis();
-//         for (uint8_t i = 0; i < IN_COUNT; i++)
-//         {
-//             bool r = (digitalRead(IN_PINS[i]) == LOW);
-//             if (r != _btn[i].last)
-//             {
-//                 _btn[i].last = r;
-//                 _btn[i].lastChangeMs = now;
-//             }
-//             if (now - _btn[i].lastChangeMs > DEBOUNCE_MS)
-//                 _btn[i].stable = r;
-//         }
-//     }
-
-//     bool _debouncePress(uint8_t i)
-//     {
-//         static bool prev[IN_COUNT]{};
-//         bool evt = (!prev[i] && _btn[i].stable);
-//         prev[i] = _btn[i].stable;
-//         return evt;
-//     }
-
-//     // ================= AUTO PUSH =================
-//     void _luuMocTrangThai()
-//     {
-//         for (uint8_t i = 0; i < OUT_COUNT; i++)
-//             _mocOut[i] = _outState[i];
-//         for (uint8_t i = 0; i < IN_COUNT; i++)
-//             _mocIn[i] = _btn[i].stable;
-//     }
-
-//     bool _coThayDoi()
-//     {
-//         for (uint8_t i = 0; i < OUT_COUNT; i++)
-//             if (_outState[i] != _mocOut[i])
-//                 return true;
-
-//         for (uint8_t i = 0; i < IN_COUNT; i++)
-//             if (_btn[i].stable != _mocIn[i])
-//                 return true;
-
-//         for (uint8_t i = 0; i < IN_COUNT; i++)
-//             if (_nutVuaNhan[i])
-//                 return true;
-
-//         return false;
-//     }
-
-//     void _autoPushNeuThayDoi()
-//     {
-//         if (!_coThayDoi())
-//             return;
-
-//         uint32_t now = millis();
-//         if (now - _lastPushMs < CHONG_SPAM_MS)
-//         {
-//             _luuMocTrangThai();
-//             return;
-//         }
-
-//         _lastPushMs = now;
-//         _sendTrangThai(1, GET_INFO + 100, _getSendTime(), false);
-//         _luuMocTrangThai();
-//     }
-
-//     // ================= JSON =================
-//     String _buildDataJson()
-//     {
-//         StaticJsonDocument<256> doc;
-//         JsonObject data = doc.to<JsonObject>();
-
-//         for (uint8_t i = 0; i < OUT_COUNT; i++)
-//             data[String("out") + String(i + 1)] = _outState[i] ? 1 : 0;
-
-//         for (uint8_t i = 0; i < IN_COUNT; i++)
-//             data[String("in") + String(i + 1)] = _btn[i].stable ? 1 : 0;
-
-//         String out;
-//         serializeJson(data, out);
-//         return out;
-//     }
-
-//     void _sendTrangThai(int id_des, int opcode, uint32_t time)
-//     {
-//         String data = _buildDataJson();
-//         StaticJsonDocument<512> doc;
-//         doc["id_des"] = id_des;
-//         doc["opcode"] = opcode;
-//         deserializeJson(doc["data"], data);
-//         doc["time"] = time;
-
-//         String sign = String(id_des) + String(opcode) + data + String(time) + SECRET_KEY;
-//         doc["auth"] = calculateMD5(sign);
-
-//         if (_getInfo)
-//         {
-//             // Feed nguyên JsonObjectConst sang aggregator (không parse lại)
-//             _getInfo->ingestFromNodeDoc(doc.as<JsonObjectConst>(), IPAddress(0, 0, 0, 0), 0);
-//         }
-//     }
-
-//     uint32_t _getSendTime()
-//     {
-//         if (_lastPcUnix != 0)
-//             return _lastPcUnix;
-//         return millis() / 1000;
-//     }
-
-//     void _clearNutNhan()
-//     {
-//         for (uint8_t i = 0; i < IN_COUNT; i++)
-//             _nutVuaNhan[i] = false;
-//     }
-
-//     void sendResponse(int id_des, int resp_opcode, uint32_t unix_time, int status)
-//     {
-//         StaticJsonDocument<512> resp_doc;
-//         resp_doc["id_des"] = id_des;
-//         resp_doc["opcode"] = resp_opcode;
-//         JsonObject data = resp_doc.createNestedObject("data");
-//         data["status"] = status;
-//         resp_doc["time"] = unix_time;
-
-//         // Tính auth cho phản hồirr
-//         String id_des_str = String(id_des);
-//         String opcode_str = String(resp_opcode);
-//         String time_str = String(unix_time);
-
-//         String data_json;
-//         serializeJson(resp_doc["data"], data_json);
-
-//         String combined = id_des_str + opcode_str + data_json + time_str + SECRET_KEY;
-//         String auth_hash = calculateMD5(combined);
-
-//         resp_doc["auth"] = auth_hash;
-
-//         String output;
-//         serializeJson(resp_doc, output);
-//         Serial.println(output);
-//     }
-// };
-
-// CentralController *CentralController::_instance = nullptr;
+#line 1 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\central\\central_controller.h"
 
 #pragma once
 #include <Arduino.h>
@@ -344,9 +8,14 @@
 #include "auto_man.h"
 #include "eeprom_state.h"
 #include "get_info.h"
+#include "Pcf8575_io.h"
+#include "led_status.h"
 
 #define GET_INFO 0x03
 #define IO_COMMAND 0x02
+#define SET_THRESHOLDS 0x06
+
+extern PCF8575IO pcf;
 
 class CentralController
 {
@@ -356,70 +25,66 @@ public:
     // ================= BEGIN =================
     void begin(Stream &pcStream = Serial)
     {
-        _pc = &pcStream;
+        pc = &pcStream;
 
         // AUTO / MAN
         setupAutoManMode();
 
+        pcf.begin();
+        ledStatusBegin();
+
         // OUT
         for (uint8_t i = 0; i < OUT_COUNT; i++)
         {
-            if (OUT_PINS[i] == 255)
-                continue;
-            pinMode(OUT_PINS[i], OUTPUT);
-            _outState[i] = false;
-            _writePin(i, false);
+            outState[i] = false;
+            writePin(i, false);
         }
 
         // IN + debounce init
         uint32_t now = millis();
         for (uint8_t i = 0; i < IN_COUNT; i++)
         {
-            if (IN_PINS[i] == 255)
-                continue;
-            pinMode(IN_PINS[i], INPUT_PULLUP);
-
-            bool v = (digitalRead(IN_PINS[i]) == LOW);
-            _btn[i].stable = v;
-            _btn[i].last = v;
-            _btn[i].lastChangeMs = now;
-            _nutVuaNhan[i] = false;
+            bool v = pcf.readInput(i);
+            btn[i].stableLevel = v;
+            btn[i].lastReading = v;
+            btn[i].lastChangeMs = now;
+            nutVuaNhan[i] = false;
         }
 
         // EEPROM
         eepromStateBegin();
-        _instance = this;
-        eepromStateLoad(_eepromThunk);
+        instance = this;
+        eepromStateLoad(eepromThunk);
 
         // snapshot ban đầu
-        _luuMocTrangThai();
-        _lastDataJson = _buildDataJson();
-
+        luuMocTrangThai();
+        lastDataJson = buildDataJson();
+        eepromThresholdsLoad(thresholds);
         // chống mất gói khi spam
-        _lastPushMs = millis();
-        _deferredPush = false;
+        lastPushMs = millis();
+        deferredPush = false;
     }
 
     // ================= Inject Aggregator =================
-    void getInforCommand(GetInfoAggregator &getInfo)
+    void getInforCommand(GetInfoAggregator &getInfoRef)
     {
-        _getInfo = &getInfo;
+        getInfo = &getInfoRef;
     }
 
     // ================= HANDLE PC COMMAND =================
     void handleCommand(const MistCommand &cmd)
     {
         if (cmd.unix != 0)
-            _lastPcUnix = cmd.unix;
+            lastPcUnix = cmd.unix;
 
         switch (cmd.opcode)
         {
         case GET_INFO:
         {
             // trả trạng thái ngay (if changed)
-            _sendTrangThaiIfChanged(cmd.id_des, GET_INFO + 100, _getSendTime());
+            sendTrangThaiIfChanged(cmd.id_des, GET_INFO + 100, getSendTime());
             // không snapshot ở đây để tránh nuốt event đang chờ (deferred)
-            _clearNutNhan();
+            clearNutNhan();
             return;
         }
 
@@ -428,7 +93,14 @@ public:
             // 1) ACK 102
             sendResponse(cmd.id_des, IO_COMMAND + 100, cmd.unix, 0);
             // 2) áp output
-            _applyIO(cmd.out1, cmd.out2, cmd.out3, cmd.out4);
+            applyIO(cmd.out1, cmd.out2, cmd.out3, cmd.out4);
+            return;
+        }
+        case SET_THRESHOLDS:
+        {
+            thresholds = cmd.thresholds;
+            eepromThresholdsSave(thresholds);
+            sendResponse(cmd.id_des, SET_THRESHOLDS + 100, cmd.unix, 0);
             return;
         }
 
@@ -440,180 +112,257 @@ public:
     // ================= LOOP =================
     void update()
     {
-        _capNhatDebounce();
-
+        updateAutoOutputsFromVoc();
         // ===== MAN MODE: nhấn nút tay thì vẫn coi là thay đổi để auto_push đẩy =====
         if (!isAutoMode())
         {
-            for (uint8_t i = 0; i < IN_COUNT; i++)
+            for (int i = 0; i < IN_COUNT; i++)
             {
-                if (IN_PINS[i] == 255)
-                    continue;
-                if (_debouncePress(i))
-                    _nutVuaNhan[i] = true;
+                bool stableLevel = LOW;
+                if (debounceUpdate(i, stableLevel))
+                {
+                    bool pressed = (stableLevel == HIGH);
+                    if (pressed)
+                        nutVuaNhan[i] = true;
+                    writeOutput(i, pressed);
+                    // Serial.printf("MAN: Button %d %s -> out%d %s\n",
+                    //               i + 1,
+                    //               pressed ? "pressed" : "released",
+                    //               i + 1,
+                    //               pressed ? "ON" : "OFF"); // released OFF Pressed ON
+                }
             }
-        }
-        else
-        {
-            _clearNutNhan();
         }
 
         // ===== AUTO_PUSH: luôn chạy khi có thay đổi, KHÔNG MẤT GÓI =====
-        _tuDongDayNeuThayDoi();
+        tuDongDayNeuThayDoi();
+
+        // 3) LED status
+
+        // ledStatusBegin();
+        setStatusLed(true, false);
+        ledStatusUpdate(pcf);
 
         // EEPROM
-        eepromStateUpdate(_outState);
+        eepromStateUpdate(outState);
     }
 
 private:
     // ================= HW =================
-    static constexpr uint8_t OUT_PINS[OUT_COUNT] = {21, 18, 12, 255};
-    static constexpr uint8_t IN_PINS[IN_COUNT] = {13, 255, 255, 255};
-
     static constexpr uint32_t DEBOUNCE_MS = 35;
     static constexpr uint32_t CHONG_SPAM_MS = 120;
-
+    static constexpr float TEMP_ON_DEFAULT = 50.0f;
+    static constexpr float TEMP_OFF_DEFAULT = 45.0f;
+    static constexpr float HUMI_ON_DEFAULT = 54.0f;
+    static constexpr float HUMI_OFF_DEFAULT = 53.0f;
+    static constexpr float NH3_ON_DEFAULT = 50.0f;
+    static constexpr float NH3_OFF_DEFAULT = 45.0f;
+    static constexpr float CO_ON_DEFAULT = 50.0f;
+    static constexpr float CO_OFF_DEFAULT = 45.0f;
+    static constexpr float NO2_ON_DEFAULT = 5.0f;
+    static constexpr float NO2_OFF_DEFAULT = 4.0f;
+    static constexpr bool OFF_WHEN_ANY_CLEAR = false;
+    //   - OFF_WHEN_ANY_CLEAR = false -> chi can 1 gia tri giam (qua nguong OFF) la tat output.
+    //   - OFF_WHEN_ANY_CLEAR = true -> tat khi tat ca gia tri giam. (mac dinh)
     struct ButtonState
     {
-        bool stable;
-        bool last;
+        bool stableLevel;
+        bool lastReading;
         uint32_t lastChangeMs;
     };
 
 private:
-    Stream *_pc = nullptr;
-    GetInfoAggregator *_getInfo = nullptr;
+    Stream *pc = nullptr;
+    GetInfoAggregator *getInfo = nullptr;
 
-    bool _outState[OUT_COUNT]{};
-    ButtonState _btn[IN_COUNT]{};
-    bool _nutVuaNhan[IN_COUNT]{};
+    bool outState[OUT_COUNT]{};
+    ButtonState btn[IN_COUNT]{};
+    bool nutVuaNhan[IN_COUNT]{};
 
     // mốc trạng thái
-    bool _mocOut[OUT_COUNT]{};
-    bool _mocIn[IN_COUNT]{};
+    bool mocOut[OUT_COUNT]{};
+    bool mocIn[IN_COUNT]{};
 
     // chống spam + chống mất event
-    uint32_t _lastPushMs = 0;
-    bool _deferredPush = false;
+    uint32_t lastPushMs = 0;
+    bool deferredPush = false;
 
-    uint32_t _lastPcUnix = 0;
+    uint32_t lastPcUnix = 0;
 
     // chống gửi trùng theo json
-    String _lastDataJson;
+    String lastDataJson;
+    bool autoOutputsOn = false;
+    bool vocHigh[2][5]{};
+    Thresholds thresholds{
+        TEMP_ON_DEFAULT,
+        TEMP_OFF_DEFAULT,
+        HUMI_ON_DEFAULT,
+        HUMI_OFF_DEFAULT,
+        NH3_ON_DEFAULT,
+        NH3_OFF_DEFAULT,
+        CO_ON_DEFAULT,
+        CO_OFF_DEFAULT,
+        NO2_ON_DEFAULT,
+        NO2_OFF_DEFAULT};
 
-    static CentralController *_instance;
+    static CentralController *instance;
 
     // ================= EEPROM =================
-    static void _eepromThunk(uint8_t ch, bool on)
+    static void eepromThunk(uint8_t ch, bool on)
     {
-        if (_instance)
-            _instance->_writeOutput(ch, on);
+        if (instance)
+            instance->writeOutput(ch, on);
     }
 
     // ================= OUTPUT =================
-    void _writePin(uint8_t ch, bool on)
+    void writePin(uint8_t ch, bool on)
     {
-        if (OUT_PINS[ch] == 255)
-            return;
-
-#if OUT_ACTIVE_LOW
-        digitalWrite(OUT_PINS[ch], on ? LOW : HIGH);
-#else
-        digitalWrite(OUT_PINS[ch], on ? HIGH : LOW);
-#endif
+        pcf.writeOutput(ch, on);
     }
 
-    void _writeOutput(uint8_t ch, bool on)
+    void writeOutput(uint8_t ch, bool on)
     {
-        bool prev = _outState[ch];
-        _outState[ch] = on;
-        _writePin(ch, on);
-        if (prev != on)
+        bool prevState = outState[ch];
+        outState[ch] = on;
+        writePin(ch, on);
+        if (prevState != on)
             eepromStateMarkDirty();
     }
 
-    void _applyIO(bool o1, bool o2, bool o3, bool o4)
+    void applyIO(bool o1, bool o2, bool o3, bool o4)
     {
-        _writeOutput(0, o1);
-        _writeOutput(1, o2);
-        _writeOutput(2, o3);
-        _writeOutput(3, o4);
+        writeOutput(0, o1);
+        writeOutput(1, o2);
+        writeOutput(2, o3);
+        writeOutput(3, o4);
     }
 
     // ================= DEBOUNCE =================
-    void _capNhatDebounce()
+    bool debounceUpdate(uint8_t i, bool &stableLevel)
     {
+        bool reading = pcf.readInput(i);
         uint32_t now = millis();
-        for (uint8_t i = 0; i < IN_COUNT; i++)
-        {
-            if (IN_PINS[i] == 255)
-                continue;
 
-            bool r = (digitalRead(IN_PINS[i]) == LOW);
-            if (r != _btn[i].last)
-            {
-                _btn[i].last = r;
-                _btn[i].lastChangeMs = now;
-            }
-            if (now - _btn[i].lastChangeMs > DEBOUNCE_MS)
-                _btn[i].stable = r;
+        if (reading != btn[i].lastReading)
+        {
+            btn[i].lastChangeMs = now;
+            btn[i].lastReading = reading;
         }
+
+        if (now - btn[i].lastChangeMs > DEBOUNCE_MS)
+        {
+            if (btn[i].stableLevel != reading)
+            {
+                btn[i].stableLevel = reading;
+                stableLevel = reading;
+                return true;
+            }
+        }
+        stableLevel = btn[i].stableLevel;
+        return false;
     }
 
-    bool _debouncePress(uint8_t i)
+    bool debouncePress(uint8_t i)
     {
-        static bool prev[IN_COUNT]{};
-        bool evt = (!prev[i] && _btn[i].stable);
-        prev[i] = _btn[i].stable;
+        static bool prevState[IN_COUNT]{};
+        bool evt = (!prevState[i] && btn[i].stableLevel);
+        prevState[i] = btn[i].stableLevel;
         return evt;
     }
 
-    // ================= SNAPSHOT / CHANGE =================
-    void _luuMocTrangThai()
+    static bool applyHysteresis(float value, float on, float off, bool state)
     {
-        for (uint8_t i = 0; i < OUT_COUNT; i++)
-            _mocOut[i] = _outState[i];
-        for (uint8_t i = 0; i < IN_COUNT; i++)
-            _mocIn[i] = _btn[i].stable;
+        if (value >= on)
+            return true;
+        if (value <= off)
+            return false;
+        return state;
     }
 
-    bool _coThayDoi()
+    void updateAutoOutputsFromVoc()
+    {
+        if (!getInfo)
+            return;
+
+        bool anyMetric = false;
+        bool anyHigh = false;
+        bool allHigh = true;
+        for (uint8_t i = 0; i < 2; i++)
+        {
+            SensorVocSnapshot snap{};
+            if (!getInfo->getVocSnapshot(i, snap))
+                continue;
+
+            vocHigh[i][0] = applyHysteresis(snap.temp, thresholds.temp_on, thresholds.temp_off, vocHigh[i][0]);
+            vocHigh[i][1] = applyHysteresis(snap.humi, thresholds.humi_on, thresholds.humi_off, vocHigh[i][1]);
+            vocHigh[i][2] = applyHysteresis(snap.nh3, thresholds.nh3_on, thresholds.nh3_off, vocHigh[i][2]);
+            vocHigh[i][3] = applyHysteresis(snap.co, thresholds.co_on, thresholds.co_off, vocHigh[i][3]);
+            vocHigh[i][4] = applyHysteresis(snap.no2, thresholds.no2_on, thresholds.no2_off, vocHigh[i][4]);
+
+            for (uint8_t k = 0; k < 5; k++)
+            {
+                anyMetric = true;
+                anyHigh = anyHigh || vocHigh[i][k];
+                allHigh = allHigh && vocHigh[i][k];
+            }
+        }
+
+        bool shouldOn = false;
+        if (anyMetric)
+            shouldOn = OFF_WHEN_ANY_CLEAR ? allHigh : anyHigh;
+        if (shouldOn != autoOutputsOn)
+        {
+            autoOutputsOn = shouldOn;
+            applyIO(shouldOn, shouldOn, shouldOn, shouldOn);
+        }
+    }
+
+    // ================= SNAPSHOT / CHANGE =================
+    void luuMocTrangThai()
     {
         for (uint8_t i = 0; i < OUT_COUNT; i++)
-            if (_outState[i] != _mocOut[i])
+            mocOut[i] = outState[i];
+        for (uint8_t i = 0; i < IN_COUNT; i++)
+            mocIn[i] = btn[i].stableLevel;
+    }
+
+    bool coThayDoi()
+    {
+        for (uint8_t i = 0; i < OUT_COUNT; i++)
+            if (outState[i] != mocOut[i])
                 return true;
 
         for (uint8_t i = 0; i < IN_COUNT; i++)
-            if (_btn[i].stable != _mocIn[i])
+            if (btn[i].stableLevel != mocIn[i])
                 return true;
 
         for (uint8_t i = 0; i < IN_COUNT; i++)
-            if (_nutVuaNhan[i])
+            if (nutVuaNhan[i])
                 return true;
 
         return false;
     }
 
     // ================= JSON (format in/out) =================
-    String _buildDataJson()
+    String buildDataJson()
     {
         StaticJsonDocument<256> doc;
         JsonObject data = doc.to<JsonObject>();
 
         for (uint8_t i = 0; i < OUT_COUNT; i++)
-            data[String("out") + String(i + 1)] = _outState[i] ? 1 : 0;
+            data[String("out") + String(i + 1)] = outState[i] ? 1 : 0;
 
         for (uint8_t i = 0; i < IN_COUNT; i++)
-            data[String("in") + String(i + 1)] = _btn[i].stable ? 1 : 0;
+            data[String("in") + String(i + 1)] = btn[i].stableLevel ? 1 : 0;
 
         String out;
         serializeJson(data, out);
         return out;
     }
 
-    void _ingestTrangThaiToAggregator(int id_des, int opcode, uint32_t time, const String &data_json)
+    void ingestTrangThaiToAggregator(int id_des, int opcode, uint32_t time, const String &data_json)
     {
-        if (!_getInfo)
+        if (!getInfo)
             return;
 
         StaticJsonDocument<512> doc;
@@ -626,61 +375,61 @@ private:
         String sign = String(id_des) + String(opcode) + data_json + String(time) + SECRET_KEY;
         doc["auth"] = calculateMD5(sign);
 
-        _getInfo->ingestFromNodeDoc(doc.as<JsonObjectConst>(), IPAddress(0, 0, 0, 0), 0);
+        getInfo->ingestFromNodeDoc(doc.as<JsonObjectConst>(), IPAddress(0, 0, 0, 0), 0);
     }
 
-    bool _sendTrangThaiIfChanged(int id_des, int opcode, uint32_t time)
+    bool sendTrangThaiIfChanged(int id_des, int opcode, uint32_t time)
     {
-        String data_json = _buildDataJson();
-        if (data_json == _lastDataJson)
+        String data_json = buildDataJson();
+        if (data_json == lastDataJson)
             return false;
 
-        _lastDataJson = data_json;
-        _ingestTrangThaiToAggregator(id_des, opcode, time, data_json);
+        lastDataJson = data_json;
+        ingestTrangThaiToAggregator(id_des, opcode, time, data_json);
         return true;
     }
 
     // ================= TIME =================
-    uint32_t _getSendTime()
+    uint32_t getSendTime()
     {
         // để auto_push luôn hoạt động: fallback millis/1000
-        if (_lastPcUnix != 0)
-            return _lastPcUnix;
+        if (lastPcUnix != 0)
+            return lastPcUnix;
         return millis() / 1000;
     }
 
     // ================= AUTO PUSH (FIX MẤT GÓI) =================
-    void _tuDongDayNeuThayDoi()
+    void tuDongDayNeuThayDoi()
     {
         // Nếu có thay đổi hoặc đang chờ gửi (deferred) thì mới xét
-        if (!_coThayDoi() && !_deferredPush)
+        if (!coThayDoi() && !deferredPush)
             return;
 
         uint32_t now = millis();
 
         // Trong khoảng chống spam -> chỉ đánh dấu deferred, KHÔNG cập nhật mốc
-        if (now - _lastPushMs < CHONG_SPAM_MS)
+        if (now - lastPushMs < CHONG_SPAM_MS)
         {
-            _deferredPush = true;
+            deferredPush = true;
             return;
         }
 
         // Đủ thời gian: gửi bù 1 lần
-        _deferredPush = false;
-        _lastPushMs = now;
+        deferredPush = false;
+        lastPushMs = now;
 
         // 103 do auto_push
-        _sendTrangThaiIfChanged(1, GET_INFO + 100, _getSendTime());
+        sendTrangThaiIfChanged(1, GET_INFO + 100, getSendTime());
 
         // Sau khi đã gửi mới cập nhật mốc để lần sau so sánh
-        _luuMocTrangThai();
-        _clearNutNhan();
+        luuMocTrangThai();
+        clearNutNhan();
     }
 
-    void _clearNutNhan()
+    void clearNutNhan()
     {
         for (uint8_t i = 0; i < IN_COUNT; i++)
-            _nutVuaNhan[i] = false;
+            nutVuaNhan[i] = false;
     }
 
     // ================= ACK RESPONSE =================
@@ -706,5 +455,5 @@ private:
 };
 
 #ifdef CENTRAL_CONTROLLER_IMPLEMENTATION
-CentralController *CentralController::_instance = nullptr;
+CentralController *CentralController::instance = nullptr;
 #endif

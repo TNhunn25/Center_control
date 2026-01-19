@@ -5,7 +5,7 @@
 #include <ArduinoJson.h>
 #include "config.h"
 #include "md5.h"
-#include "PCF8575.h"
+#include "pcf8575_io.h"
 
 #ifndef MIST_COMMAND
 #define MIST_COMMAND 0x01
@@ -21,6 +21,7 @@
 extern const String SECRET_KEY;
 extern bool outState[4];
 extern bool nutVuaNhan[4];
+extern PCF8575IO pcf;
 // extern const uint8_t IN_PINS[4];
 
 inline bool verifyAuth(const JsonDocument &doc, const String &receivedHash)
@@ -114,7 +115,7 @@ inline String Goi_trangthai(int id_des, int resp_opcode, uint32_t unix_time)
 
     for (int i = 0; i < 4; i++)
     {
-        bool active = PcfIo::readIn(i);
+        bool active = pcf.readInput(i);
         int value = nutVuaNhan[i] ? 2 : (active ? 1 : 0);
         data[String("in") + String(i + 1)] = value;
     }

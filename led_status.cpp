@@ -8,7 +8,9 @@ LedStatus::LedStatus()
       _ledOn(false),
       _lastToggleMs(0),
       _onTimeMs(500),
-      _offTimeMs(500)
+      _offTimeMs(500),
+      _overrideEnabled(false),
+      _overrideState(STATE_NORMAL)
 {
 }
 
@@ -30,6 +32,14 @@ void LedStatus::setState(State s)
     _state = s;
 }
 
+void LedStatus::setOverride(bool enable, State state)
+{
+    _overrideEnabled = enable;
+    _overrideState = state;
+    // Force re-apply timing immediately.
+    _lastState = (State)255;
+}
+
 LedStatus::State LedStatus::getState() const
 {
     return _state;
@@ -42,13 +52,17 @@ void LedStatus::update()
     const uint32_t now = millis();
     // Chọn state theo link ethernet + data serial
     State newState;
-    if (!has_connect_link && !has_data_serial)
+    if (_overrideEnabled)
     {
-        newState = STATE_OFF;
+        newState = _overrideState;
+    }
+    else if (!has_connect_link && !has_data_serial)
+    {
+        newState = STATE_NO_LINK;
     }
     else if (!has_connect_link && has_data_serial)
     {
-        newState = STATE_NO_LINK;
+        newState = STATE_OFF;
     }
     else if (has_connect_link && !has_data_serial)
     {
@@ -74,6 +88,14 @@ void LedStatus::update()
             writeLed(false);
             return;
         }
+
+        if(_state == STATE_ACTIVE_DATA_ALL)   // bình thường => luôn sáng
+        {
+            _ledOn = true;
+            writeLed(true); // luôn sáng
+            return;         // không chạy nháy
+        }
+
         getBlinkTiming(_state, _onTimeMs, _offTimeMs);
 
         _ledOn = true; // bắt đầu ON
@@ -111,7 +133,7 @@ void LedStatus::getBlinkTiming(State state, uint32_t &onTimeMs, uint32_t &offTim
     {
     case STATE_NORMAL:
         onTimeMs = 500UL;
-        offTimeMs = 500UL;
+        offTimeMs = 950UL;
         break;
     case STATE_NO_DATA_SERIAL:
         onTimeMs = 500UL;
@@ -122,8 +144,8 @@ void LedStatus::getBlinkTiming(State state, uint32_t &onTimeMs, uint32_t &offTim
         offTimeMs = 200UL;
         break;
     case STATE_ACTIVE_DATA_ALL:
-        onTimeMs = 50UL;
-        offTimeMs = 950UL;
+        onTimeMs = 0;
+        offTimeMs = 0;
         break;
     case STATE_OFF:
         onTimeMs = 0;

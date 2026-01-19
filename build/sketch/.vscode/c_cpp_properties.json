@@ -1,20 +1,31 @@
-#line 1 "D:\\phunsuong\\master\\master\\.vscode\\c_cpp_properties.json"
+#line 1 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\.vscode\\c_cpp_properties.json"
 {
   "configurations": [
     {
       "name": "Arduino",
       "includePath": [
-        "C:\\Users\\ASUS\\OneDrive\\Documents\\Arduino\\libraries/**",
-        "D:\\phunsuong\\master\\master/**",
-        "C:\\Users\\ASUS\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.5-8410210c-v2\\esp32s3\\include/**"
+        "C:\\Users\\Tuyet Nhung-RD\\Documents\\Arduino\\libraries/**",
+        "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master/**",
+        "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3\\include/**",
+        "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3\\qio_qspi\\include/**",
+        "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32/**",
+        "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3/**",
+        "C:\\Users\\Tuyet Nhung-RD\\Documents\\Arduino\\libraries\\ArduinoJson\\src/**",
+        "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\libraries\\SPI\\src/**",
+        "C:\\Users\\Tuyet Nhung-RD\\Documents\\Arduino\\libraries\\Ethernet\\src/**",
+        "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\libraries\\Wire\\src/**",
+        "C:\\Users\\Tuyet Nhung-RD\\Documents\\Arduino\\libraries\\PCF8575_library/**",
+        "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\libraries\\EEPROM\\src/**"
       ],
-      "forcedInclude": [],
-      "compilerPath": "C:\\Users\\ASUS\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp-x32\\2507/bin/xtensa-esp32s3-elf-g++",
+      "forcedInclude": [
+        "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\Arduino.h"
+      ],
+      "compilerPath": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp-x32\\2411/bin/xtensa-esp32s3-elf-g++",
       "compilerArgs": [
-        "C:\\Users\\ASUS\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp-x32\\2507/bin/xtensa-esp32s3-elf-g++",
+        "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp-x32\\2411/bin/xtensa-esp32s3-elf-g++",
         "-MMD",
         "-c",
-        "@C:\\Users\\ASUS\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.5-8410210c-v2\\esp32s3/flags/cpp_flags",
+        "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/cpp_flags",
         "-w",
         "-Os",
         "-Werror=return-type",
@@ -35,23 +46,25 @@
         "-DARDUINO_USB_CDC_ON_BOOT=1",
         "-DARDUINO_USB_MSC_ON_BOOT=0",
         "-DARDUINO_USB_DFU_ON_BOOT=0",
-        "@C:\\Users\\ASUS\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.5-8410210c-v2\\esp32s3/flags/defines",
-        "-ID:\\phunsuong\\master\\master",
+        "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/defines",
+        "-IC:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master",
         "-iprefix",
-        "C:\\Users\\ASUS\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.5-8410210c-v2\\esp32s3/include/",
-        "@C:\\Users\\ASUS\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.5-8410210c-v2\\esp32s3/flags/includes",
-        "-IC:\\Users\\ASUS\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.5-8410210c-v2\\esp32s3/qio_qspi/include",
-        "-IC:\\Users\\ASUS\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.3.4\\cores\\esp32",
-        "-IC:\\Users\\ASUS\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.3.4\\variants\\esp32s3",
-        "-IC:\\Users\\ASUS\\OneDrive\\Documents\\Arduino\\libraries\\ArduinoJson\\src",
-        "-IC:\\Users\\ASUS\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.3.4\\libraries\\SPI\\src",
-        "-IC:\\Users\\ASUS\\OneDrive\\Documents\\Arduino\\libraries\\Ethernet\\src",
-        "-IC:\\Users\\ASUS\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.3.4\\libraries\\EEPROM\\src",
-        "@D:\\phunsuong\\master\\master\\build/build_opt.h",
-        "@D:\\phunsuong\\master\\master\\build/file_opts",
-        "D:\\phunsuong\\master\\master\\build\\sketch\\MICS6814.cpp",
+        "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/include/",
+        "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/includes",
+        "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/qio_qspi/include",
+        "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32",
+        "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
+        "-IC:\\Users\\Tuyet Nhung-RD\\Documents\\Arduino\\libraries\\ArduinoJson\\src",
+        "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\libraries\\SPI\\src",
+        "-IC:\\Users\\Tuyet Nhung-RD\\Documents\\Arduino\\libraries\\Ethernet\\src",
+        "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\libraries\\Wire\\src",
+        "-IC:\\Users\\Tuyet Nhung-RD\\Documents\\Arduino\\libraries\\PCF8575_library",
+        "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\libraries\\EEPROM\\src",
+        "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/build_opt.h",
+        "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/file_opts",
+        "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\sketch\\PC_handler.cpp",
         "-o",
-        "D:\\phunsuong\\master\\master\\build\\sketch\\MICS6814.cpp.o"
+        "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\sketch\\PC_handler.cpp.o"
       ],
       "defines": [
         "F_CPU=240000000L",

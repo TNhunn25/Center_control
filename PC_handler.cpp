@@ -171,18 +171,47 @@ void PCHandler::processLine()
     {
         cmd.opcode = opcode;
     }
+    else if (opcode == 6)
+    {
+        JsonObjectConst dataObj = doc["data"].as<JsonObjectConst>();
+        if (dataObj.isNull())
+        {
+            sendResponse(id_des, opcode + 100, unix_time, 255);
+            return;
+        }
 
+        cmd.opcode = 6;
+        cmd.thresholds.temp_on = dataObj["temp_on"] | NAN;
+        cmd.thresholds.humi_on = dataObj["humi_on"] | NAN;
+        cmd.thresholds.nh3_on = dataObj["nh3_on"] | NAN;
+        cmd.thresholds.co_on = dataObj["co_on"] | NAN;
+        cmd.thresholds.no2_on = dataObj["no2_on"] | NAN;
+        cmd.thresholds.temp_off = dataObj["temp_off"] | NAN;
+        cmd.thresholds.humi_off = dataObj["humi_off"] | NAN;
+        cmd.thresholds.nh3_off = dataObj["nh3_off"] | NAN;
+        cmd.thresholds.co_off = dataObj["co_off"] | NAN;
+        cmd.thresholds.no2_off = dataObj["no2_off"] | NAN;
+
+        if (isnan(cmd.thresholds.temp_on) || isnan(cmd.thresholds.humi_on) ||
+            isnan(cmd.thresholds.nh3_on) || isnan(cmd.thresholds.co_on) ||
+            isnan(cmd.thresholds.no2_on) || isnan(cmd.thresholds.temp_off) ||
+            isnan(cmd.thresholds.humi_off) || isnan(cmd.thresholds.nh3_off) ||
+            isnan(cmd.thresholds.co_off) || isnan(cmd.thresholds.no2_off))
+        {
+            sendResponse(id_des, opcode + 100, unix_time, 255);
+            return;
+        }
+    }
     if (commandCallback)
     {
         commandCallback(cmd);
     }
     has_data_serial = true;
     // opcode 2/3: CentralController sẽ trả response đúng opcode (2 hoặc 3)
-    if (opcode == 2 || opcode == 3)
+    if (opcode >= 2 && opcode <= 6)
+    {
         return;
-    if (opcode == 3 || opcode == 4 || opcode == 5)
-        return;
-    sendResponse(id_des, opcode + 100, unix_time, 0);
+    }
 }
 
 void PCHandler::sendResponse(int id_des, int resp_opcode, uint32_t unix_time, int status)

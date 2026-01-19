@@ -1,4 +1,4 @@
-#line 1 "D:\\phunsuong\\master\\master\\led_status.h"
+#line 1 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\led_status.h"
 #pragma once
 #include <Arduino.h>
 #include "config.h"

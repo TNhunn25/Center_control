@@ -1,4 +1,4 @@
-#line 1 "D:\\phunsuong\\master\\master\\get_info.cpp"
+#line 1 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\get_info.cpp"
 #include "get_info.h"
 #include <math.h>
 
@@ -42,6 +42,13 @@ void GetInfoAggregator::syncUnixFromPc(uint32_t unix_time)
     _unixBase = unix_time;
     _millisBase = millis();
 }
+bool GetInfoAggregator::getVocSnapshot(uint8_t index, SensorVocSnapshot &out) const
+{
+    if (index >= 2)
+        return false;
+    out = _voc[index];
+    return out.has;
+}
 bool GetInfoAggregator::onPcGetInfoRequest(int id_des, uint32_t unix_time)
 {
     if (!_pcStream)
@@ -58,7 +65,7 @@ bool GetInfoAggregator::onPcGetInfoRequest(int id_des, uint32_t unix_time)
     bool ok = sendAggregatedToPC(*_pcStream, _pcIdDes, unix_time);
 
     // sau khi trả, xem như sạch (chờ thay đổi tiếp)
-    _lastPushMs = millis();
+    lastPushMs = millis();
     return ok;
 }
 
@@ -73,14 +80,14 @@ void GetInfoAggregator::update()
         return;
 
     uint32_t nowMs = millis();
-    if (_minPushIntervalMs > 0 && (uint32_t)(nowMs - _lastPushMs) < _minPushIntervalMs)
+    if (_minPushIntervalMs > 0 && (uint32_t)(nowMs - lastPushMs) < _minPushIntervalMs)
         return;
 
     uint32_t t = nowUnix();
     if (sendAggregatedToPC(*_pcStream, _pcIdDes, t))
     {
         _pushPending = false;
-        _lastPushMs = nowMs;
+        lastPushMs = nowMs;
     }
 }
 

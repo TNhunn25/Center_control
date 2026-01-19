@@ -8,13 +8,15 @@
 #define PIN_NO2 17
 #define PIN_NH3 18
 #define PIN_DHT 21
-#define MOTOR_COUNT 5
-#define OUT_COUNT 5
-#define IN_COUNT 5
+// #define MOTOR_COUNT 5
+// #define OUT_COUNT 4
+// #define IN_COUNT 4
 extern const String SECRET_KEY;
-// Not used when IO is handled via PCF8575; kept for compatibility.
-// extern const uint8_t OUT_PINS[4];
-// extern const uint8_t IN_PINS[4];
+
+static const uint8_t OUT_COUNT = 4;
+static const uint8_t IN_COUNT = 4;
+static const uint8_t MOTOR_COUNT = 5;
+
 extern bool has_connect_link;
 extern bool has_data_serial;
 
@@ -24,6 +26,19 @@ typedef struct
     uint8_t dir;
     uint8_t speed;
 } MotorCommand;
+struct Thresholds
+{
+    float temp_on;
+    float temp_off;
+    float humi_on;
+    float humi_off;
+    float nh3_on;
+    float nh3_off;
+    float co_on;
+    float co_off;
+    float no2_on;
+    float no2_off;
+};
 struct MistCommand
 {
     uint32_t unix;
@@ -35,5 +50,6 @@ struct MistCommand
     bool out1, out2, out3, out4;      // Chỉ dùng khi opcode=2
     MotorCommand motors[MOTOR_COUNT]; // Chi dung khi opcode=4
     uint8_t motor_mask;
+    Thresholds thresholds; // Chi dung khi opcode=6
 };
 #endif // CONFIG_H

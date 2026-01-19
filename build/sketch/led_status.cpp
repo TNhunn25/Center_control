@@ -1,4 +1,4 @@
-#line 1 "D:\\phunsuong\\master\\master\\led_status.cpp"
+#line 1 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\led_status.cpp"
 #include "led_status.h"
 
 LedStatus::LedStatus()
@@ -45,11 +45,11 @@ void LedStatus::update()
     State newState;
     if (!has_connect_link && !has_data_serial)
     {
-        newState = STATE_OFF;
+        newState = STATE_NO_LINK;
     }
     else if (!has_connect_link && has_data_serial)
     {
-        newState = STATE_NO_LINK;
+        newState = STATE_OFF;
     }
     else if (has_connect_link && !has_data_serial)
     {
@@ -75,6 +75,14 @@ void LedStatus::update()
             writeLed(false);
             return;
         }
+
+        if(_state == STATE_ACTIVE_DATA_ALL)   // bình thường => luôn sáng
+        {
+            _ledOn = true;
+            writeLed(true); // luôn sáng
+            return;         // không chạy nháy
+        }
+
         getBlinkTiming(_state, _onTimeMs, _offTimeMs);
 
         _ledOn = true; // bắt đầu ON
@@ -123,8 +131,8 @@ void LedStatus::getBlinkTiming(State state, uint32_t &onTimeMs, uint32_t &offTim
         offTimeMs = 200UL;
         break;
     case STATE_ACTIVE_DATA_ALL:
-        onTimeMs = 50UL;
-        offTimeMs = 950UL;
+        onTimeMs = 0;
+        offTimeMs = 0;
         break;
     case STATE_OFF:
         onTimeMs = 0;

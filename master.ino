@@ -4,8 +4,10 @@
 #include "led_status.h"
 #include "get_info.h"
 #include "config.h"
+#include "central/pcf8575_io.h"
 #define CENTRAL_CONTROLLER_IMPLEMENTATION
 #include "central/central_controller.h"
+PCF8575IO pcf;
 PCHandler pcHandler;
 EthernetUDPHandler ethHandler;
 LedStatus led_status;
@@ -21,6 +23,11 @@ void onNewCommand(const MistCommand &cmd)
     {
         getInfo.onPcGetInfoRequest(cmd.id_des, cmd.unix);
         ethHandler.sendCommand(cmd);
+        centralController.handleCommand(cmd);
+        return;
+    }
+    if (cmd.opcode == 6)
+    {
         centralController.handleCommand(cmd);
         return;
     }

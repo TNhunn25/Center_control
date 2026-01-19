@@ -1,12 +1,13 @@
-#line 1 "D:\\phunsuong\\master\\master\\central\\eeprom_state.h"
+#line 1 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\central\\eeprom_state.h"
 #pragma once
 #include <Arduino.h>
 #include <EEPROM.h>
 #include "config.h"
 
-static const size_t EEPROM_STATE_SIZE = 64;
+static const size_t EEPROM_STATE_SIZE = 256;
 static const uint32_t EEPROM_STATE_MAGIC = 0x4F555430; // "OUT0"
 static const int EEPROM_STATE_ADDR = 0;
+static const uint32_t EEPROM_THRESH_MAGIC = 0x54485230; // "THR0"
 static const uint32_t EEPROM_FLUSH_MS = 300;
 
 struct PersistedState
@@ -14,6 +15,14 @@ struct PersistedState
     uint32_t magic;
     uint8_t out[OUT_COUNT];
 };
+
+struct PersistedThresholds
+{
+    uint32_t magic;
+    Thresholds t;
+};
+
+static const int EEPROM_THRESH_ADDR = EEPROM_STATE_ADDR + sizeof(PersistedState);
 
 static bool eepromDirty = false;
 static uint32_t eepromDirtyMs = 0;
@@ -64,4 +73,23 @@ inline void eepromStateLoad(void (*applyOutput)(uint8_t, bool))
     for (int i = 0; i < OUT_COUNT; i++)
         applyOutput(i, st.out[i] != 0);
     eepromSuppress = false;
+}
+
+inline void eepromThresholdsSave(const Thresholds &t)
+{
+    PersistedThresholds st{};
+    st.magic = EEPROM_THRESH_MAGIC;
+    st.t = t;
+    EEPROM.put(EEPROM_THRESH_ADDR, st);
+    EEPROM.commit();
+}
+
+inline bool eepromThresholdsLoad(Thresholds &t)
+{
+    PersistedThresholds st{};
+    EEPROM.get(EEPROM_THRESH_ADDR, st);
+    if (st.magic != EEPROM_THRESH_MAGIC)
+        return false;
+    t = st.t;
+    return true;
 }

@@ -1,4 +1,4 @@
-#line 1 "D:\\phunsuong\\master\\master\\get_info.h"
+#line 1 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\get_info.h"
 #ifndef GET_INFO_H
 #define GET_INFO_H
 #include <Arduino.h>
@@ -59,6 +59,7 @@ public:
     void setMinPushIntervalMs(uint32_t ms) { _minPushIntervalMs = ms; }
     void setAlwaysPush(bool en) { _alwaysPush = en; }
     void syncUnixFromPc(uint32_t unix_time);
+    bool getVocSnapshot(uint8_t index, SensorVocSnapshot &out) const;
 
 private:
     void ingestDataObject(JsonObjectConst dataObj);
@@ -85,7 +86,7 @@ private:
     Stream *_pcStream = nullptr;
     bool _autoPushEnabled = false;
     uint32_t _minPushIntervalMs = 200;
-    uint32_t _lastPushMs = 0;
+    uint32_t lastPushMs = 0;
     bool _alwaysPush = true;
     int _pcIdDes = 1;
     uint32_t _unixBase = 0;

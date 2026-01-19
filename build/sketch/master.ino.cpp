@@ -1,26 +1,28 @@
 #include <Arduino.h>
-#line 1 "D:\\phunsuong\\master\\master\\master.ino"
+#line 1 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\master.ino"
 #include "PC_handler.h"
 #include "ethernet_handler.h"
 #include "rs485_handler.h"
 #include "led_status.h"
 #include "get_info.h"
 #include "config.h"
+#include "central/pcf8575_io.h"
 #define CENTRAL_CONTROLLER_IMPLEMENTATION
 #include "central/central_controller.h"
+PCF8575IO pcf;
 PCHandler pcHandler;
 EthernetUDPHandler ethHandler;
 LedStatus led_status;
 CentralController centralController;
 GetInfoAggregator getInfo;
 // Rs485Handler rs485(Serial1, RS485_RX_PIN, RS485_TX_PIN, 115200);
-#line 15 "D:\\phunsuong\\master\\master\\master.ino"
+#line 17 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\master.ino"
 void onNewCommand(const MistCommand &cmd);
-#line 31 "D:\\phunsuong\\master\\master\\master.ino"
+#line 38 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\master.ino"
 void setup();
-#line 44 "D:\\phunsuong\\master\\master\\master.ino"
+#line 51 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\master.ino"
 void loop();
-#line 15 "D:\\phunsuong\\master\\master\\master.ino"
+#line 17 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\master.ino"
 void onNewCommand(const MistCommand &cmd)
 {
     getInfo.syncUnixFromPc(cmd.unix);
@@ -30,6 +32,11 @@ void onNewCommand(const MistCommand &cmd)
     {
         getInfo.onPcGetInfoRequest(cmd.id_des, cmd.unix);
         ethHandler.sendCommand(cmd);
+        centralController.handleCommand(cmd);
+        return;
+    }
+    if (cmd.opcode == 6)
+    {
         centralController.handleCommand(cmd);
         return;
     }

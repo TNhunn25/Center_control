@@ -1,4 +1,4 @@
-#line 1 "D:\\phunsuong\\master\\master\\MICS6814.h"
+#line 1 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\MICS6814.h"
 // MICS6814.h (header - chỉ phần thay đổi chính)
 #ifndef MICS6814_H
 #define MICS6814_H

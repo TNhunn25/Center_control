@@ -1,4 +1,4 @@
-#line 1 "D:\\phunsuong\\master\\master\\MICS6814.cpp"
+#line 1 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\MICS6814.cpp"
 // MICS6814.cpp (implementation đã sửa)
 
 #include "MICS6814.h"
