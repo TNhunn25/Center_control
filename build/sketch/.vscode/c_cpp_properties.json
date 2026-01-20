@@ -62,9 +62,9 @@
         "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\libraries\\EEPROM\\src",
         "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/build_opt.h",
         "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/file_opts",
-        "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\sketch\\MICS6814.cpp",
+        "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\sketch\\ethernet_handler.cpp",
         "-o",
-        "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\sketch\\MICS6814.cpp.o"
+        "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\sketch\\ethernet_handler.cpp.o"
       ],
       "defines": [
         "F_CPU=240000000L",

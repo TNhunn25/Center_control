@@ -55,6 +55,8 @@ public:
         eepromStateBegin();
         instance = this;
         eepromStateLoad(eepromThunk);
+        // Re-apply outputs sequentially to avoid inrush at startup.
+        applyIOStaggered(outState[0], outState[1], outState[2], outState[3]);
 
         // snapshot ban đầu
         luuMocTrangThai();
@@ -63,6 +65,7 @@ public:
         // chống mất gói khi spam
         lastPushMs = millis();
         deferredPush = false;
+        lastAutoMode = isAutoMode();
     }
 
     // ================= Inject Aggregator =================
@@ -119,9 +122,17 @@ public:
     // ================= LOOP =================
     void update()
     {
+        bool autoMode = isAutoMode();
+        if (autoMode != lastAutoMode)
+        {
+            // When switching modes, stagger ON to avoid overload.
+            applyIOStaggered(outState[0], outState[1], outState[2], outState[3]);
+            lastAutoMode = autoMode;
+        }
+
         updateAutoOutputsFromVoc();
         // ===== MAN MODE: nhấn nút tay thì vẫn coi là thay đổi để auto_push đẩy =====
-        if (!isAutoMode())
+        if (!autoMode)
         {
             for (int i = 0; i < IN_COUNT; i++)
             {
@@ -169,8 +180,12 @@ private:
     static constexpr float NO2_ON_DEFAULT = 5.0f;
     static constexpr float NO2_OFF_DEFAULT = 4.0f;
     static constexpr bool OFF_WHEN_ANY_CLEAR = false;
+    static constexpr uint32_t SEQ_ON_DELAY_MS = 800;
     //   - OFF_WHEN_ANY_CLEAR = false -> chi can 1 gia tri giam (qua nguong OFF) la tat output.
     //   - OFF_WHEN_ANY_CLEAR = true -> tat khi tat ca gia tri giam. (mac dinh)
+
+    
+
     struct ButtonState
     {
         bool stableLevel;
@@ -202,6 +217,7 @@ private:
     bool vocHigh[2][5]{};
     bool manualOutState[OUT_COUNT]{}; //điều khiển output
     bool hasManualSnapshot = false;
+    bool lastAutoMode = true;
     Thresholds thresholds{
         TEMP_ON_DEFAULT,
         TEMP_OFF_DEFAULT,
@@ -246,6 +262,24 @@ private:
         writeOutput(1, o2);
         writeOutput(2, o3);
         writeOutput(3, o4);
+    }
+
+    void applyIOStaggered(bool o1, bool o2, bool o3, bool o4)
+    {
+        bool desired[OUT_COUNT] = {o1, o2, o3, o4};
+        for (uint8_t i = 0; i < OUT_COUNT; i++)
+        {
+            if (!desired[i] && outState[i])
+                writeOutput(i, false);
+        }
+        for (uint8_t i = 0; i < OUT_COUNT; i++)
+        {
+            if (desired[i] && !outState[i])
+            {
+                writeOutput(i, true);
+                delay(SEQ_ON_DELAY_MS);
+            }
+        }
     }
 
     void captureManualOutputs(bool o1, bool o2, bool o3, bool o4)
