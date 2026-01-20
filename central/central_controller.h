@@ -36,12 +36,11 @@ public:
         for (uint8_t i = 0; i < OUT_COUNT; i++)
         {
             // outState[i] = false;
-            // writePin(i, false);
-            writeOutput(i, false);
+            writePin(i, false);
         }
 
         // IN + debounce init
-        uint32_t now = millis();
+        uint32_t now = millis();static const bool OUT_ACTIVE_LOW = true;
         for (uint8_t i = 0; i < IN_COUNT; i++)
         {
             bool v = pcf.readInput(i);
@@ -118,7 +117,7 @@ public:
     // ================= LOOP =================
     void update()
     {
-        updateAutoOutputsFromVoc();
+        // updateAutoOutputsFromVoc();
         // ===== MAN MODE: nhấn nút tay thì vẫn coi là thay đổi để auto_push đẩy =====
         if (!isAutoMode())
         {
@@ -130,7 +129,7 @@ public:
                     bool pressed = (stableLevel == HIGH); // Man = High
                     if (pressed)
                         nutVuaNhan[i] = true;
-                    writeOutput(i, !pressed);
+                    writeOutput(i, pressed);
                     // Serial.printf("MAN: Button %d %s -> out%d %s\n",
                     //               i + 1,
                     //               pressed ? "pressed" : "released",
@@ -222,48 +221,19 @@ private:
 
     // ================= OUTPUT =================
 
-    // void writePin(uint8_t ch, bool on)
-    // {
-    //     pcf.writeOutput(ch, on);
-    // }
-
-    // void writePin(uint8_t ch, bool on)
-    // {
-    //     bool pinLevel = on;
-    //     if (OUT_ACTIVE_LOW)
-    //         pinLevel = !pinLevel;
-
-    //     pcf.writeOutput(ch, pinLevel ? HIGH : LOW);
-    // }
-
-    // void writeOutput(uint8_t ch, bool on)
-    // {
-    //     bool prevState = outState[ch]; // lưu trạng thái cũ để chỉ log khi có thay đổi thật
-    //     outState[ch] = on;
-
-    //     writePin(ch, on);
-    //     if (prevState != on)
-    //         eepromStateMarkDirty();
-    // }
-
-    static const bool OUT_ACTIVE_LOW = true;
+    void writePin(uint8_t ch, bool on)
+    {
+        pcf.writeOutput(ch, on);
+    }
 
     void writeOutput(uint8_t ch, bool on)
     {
         bool prevState = outState[ch]; // lưu trạng thái cũ để chỉ log khi có thay đổi thật
         outState[ch] = on;
 
-        bool pinLevel = on;
-        if (OUT_ACTIVE_LOW)
-            pinLevel = !pinLevel;
-
-        pcf.writeOutput(ch, pinLevel ? HIGH : LOW);
-
+        writePin(ch, on);
         if (prevState != on)
             eepromStateMarkDirty();
-
-        // // Debug: chỉ in log khi trạng thái output thay đổi
-        // Serial.printf("OUT%d -> %s\n", ch + 1, on ? "ON" : "OFF");
     }
 
     void applyIO(bool o1, bool o2, bool o3, bool o4) // apply

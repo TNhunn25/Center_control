@@ -109,12 +109,19 @@ void PCHandler::processLine()
     }
     else if (opcode == 2)
     {
-        auto dataObj = doc["data"].as<JsonObject>();
+       // auto dataObj = doc["data"].as<JsonObject>();
+        JsonObjectConst dataObj = doc["data"].as<JsonObjectConst>();
+        if (dataObj.isNull() || !dataObj.containsKey("out1") || !dataObj.containsKey("out2") ||
+            !dataObj.containsKey("out3") || !dataObj.containsKey("out4"))
+        {
+            sendResponse(id_des, opcode + 100, unix_time, 255);
+            return;
+        }
         cmd.opcode = 2;
-        cmd.out1 = dataObj["out1"] | false;
-        cmd.out2 = dataObj["out2"] | false;
-        cmd.out3 = dataObj["out3"] | false;
-        cmd.out4 = dataObj["out4"] | false;
+        cmd.out1 = dataObj["out1"].as<int>() != 0;
+        cmd.out2 = dataObj["out2"].as<int>() != 0;
+        cmd.out3 = dataObj["out3"].as<int>() != 0;
+        cmd.out4 = dataObj["out4"].as<int>() != 0;
     }
     else if (opcode == 3)
     {
