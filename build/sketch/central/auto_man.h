@@ -18,7 +18,7 @@ inline void setupAutoManMode()
 
 inline bool isAutoMode()
 {
-    // INPUT_PULLUP: HIGH=AUTO, LOW=MAN
+    // INPUT_PULLUP: LOW=AUTO, HIGH=MAN
     return pcf.readAutoMan() == HIGH;
 }
 

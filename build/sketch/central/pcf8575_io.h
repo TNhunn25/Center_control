@@ -64,7 +64,7 @@ public:
     {
         if (AUTO_MAN_PIN == NOT_USED || AUTO_MAN_PIN >= 16)
             return true; // default AUTO
-        return !readPin(AUTO_MAN_PIN);
+        return !readPin(AUTO_MAN_PIN); 
     }
 
 private:

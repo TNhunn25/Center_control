@@ -30,8 +30,6 @@ public:
 
     /** Gọi liên tục trong loop() để LED nháy đúng theo state */
     void update();
-    /** Bắt buộc LED giữ một trạng thái cụ thể (bỏ qua link/data) chế độ MAN */ 
-    void setOverride(bool enable, State state = STATE_NORMAL);
 
 private:
     void getBlinkTiming(State state, uint32_t &onTimeMs, uint32_t &offTimeMs);
@@ -40,8 +38,6 @@ private:
 private:
     uint8_t _pin;
     bool _activeHigh;
-    bool _overrideEnabled;
-    State _overrideState;
 
     State _state;
     State _lastState;

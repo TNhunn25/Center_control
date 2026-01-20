@@ -89,6 +89,12 @@ public:
 
         case IO_COMMAND:
         {
+            if (!isAutoMode())
+            {
+                // MAN mode: reject remote IO
+                sendResponse(cmd.id_des, IO_COMMAND + 100, cmd.unix, 1);
+                return;
+            }
             // 1) ACK 102
             sendResponse(cmd.id_des, IO_COMMAND + 100, cmd.unix, 0);
             // 2) áp output
@@ -117,10 +123,10 @@ public:
         {
             for (int i = 0; i < IN_COUNT; i++)
             {
-                bool stableLevel = LOW;
+                bool stableLevel = LOW; // Man = low
                 if (debounceUpdate(i, stableLevel))
                 {
-                    bool pressed = (stableLevel == HIGH);
+                    bool pressed = (stableLevel == HIGH); //Man = High
                     if (pressed)
                         nutVuaNhan[i] = true;
                     writeOutput(i, pressed);
@@ -349,10 +355,10 @@ private:
         JsonObject data = doc.to<JsonObject>();
 
         for (uint8_t i = 0; i < OUT_COUNT; i++)
-            data[String("out") + String(i + 1)] = outState[i] ? 1 : 0;
+            data[String("out") + String(i + 1)] = outState[i] ? 0 : 1;
 
         for (uint8_t i = 0; i < IN_COUNT; i++)
-            data[String("in") + String(i + 1)] = btn[i].stableLevel ? 1 : 0;
+            data[String("in") + String(i + 1)] = btn[i].stableLevel ? 0 : 1;
 
         String out;
         serializeJson(data, out);
@@ -437,6 +443,7 @@ private:
         StaticJsonDocument<512> resp_doc;
         resp_doc["id_des"] = id_des;
         resp_doc["opcode"] = resp_opcode;
+
         JsonObject data = resp_doc.createNestedObject("data");
         data["status"] = status;
         resp_doc["time"] = unix_time;

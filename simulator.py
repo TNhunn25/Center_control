@@ -90,20 +90,20 @@ def main():
             print("Không thể dùng đồng thời --on-all và --off-all", file=sys.stderr)
             sys.exit(2)
 
-        outputs = {"out1": False, "out2": False, "out3": False, "out4": False}
+        outputs = {"out1": 0, "out2": 0, "out3": 0, "out4": 0}
         if args.on_all:
-            outputs = {"out1": True, "out2": True, "out3": True, "out4": True}
+            outputs = {"out1": 1, "out2": 1, "out3": 1, "out4": 1}
         elif args.off_all:
-            outputs = {"out1": False, "out2": False, "out3": False, "out4": False}
+            outputs = {"out1": 0, "out2": 0, "out3": 0, "out4": 0}
 
-        if args.out1: outputs["out1"] = True
-        if args.out2: outputs["out2"] = True
-        if args.out3: outputs["out3"] = True
-        if args.out4: outputs["out4"] = True
-        if args.no_out1: outputs["out1"] = False
-        if args.no_out2: outputs["out2"] = False
-        if args.no_out3: outputs["out3"] = False
-        if args.no_out4: outputs["out4"] = False
+        if args.out1: outputs["out1"] = 1
+        if args.out2: outputs["out2"] = 1
+        if args.out3: outputs["out3"] = 1
+        if args.out4: outputs["out4"] = 1
+        if args.no_out1: outputs["out1"] = 0
+        if args.no_out2: outputs["out2"] = 0
+        if args.no_out3: outputs["out3"] = 0
+        if args.no_out4: outputs["out4"] = 0
 
         data = outputs
     elif args.opcode in (3, 5):

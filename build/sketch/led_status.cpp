@@ -120,7 +120,7 @@ void LedStatus::getBlinkTiming(State state, uint32_t &onTimeMs, uint32_t &offTim
     {
     case STATE_NORMAL:
         onTimeMs = 500UL;
-        offTimeMs = 500UL;
+        offTimeMs = 950UL;
         break;
     case STATE_NO_DATA_SERIAL:
         onTimeMs = 500UL;

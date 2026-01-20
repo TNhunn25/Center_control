@@ -8,9 +8,7 @@ LedStatus::LedStatus()
       _ledOn(false),
       _lastToggleMs(0),
       _onTimeMs(500),
-      _offTimeMs(500),
-      _overrideEnabled(false),
-      _overrideState(STATE_NORMAL)
+      _offTimeMs(500)
 {
 }
 
@@ -32,14 +30,6 @@ void LedStatus::setState(State s)
     _state = s;
 }
 
-void LedStatus::setOverride(bool enable, State state)
-{
-    _overrideEnabled = enable;
-    _overrideState = state;
-    // Force re-apply timing immediately.
-    _lastState = (State)255;
-}
-
 LedStatus::State LedStatus::getState() const
 {
     return _state;
@@ -52,11 +42,7 @@ void LedStatus::update()
     const uint32_t now = millis();
     // Chọn state theo link ethernet + data serial
     State newState;
-    if (_overrideEnabled)
-    {
-        newState = _overrideState;
-    }
-    else if (!has_connect_link && !has_data_serial)
+    if (!has_connect_link && !has_data_serial)
     {
         newState = STATE_NO_LINK;
     }
