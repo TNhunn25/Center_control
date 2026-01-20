@@ -98,6 +98,7 @@ public:
             }
             // 1) ACK 102
             sendResponse(cmd.id_des, IO_COMMAND + 100, cmd.unix, 0);
+            captureManualOutputs(cmd.out1, cmd.out2, cmd.out3, cmd.out4);
             // 2) áp output
             applyIO(cmd.out1, cmd.out2, cmd.out3, cmd.out4);
             return;
@@ -118,7 +119,7 @@ public:
     // ================= LOOP =================
     void update()
     {
-        // updateAutoOutputsFromVoc();
+        updateAutoOutputsFromVoc();
         // ===== MAN MODE: nhấn nút tay thì vẫn coi là thay đổi để auto_push đẩy =====
         if (!isAutoMode())
         {
@@ -199,6 +200,8 @@ private:
     String lastDataJson;
     bool autoOutputsOn = false;
     bool vocHigh[2][5]{};
+    bool manualOutState[OUT_COUNT]{}; //điều khiển output
+    bool hasManualSnapshot = false;
     Thresholds thresholds{
         TEMP_ON_DEFAULT,
         TEMP_OFF_DEFAULT,
@@ -243,6 +246,15 @@ private:
         writeOutput(1, o2);
         writeOutput(2, o3);
         writeOutput(3, o4);
+    }
+
+    void captureManualOutputs(bool o1, bool o2, bool o3, bool o4)
+    {
+        manualOutState[0] = o1;
+        manualOutState[1] = o2;
+        manualOutState[2] = o3;
+        manualOutState[3] = o4;
+        hasManualSnapshot = true;
     }
 
     // ================= DEBOUNCE =================
@@ -293,8 +305,7 @@ private:
             return;
 
         bool anyMetric = false;
-        bool anyHigh = false;
-        bool allHigh = true;
+        bool metricHigh[5] = {false, false, false, false, false}; // temp, humi, nh3, co, no2
         for (uint8_t i = 0; i < 2; i++)
         {
             SensorVocSnapshot snap{};
@@ -310,19 +321,37 @@ private:
             for (uint8_t k = 0; k < 5; k++)
             {
                 anyMetric = true;
-                anyHigh = anyHigh || vocHigh[i][k];
-                allHigh = allHigh && vocHigh[i][k];
+                metricHigh[k] = metricHigh[k] || vocHigh[i][k];
             }
         }
 
-        bool shouldOn = false;
-        if (anyMetric)
-            shouldOn = OFF_WHEN_ANY_CLEAR ? allHigh : anyHigh;
-        if (shouldOn != autoOutputsOn)
+        if (!anyMetric)
+            return;
+
+        bool allHigh = metricHigh[0] && metricHigh[1] && metricHigh[2] && metricHigh[3] && metricHigh[4];
+
+        // Priority: NH3 highest, CO/NO2 middle, TEMP, HUMI lowest.
+        uint8_t level = 0;
+        if (allHigh || metricHigh[2]) // nh3
+            level = 4;
+        else if (metricHigh[3] || metricHigh[4]) // co/no2
+            level = 3;
+        else if (metricHigh[0]) // temp
+            level = 2;
+        else if (metricHigh[1]) // humi
+            level = 1;
+
+        if (level == 0)
         {
-            autoOutputsOn = shouldOn;
-            applyIO(shouldOn, shouldOn, shouldOn, shouldOn);
+            // Return control to last opcode 2 state when safe.
+            if (autoOutputsOn && hasManualSnapshot)
+                applyIO(manualOutState[0], manualOutState[1], manualOutState[2], manualOutState[3]);
+            autoOutputsOn = false;
+            return;
         }
+
+        autoOutputsOn = true;
+        applyIO(level >= 1, level >= 2, level >= 3, level >= 4);
     }
 
     // ================= SNAPSHOT / CHANGE =================

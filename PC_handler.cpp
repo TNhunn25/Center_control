@@ -214,6 +214,7 @@ void PCHandler::processLine()
         commandCallback(cmd);
     }
     has_data_serial = true;
+    digitalWrite(1, HIGH); delay(50); digitalWrite(1, LOW);
     // opcode 2/3: CentralController sẽ trả response đúng opcode (2 hoặc 3)
     if (opcode >= 2 && opcode <= 6)
     {

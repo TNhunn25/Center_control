@@ -4,7 +4,7 @@ python simulator.py -p COM21 -o 1 -n 3 --phase1 2 --phase2 12 -i 1
 
 python simulator.py -p COM21 -o 2 -1 -2 -3 -4 -i 50
 
-python simulator.py -p COM10 -o 4 --motor m1,1 m2,1 m3,0 m4,0 m5,0
+python simulator.py -p COM21 -o 4 --motor m1,1 m2,1 m3,0 m4,0 m5,0
 
 IO_COMMAND bật tất cả (gửi 1 lần)----------------------------------
 
