@@ -336,11 +336,11 @@
    "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\libraries\\EEPROM\\src",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/build_opt.h",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/file_opts",
-   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\sketch\\m5d.cpp",
+   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\sketch\\master.ino.cpp",
    "-o",
-   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\sketch\\m5d.cpp.o"
+   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\sketch\\master.ino.cpp.o"
   ],
-  "file": "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\sketch\\m5d.cpp"
+  "file": "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\sketch\\master.ino.cpp"
  },
  {
   "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
@@ -385,11 +385,11 @@
    "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\libraries\\EEPROM\\src",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/build_opt.h",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/file_opts",
-   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\sketch\\master.ino.cpp",
+   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\sketch\\m5d.cpp",
    "-o",
-   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\sketch\\master.ino.cpp.o"
+   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\sketch\\m5d.cpp.o"
   ],
-  "file": "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\sketch\\master.ino.cpp"
+  "file": "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\sketch\\m5d.cpp"
  },
  {
   "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
@@ -581,6 +581,55 @@
    "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\libraries\\EEPROM\\src",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/build_opt.h",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/file_opts",
+   "C:\\Users\\Tuyet Nhung-RD\\Documents\\Arduino\\libraries\\Ethernet\\src\\EthernetClient.cpp",
+   "-o",
+   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\libraries\\Ethernet\\EthernetClient.cpp.o"
+  ],
+  "file": "C:\\Users\\Tuyet Nhung-RD\\Documents\\Arduino\\libraries\\Ethernet\\src\\EthernetClient.cpp"
+ },
+ {
+  "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
+  "arguments": [
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp-x32\\2411/bin/xtensa-esp32s3-elf-g++",
+   "-MMD",
+   "-c",
+   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/cpp_flags",
+   "-w",
+   "-Os",
+   "-Werror=return-type",
+   "-DF_CPU=240000000L",
+   "-DARDUINO=10607",
+   "-DARDUINO_ESP32S3_DEV",
+   "-DARDUINO_ARCH_ESP32",
+   "-DARDUINO_BOARD=\"ESP32S3_DEV\"",
+   "-DARDUINO_VARIANT=\"esp32s3\"",
+   "-DARDUINO_PARTITION_default",
+   "-DARDUINO_HOST_OS=\"windows\"",
+   "-DARDUINO_FQBN=\"esp32:esp32:esp32s3:UploadSpeed=921600,USBMode=hwcdc,CDCOnBoot=cdc,MSCOnBoot=default,DFUOnBoot=default,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=4M,PartitionScheme=default,DebugLevel=none,PSRAM=disabled,LoopCore=1,EventsCore=1,EraseFlash=none,JTAGAdapter=default,ZigbeeMode=default\"",
+   "-DESP32=ESP32",
+   "-DCORE_DEBUG_LEVEL=0",
+   "-DARDUINO_RUNNING_CORE=1",
+   "-DARDUINO_EVENT_RUNNING_CORE=1",
+   "-DARDUINO_USB_MODE=1",
+   "-DARDUINO_USB_CDC_ON_BOOT=1",
+   "-DARDUINO_USB_MSC_ON_BOOT=0",
+   "-DARDUINO_USB_DFU_ON_BOOT=0",
+   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/defines",
+   "-IC:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master",
+   "-iprefix",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/include/",
+   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/includes",
+   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/qio_qspi/include",
+   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32",
+   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
+   "-IC:\\Users\\Tuyet Nhung-RD\\Documents\\Arduino\\libraries\\ArduinoJson\\src",
+   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\libraries\\SPI\\src",
+   "-IC:\\Users\\Tuyet Nhung-RD\\Documents\\Arduino\\libraries\\Ethernet\\src",
+   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\libraries\\Wire\\src",
+   "-IC:\\Users\\Tuyet Nhung-RD\\Documents\\Arduino\\libraries\\PCF8575_library",
+   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\libraries\\EEPROM\\src",
+   "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/build_opt.h",
+   "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/file_opts",
    "C:\\Users\\Tuyet Nhung-RD\\Documents\\Arduino\\libraries\\Ethernet\\src\\Ethernet.cpp",
    "-o",
    "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\libraries\\Ethernet\\Ethernet.cpp.o"
@@ -679,11 +728,11 @@
    "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\libraries\\EEPROM\\src",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/build_opt.h",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/file_opts",
-   "C:\\Users\\Tuyet Nhung-RD\\Documents\\Arduino\\libraries\\Ethernet\\src\\EthernetClient.cpp",
+   "C:\\Users\\Tuyet Nhung-RD\\Documents\\Arduino\\libraries\\Ethernet\\src\\EthernetServer.cpp",
    "-o",
-   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\libraries\\Ethernet\\EthernetClient.cpp.o"
+   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\libraries\\Ethernet\\EthernetServer.cpp.o"
   ],
-  "file": "C:\\Users\\Tuyet Nhung-RD\\Documents\\Arduino\\libraries\\Ethernet\\src\\EthernetClient.cpp"
+  "file": "C:\\Users\\Tuyet Nhung-RD\\Documents\\Arduino\\libraries\\Ethernet\\src\\EthernetServer.cpp"
  },
  {
   "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
@@ -777,55 +826,6 @@
    "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\libraries\\EEPROM\\src",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/build_opt.h",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/file_opts",
-   "C:\\Users\\Tuyet Nhung-RD\\Documents\\Arduino\\libraries\\Ethernet\\src\\utility\\w5100.cpp",
-   "-o",
-   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\libraries\\Ethernet\\utility\\w5100.cpp.o"
-  ],
-  "file": "C:\\Users\\Tuyet Nhung-RD\\Documents\\Arduino\\libraries\\Ethernet\\src\\utility\\w5100.cpp"
- },
- {
-  "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
-  "arguments": [
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp-x32\\2411/bin/xtensa-esp32s3-elf-g++",
-   "-MMD",
-   "-c",
-   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/cpp_flags",
-   "-w",
-   "-Os",
-   "-Werror=return-type",
-   "-DF_CPU=240000000L",
-   "-DARDUINO=10607",
-   "-DARDUINO_ESP32S3_DEV",
-   "-DARDUINO_ARCH_ESP32",
-   "-DARDUINO_BOARD=\"ESP32S3_DEV\"",
-   "-DARDUINO_VARIANT=\"esp32s3\"",
-   "-DARDUINO_PARTITION_default",
-   "-DARDUINO_HOST_OS=\"windows\"",
-   "-DARDUINO_FQBN=\"esp32:esp32:esp32s3:UploadSpeed=921600,USBMode=hwcdc,CDCOnBoot=cdc,MSCOnBoot=default,DFUOnBoot=default,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=4M,PartitionScheme=default,DebugLevel=none,PSRAM=disabled,LoopCore=1,EventsCore=1,EraseFlash=none,JTAGAdapter=default,ZigbeeMode=default\"",
-   "-DESP32=ESP32",
-   "-DCORE_DEBUG_LEVEL=0",
-   "-DARDUINO_RUNNING_CORE=1",
-   "-DARDUINO_EVENT_RUNNING_CORE=1",
-   "-DARDUINO_USB_MODE=1",
-   "-DARDUINO_USB_CDC_ON_BOOT=1",
-   "-DARDUINO_USB_MSC_ON_BOOT=0",
-   "-DARDUINO_USB_DFU_ON_BOOT=0",
-   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/defines",
-   "-IC:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master",
-   "-iprefix",
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/include/",
-   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/includes",
-   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/qio_qspi/include",
-   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32",
-   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
-   "-IC:\\Users\\Tuyet Nhung-RD\\Documents\\Arduino\\libraries\\ArduinoJson\\src",
-   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\libraries\\SPI\\src",
-   "-IC:\\Users\\Tuyet Nhung-RD\\Documents\\Arduino\\libraries\\Ethernet\\src",
-   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\libraries\\Wire\\src",
-   "-IC:\\Users\\Tuyet Nhung-RD\\Documents\\Arduino\\libraries\\PCF8575_library",
-   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\libraries\\EEPROM\\src",
-   "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/build_opt.h",
-   "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/file_opts",
    "C:\\Users\\Tuyet Nhung-RD\\Documents\\Arduino\\libraries\\Ethernet\\src\\socket.cpp",
    "-o",
    "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\libraries\\Ethernet\\socket.cpp.o"
@@ -875,11 +875,11 @@
    "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\libraries\\EEPROM\\src",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/build_opt.h",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/file_opts",
-   "C:\\Users\\Tuyet Nhung-RD\\Documents\\Arduino\\libraries\\Ethernet\\src\\EthernetServer.cpp",
+   "C:\\Users\\Tuyet Nhung-RD\\Documents\\Arduino\\libraries\\Ethernet\\src\\utility\\w5100.cpp",
    "-o",
-   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\libraries\\Ethernet\\EthernetServer.cpp.o"
+   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\libraries\\Ethernet\\utility\\w5100.cpp.o"
   ],
-  "file": "C:\\Users\\Tuyet Nhung-RD\\Documents\\Arduino\\libraries\\Ethernet\\src\\EthernetServer.cpp"
+  "file": "C:\\Users\\Tuyet Nhung-RD\\Documents\\Arduino\\libraries\\Ethernet\\src\\utility\\w5100.cpp"
  },
  {
   "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
@@ -1151,6 +1151,49 @@
    "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/build_opt.h",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/file_opts",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\FunctionalInterrupt.cpp",
+   "-o",
+   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\core\\FunctionalInterrupt.cpp.o"
+  ],
+  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\FunctionalInterrupt.cpp"
+ },
+ {
+  "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
+  "arguments": [
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp-x32\\2411/bin/xtensa-esp32s3-elf-g++",
+   "-MMD",
+   "-c",
+   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/cpp_flags",
+   "-w",
+   "-Os",
+   "-Werror=return-type",
+   "-DF_CPU=240000000L",
+   "-DARDUINO=10607",
+   "-DARDUINO_ESP32S3_DEV",
+   "-DARDUINO_ARCH_ESP32",
+   "-DARDUINO_BOARD=\"ESP32S3_DEV\"",
+   "-DARDUINO_VARIANT=\"esp32s3\"",
+   "-DARDUINO_PARTITION_default",
+   "-DARDUINO_HOST_OS=\"windows\"",
+   "-DARDUINO_FQBN=\"esp32:esp32:esp32s3:UploadSpeed=921600,USBMode=hwcdc,CDCOnBoot=cdc,MSCOnBoot=default,DFUOnBoot=default,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=4M,PartitionScheme=default,DebugLevel=none,PSRAM=disabled,LoopCore=1,EventsCore=1,EraseFlash=none,JTAGAdapter=default,ZigbeeMode=default\"",
+   "-DESP32=ESP32",
+   "-DCORE_DEBUG_LEVEL=0",
+   "-DARDUINO_RUNNING_CORE=1",
+   "-DARDUINO_EVENT_RUNNING_CORE=1",
+   "-DARDUINO_USB_MODE=1",
+   "-DARDUINO_USB_CDC_ON_BOOT=1",
+   "-DARDUINO_USB_MSC_ON_BOOT=0",
+   "-DARDUINO_USB_DFU_ON_BOOT=0",
+   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/defines",
+   "-IC:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master",
+   "-iprefix",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/include/",
+   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/includes",
+   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/qio_qspi/include",
+   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32",
+   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
+   "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/build_opt.h",
+   "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/file_opts",
    "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\FirmwareMSC.cpp",
    "-o",
    "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\core\\FirmwareMSC.cpp.o"
@@ -1237,140 +1280,11 @@
    "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/build_opt.h",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/file_opts",
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\FunctionalInterrupt.cpp",
-   "-o",
-   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\core\\FunctionalInterrupt.cpp.o"
-  ],
-  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\FunctionalInterrupt.cpp"
- },
- {
-  "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
-  "arguments": [
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp-x32\\2411/bin/xtensa-esp32s3-elf-g++",
-   "-MMD",
-   "-c",
-   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/cpp_flags",
-   "-w",
-   "-Os",
-   "-Werror=return-type",
-   "-DF_CPU=240000000L",
-   "-DARDUINO=10607",
-   "-DARDUINO_ESP32S3_DEV",
-   "-DARDUINO_ARCH_ESP32",
-   "-DARDUINO_BOARD=\"ESP32S3_DEV\"",
-   "-DARDUINO_VARIANT=\"esp32s3\"",
-   "-DARDUINO_PARTITION_default",
-   "-DARDUINO_HOST_OS=\"windows\"",
-   "-DARDUINO_FQBN=\"esp32:esp32:esp32s3:UploadSpeed=921600,USBMode=hwcdc,CDCOnBoot=cdc,MSCOnBoot=default,DFUOnBoot=default,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=4M,PartitionScheme=default,DebugLevel=none,PSRAM=disabled,LoopCore=1,EventsCore=1,EraseFlash=none,JTAGAdapter=default,ZigbeeMode=default\"",
-   "-DESP32=ESP32",
-   "-DCORE_DEBUG_LEVEL=0",
-   "-DARDUINO_RUNNING_CORE=1",
-   "-DARDUINO_EVENT_RUNNING_CORE=1",
-   "-DARDUINO_USB_MODE=1",
-   "-DARDUINO_USB_CDC_ON_BOOT=1",
-   "-DARDUINO_USB_MSC_ON_BOOT=0",
-   "-DARDUINO_USB_DFU_ON_BOOT=0",
-   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/defines",
-   "-IC:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master",
-   "-iprefix",
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/include/",
-   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/includes",
-   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/qio_qspi/include",
-   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32",
-   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
-   "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/build_opt.h",
-   "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/file_opts",
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\HardwareSerial.cpp",
-   "-o",
-   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\core\\HardwareSerial.cpp.o"
-  ],
-  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\HardwareSerial.cpp"
- },
- {
-  "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
-  "arguments": [
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp-x32\\2411/bin/xtensa-esp32s3-elf-g++",
-   "-MMD",
-   "-c",
-   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/cpp_flags",
-   "-w",
-   "-Os",
-   "-Werror=return-type",
-   "-DF_CPU=240000000L",
-   "-DARDUINO=10607",
-   "-DARDUINO_ESP32S3_DEV",
-   "-DARDUINO_ARCH_ESP32",
-   "-DARDUINO_BOARD=\"ESP32S3_DEV\"",
-   "-DARDUINO_VARIANT=\"esp32s3\"",
-   "-DARDUINO_PARTITION_default",
-   "-DARDUINO_HOST_OS=\"windows\"",
-   "-DARDUINO_FQBN=\"esp32:esp32:esp32s3:UploadSpeed=921600,USBMode=hwcdc,CDCOnBoot=cdc,MSCOnBoot=default,DFUOnBoot=default,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=4M,PartitionScheme=default,DebugLevel=none,PSRAM=disabled,LoopCore=1,EventsCore=1,EraseFlash=none,JTAGAdapter=default,ZigbeeMode=default\"",
-   "-DESP32=ESP32",
-   "-DCORE_DEBUG_LEVEL=0",
-   "-DARDUINO_RUNNING_CORE=1",
-   "-DARDUINO_EVENT_RUNNING_CORE=1",
-   "-DARDUINO_USB_MODE=1",
-   "-DARDUINO_USB_CDC_ON_BOOT=1",
-   "-DARDUINO_USB_MSC_ON_BOOT=0",
-   "-DARDUINO_USB_DFU_ON_BOOT=0",
-   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/defines",
-   "-IC:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master",
-   "-iprefix",
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/include/",
-   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/includes",
-   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/qio_qspi/include",
-   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32",
-   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
-   "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/build_opt.h",
-   "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/file_opts",
    "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\HEXBuilder.cpp",
    "-o",
    "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\core\\HEXBuilder.cpp.o"
   ],
   "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\HEXBuilder.cpp"
- },
- {
-  "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
-  "arguments": [
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp-x32\\2411/bin/xtensa-esp32s3-elf-g++",
-   "-MMD",
-   "-c",
-   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/cpp_flags",
-   "-w",
-   "-Os",
-   "-Werror=return-type",
-   "-DF_CPU=240000000L",
-   "-DARDUINO=10607",
-   "-DARDUINO_ESP32S3_DEV",
-   "-DARDUINO_ARCH_ESP32",
-   "-DARDUINO_BOARD=\"ESP32S3_DEV\"",
-   "-DARDUINO_VARIANT=\"esp32s3\"",
-   "-DARDUINO_PARTITION_default",
-   "-DARDUINO_HOST_OS=\"windows\"",
-   "-DARDUINO_FQBN=\"esp32:esp32:esp32s3:UploadSpeed=921600,USBMode=hwcdc,CDCOnBoot=cdc,MSCOnBoot=default,DFUOnBoot=default,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=4M,PartitionScheme=default,DebugLevel=none,PSRAM=disabled,LoopCore=1,EventsCore=1,EraseFlash=none,JTAGAdapter=default,ZigbeeMode=default\"",
-   "-DESP32=ESP32",
-   "-DCORE_DEBUG_LEVEL=0",
-   "-DARDUINO_RUNNING_CORE=1",
-   "-DARDUINO_EVENT_RUNNING_CORE=1",
-   "-DARDUINO_USB_MODE=1",
-   "-DARDUINO_USB_CDC_ON_BOOT=1",
-   "-DARDUINO_USB_MSC_ON_BOOT=0",
-   "-DARDUINO_USB_DFU_ON_BOOT=0",
-   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/defines",
-   "-IC:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master",
-   "-iprefix",
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/include/",
-   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/includes",
-   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/qio_qspi/include",
-   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32",
-   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
-   "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/build_opt.h",
-   "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/file_opts",
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\MD5Builder.cpp",
-   "-o",
-   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\core\\MD5Builder.cpp.o"
-  ],
-  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\MD5Builder.cpp"
  },
  {
   "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
@@ -1452,11 +1366,54 @@
    "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/build_opt.h",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/file_opts",
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\MacAddress.cpp",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\MD5Builder.cpp",
    "-o",
-   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\core\\MacAddress.cpp.o"
+   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\core\\MD5Builder.cpp.o"
   ],
-  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\MacAddress.cpp"
+  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\MD5Builder.cpp"
+ },
+ {
+  "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
+  "arguments": [
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp-x32\\2411/bin/xtensa-esp32s3-elf-g++",
+   "-MMD",
+   "-c",
+   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/cpp_flags",
+   "-w",
+   "-Os",
+   "-Werror=return-type",
+   "-DF_CPU=240000000L",
+   "-DARDUINO=10607",
+   "-DARDUINO_ESP32S3_DEV",
+   "-DARDUINO_ARCH_ESP32",
+   "-DARDUINO_BOARD=\"ESP32S3_DEV\"",
+   "-DARDUINO_VARIANT=\"esp32s3\"",
+   "-DARDUINO_PARTITION_default",
+   "-DARDUINO_HOST_OS=\"windows\"",
+   "-DARDUINO_FQBN=\"esp32:esp32:esp32s3:UploadSpeed=921600,USBMode=hwcdc,CDCOnBoot=cdc,MSCOnBoot=default,DFUOnBoot=default,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=4M,PartitionScheme=default,DebugLevel=none,PSRAM=disabled,LoopCore=1,EventsCore=1,EraseFlash=none,JTAGAdapter=default,ZigbeeMode=default\"",
+   "-DESP32=ESP32",
+   "-DCORE_DEBUG_LEVEL=0",
+   "-DARDUINO_RUNNING_CORE=1",
+   "-DARDUINO_EVENT_RUNNING_CORE=1",
+   "-DARDUINO_USB_MODE=1",
+   "-DARDUINO_USB_CDC_ON_BOOT=1",
+   "-DARDUINO_USB_MSC_ON_BOOT=0",
+   "-DARDUINO_USB_DFU_ON_BOOT=0",
+   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/defines",
+   "-IC:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master",
+   "-iprefix",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/include/",
+   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/includes",
+   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/qio_qspi/include",
+   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32",
+   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
+   "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/build_opt.h",
+   "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/file_opts",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\HardwareSerial.cpp",
+   "-o",
+   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\core\\HardwareSerial.cpp.o"
+  ],
+  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\HardwareSerial.cpp"
  },
  {
   "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
@@ -1538,11 +1495,11 @@
    "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/build_opt.h",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/file_opts",
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\SHA1Builder.cpp",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\MacAddress.cpp",
    "-o",
-   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\core\\SHA1Builder.cpp.o"
+   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\core\\MacAddress.cpp.o"
   ],
-  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\SHA1Builder.cpp"
+  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\MacAddress.cpp"
  },
  {
   "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
@@ -1581,11 +1538,11 @@
    "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/build_opt.h",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/file_opts",
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\Stream.cpp",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\SHA1Builder.cpp",
    "-o",
-   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\core\\Stream.cpp.o"
+   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\core\\SHA1Builder.cpp.o"
   ],
-  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\Stream.cpp"
+  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\SHA1Builder.cpp"
  },
  {
   "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
@@ -1710,11 +1667,11 @@
    "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/build_opt.h",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/file_opts",
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\USB.cpp",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\Stream.cpp",
    "-o",
-   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\core\\USB.cpp.o"
+   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\core\\Stream.cpp.o"
   ],
-  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\USB.cpp"
+  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\Stream.cpp"
  },
  {
   "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
@@ -1839,6 +1796,49 @@
    "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/build_opt.h",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/file_opts",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\USB.cpp",
+   "-o",
+   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\core\\USB.cpp.o"
+  ],
+  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\USB.cpp"
+ },
+ {
+  "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
+  "arguments": [
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp-x32\\2411/bin/xtensa-esp32s3-elf-g++",
+   "-MMD",
+   "-c",
+   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/cpp_flags",
+   "-w",
+   "-Os",
+   "-Werror=return-type",
+   "-DF_CPU=240000000L",
+   "-DARDUINO=10607",
+   "-DARDUINO_ESP32S3_DEV",
+   "-DARDUINO_ARCH_ESP32",
+   "-DARDUINO_BOARD=\"ESP32S3_DEV\"",
+   "-DARDUINO_VARIANT=\"esp32s3\"",
+   "-DARDUINO_PARTITION_default",
+   "-DARDUINO_HOST_OS=\"windows\"",
+   "-DARDUINO_FQBN=\"esp32:esp32:esp32s3:UploadSpeed=921600,USBMode=hwcdc,CDCOnBoot=cdc,MSCOnBoot=default,DFUOnBoot=default,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=4M,PartitionScheme=default,DebugLevel=none,PSRAM=disabled,LoopCore=1,EventsCore=1,EraseFlash=none,JTAGAdapter=default,ZigbeeMode=default\"",
+   "-DESP32=ESP32",
+   "-DCORE_DEBUG_LEVEL=0",
+   "-DARDUINO_RUNNING_CORE=1",
+   "-DARDUINO_EVENT_RUNNING_CORE=1",
+   "-DARDUINO_USB_MODE=1",
+   "-DARDUINO_USB_CDC_ON_BOOT=1",
+   "-DARDUINO_USB_MSC_ON_BOOT=0",
+   "-DARDUINO_USB_DFU_ON_BOOT=0",
+   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/defines",
+   "-IC:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master",
+   "-iprefix",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/include/",
+   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/includes",
+   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/qio_qspi/include",
+   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32",
+   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
+   "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/build_opt.h",
+   "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/file_opts",
    "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\WMath.cpp",
    "-o",
    "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\core\\WMath.cpp.o"
@@ -1887,49 +1887,6 @@
    "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\core\\WString.cpp.o"
   ],
   "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\WString.cpp"
- },
- {
-  "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
-  "arguments": [
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp-x32\\2411/bin/xtensa-esp32s3-elf-g++",
-   "-MMD",
-   "-c",
-   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/cpp_flags",
-   "-w",
-   "-Os",
-   "-Werror=return-type",
-   "-DF_CPU=240000000L",
-   "-DARDUINO=10607",
-   "-DARDUINO_ESP32S3_DEV",
-   "-DARDUINO_ARCH_ESP32",
-   "-DARDUINO_BOARD=\"ESP32S3_DEV\"",
-   "-DARDUINO_VARIANT=\"esp32s3\"",
-   "-DARDUINO_PARTITION_default",
-   "-DARDUINO_HOST_OS=\"windows\"",
-   "-DARDUINO_FQBN=\"esp32:esp32:esp32s3:UploadSpeed=921600,USBMode=hwcdc,CDCOnBoot=cdc,MSCOnBoot=default,DFUOnBoot=default,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=4M,PartitionScheme=default,DebugLevel=none,PSRAM=disabled,LoopCore=1,EventsCore=1,EraseFlash=none,JTAGAdapter=default,ZigbeeMode=default\"",
-   "-DESP32=ESP32",
-   "-DCORE_DEBUG_LEVEL=0",
-   "-DARDUINO_RUNNING_CORE=1",
-   "-DARDUINO_EVENT_RUNNING_CORE=1",
-   "-DARDUINO_USB_MODE=1",
-   "-DARDUINO_USB_CDC_ON_BOOT=1",
-   "-DARDUINO_USB_MSC_ON_BOOT=0",
-   "-DARDUINO_USB_DFU_ON_BOOT=0",
-   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/defines",
-   "-IC:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master",
-   "-iprefix",
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/include/",
-   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/includes",
-   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/qio_qspi/include",
-   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32",
-   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
-   "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/build_opt.h",
-   "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/file_opts",
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\base64.cpp",
-   "-o",
-   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\core\\base64.cpp.o"
-  ],
-  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\base64.cpp"
  },
  {
   "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
@@ -2020,10 +1977,10 @@
  {
   "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
   "arguments": [
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp-x32\\2411/bin/xtensa-esp32s3-elf-gcc",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp-x32\\2411/bin/xtensa-esp32s3-elf-g++",
    "-MMD",
    "-c",
-   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/c_flags",
+   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/cpp_flags",
    "-w",
    "-Os",
    "-Werror=return-type",
@@ -2054,11 +2011,11 @@
    "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/build_opt.h",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/file_opts",
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-adc.c",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\base64.cpp",
    "-o",
-   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\core\\esp32-hal-adc.c.o"
+   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\core\\base64.cpp.o"
   ],
-  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-adc.c"
+  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\base64.cpp"
  },
  {
   "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
@@ -2183,11 +2140,11 @@
    "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/build_opt.h",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/file_opts",
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-dac.c",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-adc.c",
    "-o",
-   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\core\\esp32-hal-dac.c.o"
+   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\core\\esp32-hal-adc.c.o"
   ],
-  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-dac.c"
+  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-adc.c"
  },
  {
   "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
@@ -2312,11 +2269,11 @@
    "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/build_opt.h",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/file_opts",
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-i2c-slave.c",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-dac.c",
    "-o",
-   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\core\\esp32-hal-i2c-slave.c.o"
+   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\core\\esp32-hal-dac.c.o"
   ],
-  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-i2c-slave.c"
+  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-dac.c"
  },
  {
   "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
@@ -2398,49 +2355,6 @@
    "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/build_opt.h",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/file_opts",
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-matrix.c",
-   "-o",
-   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\core\\esp32-hal-matrix.c.o"
-  ],
-  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-matrix.c"
- },
- {
-  "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
-  "arguments": [
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp-x32\\2411/bin/xtensa-esp32s3-elf-gcc",
-   "-MMD",
-   "-c",
-   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/c_flags",
-   "-w",
-   "-Os",
-   "-Werror=return-type",
-   "-DF_CPU=240000000L",
-   "-DARDUINO=10607",
-   "-DARDUINO_ESP32S3_DEV",
-   "-DARDUINO_ARCH_ESP32",
-   "-DARDUINO_BOARD=\"ESP32S3_DEV\"",
-   "-DARDUINO_VARIANT=\"esp32s3\"",
-   "-DARDUINO_PARTITION_default",
-   "-DARDUINO_HOST_OS=\"windows\"",
-   "-DARDUINO_FQBN=\"esp32:esp32:esp32s3:UploadSpeed=921600,USBMode=hwcdc,CDCOnBoot=cdc,MSCOnBoot=default,DFUOnBoot=default,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=4M,PartitionScheme=default,DebugLevel=none,PSRAM=disabled,LoopCore=1,EventsCore=1,EraseFlash=none,JTAGAdapter=default,ZigbeeMode=default\"",
-   "-DESP32=ESP32",
-   "-DCORE_DEBUG_LEVEL=0",
-   "-DARDUINO_RUNNING_CORE=1",
-   "-DARDUINO_EVENT_RUNNING_CORE=1",
-   "-DARDUINO_USB_MODE=1",
-   "-DARDUINO_USB_CDC_ON_BOOT=1",
-   "-DARDUINO_USB_MSC_ON_BOOT=0",
-   "-DARDUINO_USB_DFU_ON_BOOT=0",
-   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/defines",
-   "-IC:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master",
-   "-iprefix",
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/include/",
-   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/includes",
-   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/qio_qspi/include",
-   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32",
-   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
-   "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/build_opt.h",
-   "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/file_opts",
    "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-ledc.c",
    "-o",
    "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\core\\esp32-hal-ledc.c.o"
@@ -2484,11 +2398,11 @@
    "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/build_opt.h",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/file_opts",
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-misc.c",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-i2c-slave.c",
    "-o",
-   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\core\\esp32-hal-misc.c.o"
+   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\core\\esp32-hal-i2c-slave.c.o"
   ],
-  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-misc.c"
+  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-i2c-slave.c"
  },
  {
   "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
@@ -2527,11 +2441,54 @@
    "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/build_opt.h",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/file_opts",
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-periman.c",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-matrix.c",
    "-o",
-   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\core\\esp32-hal-periman.c.o"
+   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\core\\esp32-hal-matrix.c.o"
   ],
-  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-periman.c"
+  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-matrix.c"
+ },
+ {
+  "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
+  "arguments": [
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp-x32\\2411/bin/xtensa-esp32s3-elf-gcc",
+   "-MMD",
+   "-c",
+   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/c_flags",
+   "-w",
+   "-Os",
+   "-Werror=return-type",
+   "-DF_CPU=240000000L",
+   "-DARDUINO=10607",
+   "-DARDUINO_ESP32S3_DEV",
+   "-DARDUINO_ARCH_ESP32",
+   "-DARDUINO_BOARD=\"ESP32S3_DEV\"",
+   "-DARDUINO_VARIANT=\"esp32s3\"",
+   "-DARDUINO_PARTITION_default",
+   "-DARDUINO_HOST_OS=\"windows\"",
+   "-DARDUINO_FQBN=\"esp32:esp32:esp32s3:UploadSpeed=921600,USBMode=hwcdc,CDCOnBoot=cdc,MSCOnBoot=default,DFUOnBoot=default,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=4M,PartitionScheme=default,DebugLevel=none,PSRAM=disabled,LoopCore=1,EventsCore=1,EraseFlash=none,JTAGAdapter=default,ZigbeeMode=default\"",
+   "-DESP32=ESP32",
+   "-DCORE_DEBUG_LEVEL=0",
+   "-DARDUINO_RUNNING_CORE=1",
+   "-DARDUINO_EVENT_RUNNING_CORE=1",
+   "-DARDUINO_USB_MODE=1",
+   "-DARDUINO_USB_CDC_ON_BOOT=1",
+   "-DARDUINO_USB_MSC_ON_BOOT=0",
+   "-DARDUINO_USB_DFU_ON_BOOT=0",
+   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/defines",
+   "-IC:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master",
+   "-iprefix",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/include/",
+   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/includes",
+   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/qio_qspi/include",
+   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32",
+   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
+   "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/build_opt.h",
+   "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/file_opts",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-misc.c",
+   "-o",
+   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\core\\esp32-hal-misc.c.o"
+  ],
+  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-misc.c"
  },
  {
   "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
@@ -2618,6 +2575,49 @@
    "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\core\\esp32-hal-rgb-led.c.o"
   ],
   "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-rgb-led.c"
+ },
+ {
+  "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
+  "arguments": [
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp-x32\\2411/bin/xtensa-esp32s3-elf-gcc",
+   "-MMD",
+   "-c",
+   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/c_flags",
+   "-w",
+   "-Os",
+   "-Werror=return-type",
+   "-DF_CPU=240000000L",
+   "-DARDUINO=10607",
+   "-DARDUINO_ESP32S3_DEV",
+   "-DARDUINO_ARCH_ESP32",
+   "-DARDUINO_BOARD=\"ESP32S3_DEV\"",
+   "-DARDUINO_VARIANT=\"esp32s3\"",
+   "-DARDUINO_PARTITION_default",
+   "-DARDUINO_HOST_OS=\"windows\"",
+   "-DARDUINO_FQBN=\"esp32:esp32:esp32s3:UploadSpeed=921600,USBMode=hwcdc,CDCOnBoot=cdc,MSCOnBoot=default,DFUOnBoot=default,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=4M,PartitionScheme=default,DebugLevel=none,PSRAM=disabled,LoopCore=1,EventsCore=1,EraseFlash=none,JTAGAdapter=default,ZigbeeMode=default\"",
+   "-DESP32=ESP32",
+   "-DCORE_DEBUG_LEVEL=0",
+   "-DARDUINO_RUNNING_CORE=1",
+   "-DARDUINO_EVENT_RUNNING_CORE=1",
+   "-DARDUINO_USB_MODE=1",
+   "-DARDUINO_USB_CDC_ON_BOOT=1",
+   "-DARDUINO_USB_MSC_ON_BOOT=0",
+   "-DARDUINO_USB_DFU_ON_BOOT=0",
+   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/defines",
+   "-IC:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master",
+   "-iprefix",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/include/",
+   "@C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/flags/includes",
+   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\esp32-arduino-libs\\idf-release_v5.4-858a988d-v1\\esp32s3/qio_qspi/include",
+   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32",
+   "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
+   "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/build_opt.h",
+   "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/file_opts",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-periman.c",
+   "-o",
+   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\core\\esp32-hal-periman.c.o"
+  ],
+  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-periman.c"
  },
  {
   "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
@@ -2914,11 +2914,11 @@
    "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/build_opt.h",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/file_opts",
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-touch.c",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-touch-ng.c",
    "-o",
-   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\core\\esp32-hal-touch.c.o"
+   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\core\\esp32-hal-touch-ng.c.o"
   ],
-  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-touch.c"
+  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-touch-ng.c"
  },
  {
   "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
@@ -2957,11 +2957,11 @@
    "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/build_opt.h",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/file_opts",
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-touch-ng.c",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-touch.c",
    "-o",
-   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\core\\esp32-hal-touch-ng.c.o"
+   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\core\\esp32-hal-touch.c.o"
   ],
-  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-touch-ng.c"
+  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\esp32-hal-touch.c"
  },
  {
   "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
@@ -3301,11 +3301,11 @@
    "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/build_opt.h",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/file_opts",
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\wiring_shift.c",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\wiring_pulse.c",
    "-o",
-   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\core\\wiring_shift.c.o"
+   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\core\\wiring_pulse.c.o"
   ],
-  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\wiring_shift.c"
+  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\wiring_pulse.c"
  },
  {
   "directory": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Programs\\Microsoft VS Code",
@@ -3344,10 +3344,10 @@
    "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\variants\\esp32s3",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/build_opt.h",
    "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/file_opts",
-   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\wiring_pulse.c",
+   "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\wiring_shift.c",
    "-o",
-   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\core\\wiring_pulse.c.o"
+   "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\core\\wiring_shift.c.o"
   ],
-  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\wiring_pulse.c"
+  "file": "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\wiring_shift.c"
  }
 ]

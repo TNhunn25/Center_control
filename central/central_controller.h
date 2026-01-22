@@ -382,7 +382,7 @@ private:
         return state;
     }
 
-    // Cập nhật output theo dữ liệu VOC ở chế độ AUTO.
+    // Cập nhật output theo dữ liệu VOC 
     void updateAutoOutputsFromVoc()
     {
         if (!getInfo)
@@ -415,18 +415,25 @@ private:
         bool allHigh = metricHigh[0] && metricHigh[1] && metricHigh[2] && metricHigh[3] && metricHigh[4];
 
         bool anyHigh = metricHigh[0] || metricHigh[1] || metricHigh[2] || metricHigh[3] || metricHigh[4];
+        const bool onLevel = OUT_ACTIVE_LOW ? false : true;
+        const bool offLevel = !onLevel;
+
         if (!anyHigh)
         {
             // Return control to last opcode 2 state when safe.
             if (autoOutputsOn && hasManualSnapshot)
                 applyIO(manualOutState[0], manualOutState[1], manualOutState[2], manualOutState[3]);
+            else
+                applyIOStaggered(offLevel, offLevel, offLevel, offLevel);    
             autoOutputsOn = false;
             return;
         }
 
         autoOutputsOn = true;
-        const bool onLevel = OUT_ACTIVE_LOW ? false : true;
-        applyIO(onLevel, onLevel, onLevel, onLevel); //điều khiển toàn bộ output 
+        // const bool onLevel = OUT_ACTIVE_LOW ? false : true;
+        // applyIO(onLevel, onLevel, onLevel, onLevel); //điều khiển toàn bộ output 
+        // Ưu tiên bật theo thứ tự output để tránh quá tải.
+        applyIOStaggered(onLevel, onLevel, onLevel, onLevel); //điều khiển toàn bộ output 
     }
 
     // ================= SNAPSHOT / CHANGE =================
