@@ -20,7 +20,7 @@ public:
     const uint8_t IN_PINS[IN_COUNT] = {11, 12, 13, 14};
     const uint8_t AUTO_MAN_PIN = 10;
 
-    void begin()
+    void begin(bool outputsOffLevel = true)
     {
         Wire.begin(SDA_PIN, SCL_PIN);
         write_state_ = 0xFFFF; // all pins high (input mode for PCF8575)

@@ -72,13 +72,13 @@ void EthernetUDPHandler::begin(uint8_t csPin,
     }
 }
 
-void EthernetUDPHandler::update()
+void EthernetUDPHandler::update() 
 {
 
     handleReceive();
 }
 
-// Nhận gói UDP từ node
+// Nhận gói UDP từ node, forward ACK và ingest dữ liệu
 void EthernetUDPHandler::handleReceive()
 {
     // Chỉ check link mỗi 250ms
@@ -116,8 +116,12 @@ void EthernetUDPHandler::handleReceive()
     if (err)
         return;
     int opcode = doc["opcode"];
-    if (opcode == 104 || opcode == 105)
+    // Serial.println(rxBuf);
+    
+    // if (opcode == 104 || opcode == 105)
+    if (opcode == 101 ||opcode == 104 || opcode == 105) //FIXME: cần xem lại 
     {
+        Serial.println(rxBuf);
         serializeJson(doc, Serial);
         Serial.println();
     }

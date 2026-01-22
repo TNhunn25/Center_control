@@ -1,22 +1,27 @@
 #include "PC_handler.h"
 #include "led_status.h"
 extern LedStatus led_status;
+
+// Khởi tạo handler, chuẩn bị bộ đệm nhận.
 PCHandler::PCHandler()
 {
     rxLine.reserve(1024);
 }
 
+// Khởi động Serial và đánh dấu thời điểm nhận cuối.
 void PCHandler::begin()
 {
     Serial.begin(115200);
     lastRxMs = millis();
 }
 
+// Đăng ký callback để xử lý lệnh đã parse.
 void PCHandler::onCommandReceived(CommandCallback cb)
 {
     commandCallback = cb;
 }
 
+// Đọc Serial theo dòng, gom dữ liệu đến khi gặp '\n' rồi xử lý.
 void PCHandler::update()
 {
     while (Serial.available())
@@ -70,6 +75,7 @@ bool verifyAuth(const JsonDocument &doc, const String &receivedHash)
     return computedHash.equalsIgnoreCase(receivedHash);
 }
 
+// Parse JSON, xác thực, tạo command và gọi callback.
 void PCHandler::processLine()
 {
 
@@ -83,7 +89,7 @@ void PCHandler::processLine()
     uint32_t unix_time = doc["time"].as<uint32_t>();
     String receivedHash = doc["auth"].as<String>();
 
-    if (id_des < 0 || (opcode != 1 && opcode != 2 && opcode != 3 && opcode != 4 && opcode != 5))
+    if (id_des < 0 || (opcode != 1 && opcode != 2 && opcode != 3 && opcode != 4 && opcode != 5 && opcode != 6))
     {
         sendResponse(id_des, opcode + 100, unix_time, 255);
         return;
@@ -108,7 +114,7 @@ void PCHandler::processLine()
     }
     else if (opcode == 2)
     {
-       // auto dataObj = doc["data"].as<JsonObject>();
+        // auto dataObj = doc["data"].as<JsonObject>();
         JsonObjectConst dataObj = doc["data"].as<JsonObjectConst>();
         if (dataObj.isNull() || !dataObj.containsKey("out1") || !dataObj.containsKey("out2") ||
             !dataObj.containsKey("out3") || !dataObj.containsKey("out4"))
@@ -116,11 +122,36 @@ void PCHandler::processLine()
             sendResponse(id_des, opcode + 100, unix_time, 255);
             return;
         }
+
+        auto parseOutput = [&](const JsonObjectConst &obj, const char *key, bool &outValue) -> bool
+        {
+            int raw = obj[key].as<int>();
+            if (raw == 0)
+            {
+                outValue = true;
+                return true;
+            }
+            if (raw == 1)
+            {
+                outValue = false;
+                return true;
+            }
+            return false;
+        };
         cmd.opcode = 2;
-        cmd.out1 = dataObj["out1"].as<int>() != 0;
-        cmd.out2 = dataObj["out2"].as<int>() != 0;
-        cmd.out3 = dataObj["out3"].as<int>() != 0;
-        cmd.out4 = dataObj["out4"].as<int>() != 0;
+        // cmd.out1 = dataObj["out1"].as<int>() != 0;
+        // cmd.out2 = dataObj["out2"].as<int>() != 0;
+        // cmd.out3 = dataObj["out3"].as<int>() != 0;
+        // cmd.out4 = dataObj["out4"].as<int>() != 0;
+
+        if (!parseOutput(dataObj, "out1", cmd.out1) ||
+            !parseOutput(dataObj, "out2", cmd.out2) ||
+            !parseOutput(dataObj, "out3", cmd.out3) ||
+            !parseOutput(dataObj, "out4", cmd.out4))
+        {
+            sendResponse(id_des, opcode + 100, unix_time, 255);
+            return;
+        }
     }
     else if (opcode == 3)
     {
@@ -214,7 +245,9 @@ void PCHandler::processLine()
         commandCallback(cmd);
     }
     has_data_serial = true;
-    digitalWrite(1, HIGH); delay(50); digitalWrite(1, LOW);
+    digitalWrite(1, HIGH);
+    delay(50);
+    digitalWrite(1, LOW);
     // opcode 2/3: CentralController sẽ trả response đúng opcode (2 hoặc 3)
     if (opcode >= 2 && opcode <= 6)
     {
@@ -222,6 +255,7 @@ void PCHandler::processLine()
     }
 }
 
+// Gửi phản hồi trạng thái về PC kèm auth.
 void PCHandler::sendResponse(int id_des, int resp_opcode, uint32_t unix_time, int status)
 {
     StaticJsonDocument<512> resp_doc;

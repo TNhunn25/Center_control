@@ -16,23 +16,25 @@ LedStatus led_status;
 CentralController centralController;
 GetInfoAggregator getInfo;
 // Rs485Handler rs485(Serial1, RS485_RX_PIN, RS485_TX_PIN, 115200);
-#line 17 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\master.ino"
+
+#line 18 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\master.ino"
 void onNewCommand(const MistCommand &cmd);
-#line 38 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\master.ino"
+#line 40 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\master.ino"
 void setup();
-#line 51 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\master.ino"
+#line 53 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\master.ino"
 void loop();
-#line 17 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\master.ino"
-void onNewCommand(const MistCommand &cmd)
+#line 18 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\master.ino"
+void onNewCommand(const MistCommand &cmd) // Dispatch lệnh từ PC tới các module 
 {
     getInfo.syncUnixFromPc(cmd.unix);
     if (cmd.opcode == 2)
         centralController.handleCommand(cmd);
     if (cmd.opcode == 3)
     {
+        // Ingest local IO status before replying 103 to PC.
+        centralController.handleCommand(cmd);
         getInfo.onPcGetInfoRequest(cmd.id_des, cmd.unix);
         ethHandler.sendCommand(cmd);
-        centralController.handleCommand(cmd);
         return;
     }
     if (cmd.opcode == 6)

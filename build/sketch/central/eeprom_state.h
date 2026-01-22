@@ -75,6 +75,19 @@ inline void eepromStateLoad(void (*applyOutput)(uint8_t, bool))
     eepromSuppress = false;
 }
 
+// Nạp trạng thái từ EEPROM vào buffer mà KHÔNG áp ra output.
+inline bool eepromStateRead(bool outState[OUT_COUNT])
+{
+    PersistedState st{};
+    EEPROM.get(EEPROM_STATE_ADDR, st);
+    if (st.magic != EEPROM_STATE_MAGIC)
+        return false;
+
+    for (int i = 0; i < OUT_COUNT; i++)
+        outState[i] = st.out[i] != 0;
+    return true;
+}
+
 inline void eepromThresholdsSave(const Thresholds &t)
 {
     PersistedThresholds st{};

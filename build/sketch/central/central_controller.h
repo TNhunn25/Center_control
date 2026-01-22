@@ -23,6 +23,7 @@ public:
     CentralController() {}
 
     // ================= BEGIN =================
+    // Khởi tạo controller trung tâm và trạng thái IO.
     void begin(Stream &pcStream = Serial)
     {
         pc = &pcStream;
@@ -34,14 +35,19 @@ public:
         ledStatusBegin();
 
         // OUT
+        const bool offLevel = OUT_ACTIVE_LOW ? true : false;
         for (uint8_t i = 0; i < OUT_COUNT; i++)
         {
             // outState[i] = false;
-            writePin(i, false);
+
+            // writePin(i, false);
+            writePin(i, offLevel);
+            outState[i] = offLevel;
         }
 
         // IN + debounce init
-        uint32_t now = millis();static const bool OUT_ACTIVE_LOW = true;
+        uint32_t now = millis();
+        // static const bool OUT_ACTIVE_LOW = true;
         for (uint8_t i = 0; i < IN_COUNT; i++)
         {
             bool v = pcf.readInput(i);
@@ -53,10 +59,18 @@ public:
 
         // EEPROM
         eepromStateBegin();
-        instance = this;
-        eepromStateLoad(eepromThunk);
-        // Re-apply outputs sequentially to avoid inrush at startup.
-        applyIOStaggered(outState[0], outState[1], outState[2], outState[3]);
+        // instance = this;
+        // eepromStateLoad(eepromThunk);
+        // // Re-apply outputs sequentially to avoid inrush at startup.
+        // applyIOStaggered(outState[0], outState[1], outState[2], outState[3]);
+
+        bool desiredOut[OUT_COUNT]{};
+        bool hasPersisted = eepromStateRead(desiredOut);
+        if (desiredOut)
+        {
+            // Re-apply outputs sequentially to avoid inrush at startup.
+            applyIOStaggered(desiredOut[0], desiredOut[1], desiredOut[2], desiredOut[3]);
+        }
 
         // snapshot ban đầu
         luuMocTrangThai();
@@ -69,12 +83,14 @@ public:
     }
 
     // ================= Inject Aggregator =================
+    // Gán bộ tổng hợp dữ liệu để push trạng thái về PC.
     void getInforCommand(GetInfoAggregator &getInfoRef)
     {
         getInfo = &getInfoRef;
     }
 
     // ================= HANDLE PC COMMAND =================
+    // Xử lý lệnh từ PC (GET_INFO/IO_COMMAND/SET_THRESHOLDS).
     void handleCommand(const MistCommand &cmd)
     {
         if (cmd.unix != 0)
@@ -85,7 +101,7 @@ public:
         case GET_INFO:
         {
             // trả trạng thái ngay (if changed)
-            sendTrangThaiIfChanged(cmd.id_des, GET_INFO + 100, getSendTime());
+            sendTrangThaiIfChanged(cmd.id_des, GET_INFO + 100, getSendTime(), true);
             // không snapshot ở đây để tránh nuốt event đang chờ (deferred)
             clearNutNhan();
             return;
@@ -103,7 +119,7 @@ public:
             sendResponse(cmd.id_des, IO_COMMAND + 100, cmd.unix, 0);
             captureManualOutputs(cmd.out1, cmd.out2, cmd.out3, cmd.out4);
             // 2) áp output
-            applyIO(cmd.out1, cmd.out2, cmd.out3, cmd.out4);
+            applyIOStaggered(cmd.out1, cmd.out2, cmd.out3, cmd.out4); //điều khiển tuần tự io
             return;
         }
         case SET_THRESHOLDS:
@@ -120,6 +136,7 @@ public:
     }
 
     // ================= LOOP =================
+    // Cập nhật định kỳ: mode, auto, manual, push trạng thái, LED, EEPROM.
     void update()
     {
         bool autoMode = isAutoMode();
@@ -127,10 +144,26 @@ public:
         {
             // When switching modes, stagger ON to avoid overload.
             applyIOStaggered(outState[0], outState[1], outState[2], outState[3]);
+            if (!autoMode)
+            {
+                autoOutputsOn = false;
+                // Sync outputs to current MAN inputs right away.
+                uint32_t now = millis();
+                for (uint8_t i = 0; i < IN_COUNT; i++)
+                {
+                    bool v = pcf.readInput(i);
+                    btn[i].stableLevel = v;
+                    btn[i].lastReading = v;
+                    btn[i].lastChangeMs = now;
+                    bool pressed = (v == HIGH); // MAN: HIGH = ON
+                    writeOutput(i, pressed);
+                }
+            }
             lastAutoMode = autoMode;
         }
 
-        updateAutoOutputsFromVoc();
+        if (autoMode)
+            updateAutoOutputsFromVoc();
         // ===== MAN MODE: nhấn nút tay thì vẫn coi là thay đổi để auto_push đẩy =====
         if (!autoMode)
         {
@@ -181,10 +214,9 @@ private:
     static constexpr float NO2_OFF_DEFAULT = 4.0f;
     static constexpr bool OFF_WHEN_ANY_CLEAR = false;
     static constexpr uint32_t SEQ_ON_DELAY_MS = 800;
+    static constexpr bool OUT_ACTIVE_LOW = true;
     //   - OFF_WHEN_ANY_CLEAR = false -> chi can 1 gia tri giam (qua nguong OFF) la tat output.
     //   - OFF_WHEN_ANY_CLEAR = true -> tat khi tat ca gia tri giam. (mac dinh)
-
-    
 
     struct ButtonState
     {
@@ -215,7 +247,7 @@ private:
     String lastDataJson;
     bool autoOutputsOn = false;
     bool vocHigh[2][5]{};
-    bool manualOutState[OUT_COUNT]{}; //điều khiển output
+    bool manualOutState[OUT_COUNT]{}; // điều khiển output
     bool hasManualSnapshot = false;
     bool lastAutoMode = true;
     Thresholds thresholds{
@@ -230,22 +262,24 @@ private:
         NO2_ON_DEFAULT,
         NO2_OFF_DEFAULT};
 
-    static CentralController *instance;
+    // static CentralController *instance;
 
-    // ================= EEPROM =================
-    static void eepromThunk(uint8_t ch, bool on)
-    {
-        if (instance)
-            instance->writeOutput(ch, on);
-    }
+    // // ================= EEPROM =================
+    // static void eepromThunk(uint8_t ch, bool on)
+    // {
+    //     if (instance)
+    //         instance->writeOutput(ch, on);
+    // }
 
     // ================= OUTPUT =================
 
+    // Ghi mức logic ra chân output tương ứng trên PCF8575.
     void writePin(uint8_t ch, bool on)
     {
         pcf.writeOutput(ch, on);
     }
 
+    // Lưu trạng thái output và ghi ra chân; đánh dấu EEPROM nếu thay đổi.
     void writeOutput(uint8_t ch, bool on)
     {
         bool prevState = outState[ch]; // lưu trạng thái cũ để chỉ log khi có thay đổi thật
@@ -256,6 +290,7 @@ private:
             eepromStateMarkDirty();
     }
 
+    // Áp trực tiếp trạng thái output (không stagger).
     void applyIO(bool o1, bool o2, bool o3, bool o4) // apply
     {
         writeOutput(0, o1);
@@ -264,24 +299,32 @@ private:
         writeOutput(3, o4);
     }
 
-    void applyIOStaggered(bool o1, bool o2, bool o3, bool o4)
+    // Áp output theo thứ tự để tránh inrush.
+    void applyIOStaggered(bool o1, bool o2, bool o3, bool o4)  //điều khiển tuần tự 
     {
         bool desired[OUT_COUNT] = {o1, o2, o3, o4};
+        const bool onLevel = OUT_ACTIVE_LOW ? false : true;
+        const bool offLevel = !onLevel;
         for (uint8_t i = 0; i < OUT_COUNT; i++)
         {
-            if (!desired[i] && outState[i])
-                writeOutput(i, false);
+            // if (!desired[i] && outState[i])
+            //     writeOutput(i, false);
+            if (desired[i] == offLevel && outState[i] == onLevel)
+                writeOutput(i, offLevel);
         }
         for (uint8_t i = 0; i < OUT_COUNT; i++)
         {
-            if (desired[i] && !outState[i])
+            // if (desired[i] && !outState[i])
+            if (desired[i] == onLevel && outState[i] == offLevel)
             {
-                writeOutput(i, true);
+                // writeOutput(i, true);
+                writeOutput(i, onLevel);
                 delay(SEQ_ON_DELAY_MS);
             }
         }
     }
 
+    // Lưu lại trạng thái manual để phục hồi khi auto tắt.
     void captureManualOutputs(bool o1, bool o2, bool o3, bool o4)
     {
         manualOutState[0] = o1;
@@ -292,6 +335,7 @@ private:
     }
 
     // ================= DEBOUNCE =================
+    // Debounce input, trả true nếu có thay đổi ổn định.
     bool debounceUpdate(uint8_t i, bool &stableLevel)
     {
         bool reading = pcf.readInput(i);
@@ -316,6 +360,7 @@ private:
         return false;
     }
 
+    // Phát hiện cạnh nhấn (rising edge) sau debounce.
     bool debouncePress(uint8_t i)
     {
         static bool prevState[IN_COUNT]{};
@@ -324,6 +369,7 @@ private:
         return evt;
     }
 
+    // Hysteresis: bật khi >= on, tắt khi <= off, giữ trạng thái nếu nằm giữa.
     static bool applyHysteresis(float value, float on, float off, bool state)
     {
         if (value >= on)
@@ -333,7 +379,8 @@ private:
         return state;
     }
 
-    void updateAutoOutputsFromVoc()
+    // Cập nhật output theo dữ liệu VOC ở chế độ AUTO.
+    void updateAutoOutputsFromVoc() // kiểm tra lại opcode 6
     {
         if (!getInfo)
             return;
@@ -362,20 +409,22 @@ private:
         if (!anyMetric)
             return;
 
-        bool allHigh = metricHigh[0] && metricHigh[1] && metricHigh[2] && metricHigh[3] && metricHigh[4];
+        // bool allHigh = metricHigh[0] && metricHigh[1] && metricHigh[2] && metricHigh[3] && metricHigh[4];
 
-        // Priority: NH3 highest, CO/NO2 middle, TEMP, HUMI lowest.
-        uint8_t level = 0;
-        if (allHigh || metricHigh[2]) // nh3
-            level = 4;
-        else if (metricHigh[3] || metricHigh[4]) // co/no2
-            level = 3;
-        else if (metricHigh[0]) // temp
-            level = 2;
-        else if (metricHigh[1]) // humi
-            level = 1;
+        // // Priority: NH3 highest, CO/NO2 middle, TEMP, HUMI lowest.
+        // uint8_t level = 0;
+        // if (allHigh || metricHigh[2]) // nh3
+        //     level = 4;
+        // else if (metricHigh[3] || metricHigh[4]) // co/no2
+        //     level = 3;
+        // else if (metricHigh[0]) // temp
+        //     level = 2;
+        // else if (metricHigh[1]) // humi
+        //     level = 1;
 
-        if (level == 0)
+        // if (level == 0)
+        bool anyHigh = metricHigh[0] || metricHigh[1] || metricHigh[2] || metricHigh[3] || metricHigh[4];
+        if (!anyHigh)
         {
             // Return control to last opcode 2 state when safe.
             if (autoOutputsOn && hasManualSnapshot)
@@ -385,10 +434,13 @@ private:
         }
 
         autoOutputsOn = true;
-        applyIO(level >= 1, level >= 2, level >= 3, level >= 4);
+        // const bool onLevel = OUT_ACTIVE_LOW ? false : true;
+        // applyIO(onLevel, onLevel, onLevel, onLevel); //điều khiển toàn bộ output 
+        // applyIO(level >= 1, level >= 2, level >= 3, level >= 4);
     }
 
     // ================= SNAPSHOT / CHANGE =================
+    // Lưu mốc trạng thái để so sánh thay đổi.
     void luuMocTrangThai()
     {
         for (uint8_t i = 0; i < OUT_COUNT; i++)
@@ -397,6 +449,7 @@ private:
             mocIn[i] = btn[i].stableLevel;
     }
 
+    // Kiểm tra có thay đổi trạng thái input/output hay không.
     bool coThayDoi()
     {
         for (uint8_t i = 0; i < OUT_COUNT; i++)
@@ -415,6 +468,7 @@ private:
     }
 
     // ================= JSON (format in/out) =================
+    // Xây dựng JSON trạng thái IO để gửi về PC.
     String buildDataJson()
     {
         StaticJsonDocument<256> doc;
@@ -431,6 +485,7 @@ private:
         return out;
     }
 
+    // Đưa trạng thái IO vào bộ tổng hợp để tạo gói 103.
     void ingestTrangThaiToAggregator(int id_des, int opcode, uint32_t time, const String &data_json)
     {
         if (!getInfo)
@@ -449,10 +504,12 @@ private:
         getInfo->ingestFromNodeDoc(doc.as<JsonObjectConst>(), IPAddress(0, 0, 0, 0), 0);
     }
 
-    bool sendTrangThaiIfChanged(int id_des, int opcode, uint32_t time)
+    // Gửi trạng thái nếu có thay đổi (hoặc ép gửi khi force=true).
+    bool sendTrangThaiIfChanged(int id_des, int opcode, uint32_t time, bool force = false)
     {
         String data_json = buildDataJson();
-        if (data_json == lastDataJson)
+        // if (data_json == lastDataJson)
+        if (!force && data_json == lastDataJson)
             return false;
 
         lastDataJson = data_json;
@@ -461,6 +518,7 @@ private:
     }
 
     // ================= TIME =================
+    // Lấy thời gian gửi (ưu tiên unix từ PC, fallback millis).
     uint32_t getSendTime()
     {
         // để auto_push luôn hoạt động: fallback millis/1000
@@ -470,6 +528,7 @@ private:
     }
 
     // ================= AUTO PUSH (FIX MẤT GÓI) =================
+    // Auto-push trạng thái khi có thay đổi, chống spam.
     void tuDongDayNeuThayDoi()
     {
         // Nếu có thay đổi hoặc đang chờ gửi (deferred) thì mới xét
@@ -497,6 +556,7 @@ private:
         clearNutNhan();
     }
 
+    // Xóa cờ "vừa nhấn" của input.
     void clearNutNhan()
     {
         for (uint8_t i = 0; i < IN_COUNT; i++)
@@ -526,6 +586,6 @@ private:
     }
 };
 
-#ifdef CENTRAL_CONTROLLER_IMPLEMENTATION
-CentralController *CentralController::instance = nullptr;
-#endif
+// #ifdef CENTRAL_CONTROLLER_IMPLEMENTATION
+// CentralController *CentralController::instance = nullptr;
+// #endif

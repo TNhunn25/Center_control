@@ -27,6 +27,15 @@ def calculate_md5_auth(
     )
     return hashlib.md5(combined.encode("utf-8")).hexdigest()
 
+def normalize_numbers(obj):
+    if isinstance(obj, dict):
+        return {k: normalize_numbers(v) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [normalize_numbers(v) for v in obj]
+    if isinstance(obj, float) and obj.is_integer():
+        return int(obj)
+    return obj
+
 def send_line(ser: serial.Serial, obj: dict):
     line = json.dumps(obj, ensure_ascii=False, separators=(",", ":")) + "\n"
     ser.write(line.encode("utf-8"))
@@ -48,8 +57,8 @@ def main():
     ap.add_argument("-b", "--baud", type=int, default=115200, help="Baudrate")
     ap.add_argument("-d", "--id_des", type=int, default=1, help="ID thiết bị đích (0=all, >=1=cụ thể)")
     ap.add_argument("-o", "--opcode", type=int, required=True, 
-                    choices=[1, 2, 3, 5], 
-                    help="Opcode: 1=MIST_COMMAND, 2=IO_COMMAND, 3=GET_INFO, 5=QUERY_STATUS (hoặc tương tự)")
+                    choices=[1, 2, 3, 5, 6], 
+                    help="Opcode: 1=MIST_COMMAND, 2=IO_COMMAND, 3=GET_INFO, 5=QUERY_STATUS (hoặc tương tự), 6=SET_THRESHOLDS")
     ap.add_argument("-i", "--interval", type=float, default=1.0, help="Gửi mỗi bao giây")
     ap.add_argument("--wait", type=float, default=0.5, help="Thời gian chờ phản hồi (giây)")
 
@@ -69,6 +78,18 @@ def main():
     ap.add_argument("-!2", "--no-out2", action="store_true", help="Tắt output 2 (cho opcode 2)")
     ap.add_argument("-!3", "--no-out3", action="store_true", help="Tắt output 3 (cho opcode 2)")
     ap.add_argument("-!4", "--no-out4", action="store_true", help="Tắt output 4 (cho opcode 2)")
+
+    # Đối với opcode 6: SET_THRESHOLDS
+    ap.add_argument("--temp_on", type=float, help="Ngưỡng temp bật (opcode 6)")
+    ap.add_argument("--humi_on", type=float, help="Ngưỡng humi bật (opcode 6)")
+    ap.add_argument("--nh3_on", type=float, help="Ngưỡng nh3 bật (opcode 6)")
+    ap.add_argument("--co_on", type=float, help="Ngưỡng co bật (opcode 6)")
+    ap.add_argument("--no2_on", type=float, help="Ngưỡng no2 bật (opcode 6)")
+    ap.add_argument("--temp_off", type=float, help="Ngưỡng temp tắt (opcode 6)")
+    ap.add_argument("--humi_off", type=float, help="Ngưỡng humi tắt (opcode 6)")
+    ap.add_argument("--nh3_off", type=float, help="Ngưỡng nh3 tắt (opcode 6)")
+    ap.add_argument("--co_off", type=float, help="Ngưỡng co tắt (opcode 6)")
+    ap.add_argument("--no2_off", type=float, help="Ngưỡng no2 tắt (opcode 6)")
 
     args = ap.parse_args()
 
@@ -106,6 +127,27 @@ def main():
         if args.no_out4: outputs["out4"] = 0
 
         data = outputs
+    elif args.opcode == 6:
+        required = [
+            "temp_on", "humi_on", "nh3_on", "co_on", "no2_on",
+            "temp_off", "humi_off", "nh3_off", "co_off", "no2_off",
+        ]
+        missing = [arg for arg in required if getattr(args, arg) is None]
+        if missing:
+            print("Opcode 6 yêu cầu đầy đủ tham số:", ", ".join(f"--{m}" for m in missing), file=sys.stderr)
+            sys.exit(2)
+        data = {
+            "temp_on": args.temp_on,
+            "humi_on": args.humi_on,
+            "nh3_on": args.nh3_on,
+            "co_on": args.co_on,
+            "no2_on": args.no2_on,
+            "temp_off": args.temp_off,
+            "humi_off": args.humi_off,
+            "nh3_off": args.nh3_off,
+            "co_off": args.co_off,
+            "no2_off": args.no2_off,
+        }
     elif args.opcode in (3, 5):
         # Opcode 3 và 5: data rỗng (query không cần tham số)
         data = {}
@@ -124,10 +166,11 @@ def main():
                 # unix_time = int(123)  # Dùng để test nếu cần
 
                 # Tính auth
+                data_norm = normalize_numbers(data)
                 auth_hash = calculate_md5_auth(
                     id_des=args.id_des,
                     opcode=args.opcode,
-                    data=data,
+                    data=data_norm,
                     unix_time=unix_time
                 )
 
@@ -135,7 +178,7 @@ def main():
                 cmd = {
                     "id_des": args.id_des,
                     "opcode": args.opcode,
-                    "data": data,
+                    "data": data_norm,
                     "time": unix_time,
                     "auth": auth_hash
                 }
