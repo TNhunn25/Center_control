@@ -6,7 +6,7 @@ python simulator.py -p COM21 -o 2 -1 -2 -3 -4 -i 5
 
 python simulator.py -p COM21 -o 3 -i 10
 
-python simulator.py -p COM21 -o 6 --temp_on 55 --temp_off 45 --humi_on 54 --humi_off 50 --nh3_on 50 --nh3_off 45 --co_on 50 --co_off 45 --no2_on 50 --no2_off 40 -i 5
+python simulator.py -p COM21 -o 6 --temp_on 55 --temp_off 45 --humi_on 54 --humi_off 50 --nh3_on 50 --nh3_off 45 --co_on 6 --co_off 5 --no2_on 50 --no2_off 40 -i 5
 
 python simulator.py -p COM21 -o 5 -n 0  -i 2
 

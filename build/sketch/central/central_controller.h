@@ -139,6 +139,8 @@ public:
     // Cập nhật định kỳ: mode, auto, manual, push trạng thái, LED, EEPROM.
     void update()
     {
+        updateAutoOutputsFromVoc();
+
         bool autoMode = isAutoMode();
         if (autoMode != lastAutoMode)
         {
@@ -162,8 +164,6 @@ public:
             lastAutoMode = autoMode;
         }
 
-        if (autoMode)
-            updateAutoOutputsFromVoc();
         // ===== MAN MODE: nhấn nút tay thì vẫn coi là thay đổi để auto_push đẩy =====
         if (!autoMode)
         {
@@ -380,7 +380,7 @@ private:
     }
 
     // Cập nhật output theo dữ liệu VOC ở chế độ AUTO.
-    void updateAutoOutputsFromVoc() // kiểm tra lại opcode 6
+    void updateAutoOutputsFromVoc()
     {
         if (!getInfo)
             return;
@@ -434,8 +434,8 @@ private:
         }
 
         autoOutputsOn = true;
-        // const bool onLevel = OUT_ACTIVE_LOW ? false : true;
-        // applyIO(onLevel, onLevel, onLevel, onLevel); //điều khiển toàn bộ output 
+        const bool onLevel = OUT_ACTIVE_LOW ? false : true;
+        applyIO(onLevel, onLevel, onLevel, onLevel); //điều khiển toàn bộ output 
         // applyIO(level >= 1, level >= 2, level >= 3, level >= 4);
     }
 

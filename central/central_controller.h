@@ -138,12 +138,14 @@ public:
     // Cập nhật định kỳ: mode, auto, manual, push trạng thái, LED, EEPROM.
     void update()
     {
+        updateAutoOutputsFromVoc();
+
         bool autoMode = isAutoMode();
         if (autoMode != lastAutoMode)
         {
             // When switching modes, stagger ON to avoid overload.
             applyIOStaggered(outState[0], outState[1], outState[2], outState[3]);
-            if (!autoMode)
+            if (!autoMode && !autoOutputsOn)
             {
                 autoOutputsOn = false;
                 // Sync outputs to current MAN inputs right away.
@@ -156,15 +158,15 @@ public:
                     btn[i].lastChangeMs = now;
                     bool pressed = (v == HIGH); // MAN: HIGH = ON
                     writeOutput(i, pressed);
+                    manualOutState[i] = pressed;
+                    hasManualSnapshot = true;
                 }
             }
             lastAutoMode = autoMode;
         }
 
-        if (autoMode)
-            updateAutoOutputsFromVoc();
         // ===== MAN MODE: nhấn nút tay thì vẫn coi là thay đổi để auto_push đẩy =====
-        if (!autoMode)
+        if (!autoMode && !autoOutputsOn)
         {
             for (int i = 0; i < IN_COUNT; i++)
             {
@@ -175,6 +177,8 @@ public:
                     if (pressed)
                         nutVuaNhan[i] = true;
                     writeOutput(i, pressed);
+                    manualOutState[i] = pressed;
+                    hasManualSnapshot = true;
                     // Serial.printf("MAN: Button %d %s -> out%d %s\n",
                     //               i + 1,
                     //               pressed ? "pressed" : "released",
@@ -379,7 +383,7 @@ private:
     }
 
     // Cập nhật output theo dữ liệu VOC ở chế độ AUTO.
-    void updateAutoOutputsFromVoc() // kiểm tra lại opcode 6
+    void updateAutoOutputsFromVoc()
     {
         if (!getInfo)
             return;
@@ -408,20 +412,8 @@ private:
         if (!anyMetric)
             return;
 
-        // bool allHigh = metricHigh[0] && metricHigh[1] && metricHigh[2] && metricHigh[3] && metricHigh[4];
+        bool allHigh = metricHigh[0] && metricHigh[1] && metricHigh[2] && metricHigh[3] && metricHigh[4];
 
-        // // Priority: NH3 highest, CO/NO2 middle, TEMP, HUMI lowest.
-        // uint8_t level = 0;
-        // if (allHigh || metricHigh[2]) // nh3
-        //     level = 4;
-        // else if (metricHigh[3] || metricHigh[4]) // co/no2
-        //     level = 3;
-        // else if (metricHigh[0]) // temp
-        //     level = 2;
-        // else if (metricHigh[1]) // humi
-        //     level = 1;
-
-        // if (level == 0)
         bool anyHigh = metricHigh[0] || metricHigh[1] || metricHigh[2] || metricHigh[3] || metricHigh[4];
         if (!anyHigh)
         {
@@ -433,9 +425,8 @@ private:
         }
 
         autoOutputsOn = true;
-        // const bool onLevel = OUT_ACTIVE_LOW ? false : true;
-        // applyIO(onLevel, onLevel, onLevel, onLevel); //điều khiển toàn bộ output 
-        // applyIO(level >= 1, level >= 2, level >= 3, level >= 4);
+        const bool onLevel = OUT_ACTIVE_LOW ? false : true;
+        applyIO(onLevel, onLevel, onLevel, onLevel); //điều khiển toàn bộ output 
     }
 
     // ================= SNAPSHOT / CHANGE =================
