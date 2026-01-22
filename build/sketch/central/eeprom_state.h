@@ -8,7 +8,7 @@ static const size_t EEPROM_STATE_SIZE = 256;
 static const uint32_t EEPROM_STATE_MAGIC = 0x4F555430; // "OUT0"
 static const int EEPROM_STATE_ADDR = 0;
 static const uint32_t EEPROM_THRESH_MAGIC = 0x54485230; // "THR0"
-static const uint32_t EEPROM_FLUSH_MS = 300;
+static const uint32_t EEPROM_FLUSH_MS = 300; //eepromStatemarkDirty() gọi và sau ~300ms sẽ ghi vào eeprom 
 
 struct PersistedState
 {

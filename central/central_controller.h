@@ -65,7 +65,7 @@ public:
 
         bool desiredOut[OUT_COUNT]{};
         bool hasPersisted = eepromStateRead(desiredOut);
-        if (desiredOut)
+        if (hasPersisted) // fix
         {
             // Re-apply outputs sequentially to avoid inrush at startup.
             applyIOStaggered(desiredOut[0], desiredOut[1], desiredOut[2], desiredOut[3]);
@@ -118,7 +118,7 @@ public:
             sendResponse(cmd.id_des, IO_COMMAND + 100, cmd.unix, 0);
             captureManualOutputs(cmd.out1, cmd.out2, cmd.out3, cmd.out4);
             // 2) áp output
-            applyIOStaggered(cmd.out1, cmd.out2, cmd.out3, cmd.out4); //điều khiển tuần tự io
+            applyIOStaggered(cmd.out1, cmd.out2, cmd.out3, cmd.out4); // điều khiển tuần tự io
             return;
         }
         case SET_THRESHOLDS:
@@ -138,16 +138,22 @@ public:
     // Cập nhật định kỳ: mode, auto, manual, push trạng thái, LED, EEPROM.
     void update()
     {
-        updateAutoOutputsFromVoc();
+        updateAutoOutputsFromVoc(); //man/auto đều auto_push voc
 
         bool autoMode = isAutoMode();
-        if (autoMode != lastAutoMode)
+
+        // if (autoMode) 
+        //     updateAutoOutputsFromVoc();
+
+        if (autoMode != lastAutoMode) 
         {
             // When switching modes, stagger ON to avoid overload.
             applyIOStaggered(outState[0], outState[1], outState[2], outState[3]);
-            if (!autoMode && !autoOutputsOn)
+            // if (!autoMode && !autoOutputsOn)
+            if (!autoMode)
             {
                 autoOutputsOn = false;
+                hasAutoRestore = false;
                 // Sync outputs to current MAN inputs right away.
                 uint32_t now = millis();
                 for (uint8_t i = 0; i < IN_COUNT; i++)
@@ -166,7 +172,8 @@ public:
         }
 
         // ===== MAN MODE: nhấn nút tay thì vẫn coi là thay đổi để auto_push đẩy =====
-        if (!autoMode && !autoOutputsOn)
+        // if (!autoMode && !autoOutputsOn)
+        if (!autoMode)
         {
             for (int i = 0; i < IN_COUNT; i++)
             {
@@ -249,6 +256,10 @@ private:
     // chống gửi trùng theo json
     String lastDataJson;
     bool autoOutputsOn = false;
+
+    bool autoRestoreState[OUT_COUNT]{}; // trạng thái để khôi phục khi VOC an toàn
+    bool hasAutoRestore = false;
+
     bool vocHigh[2][5]{};
     bool manualOutState[OUT_COUNT]{}; // điều khiển output
     bool hasManualSnapshot = false;
@@ -303,7 +314,7 @@ private:
     }
 
     // Áp output theo thứ tự để tránh inrush.
-    void applyIOStaggered(bool o1, bool o2, bool o3, bool o4)  //điều khiển tuần tự 
+    void applyIOStaggered(bool o1, bool o2, bool o3, bool o4) // điều khiển tuần tự
     {
         bool desired[OUT_COUNT] = {o1, o2, o3, o4};
         const bool onLevel = OUT_ACTIVE_LOW ? false : true;
@@ -382,7 +393,7 @@ private:
         return state;
     }
 
-    // Cập nhật output theo dữ liệu VOC 
+    // Cập nhật output theo dữ liệu VOC
     void updateAutoOutputsFromVoc()
     {
         if (!getInfo)
@@ -421,19 +432,38 @@ private:
         if (!anyHigh)
         {
             // Return control to last opcode 2 state when safe.
-            if (autoOutputsOn && hasManualSnapshot)
+            // if (autoOutputsOn && hasManualSnapshot)
+            //     applyIO(manualOutState[0], manualOutState[1], manualOutState[2], manualOutState[3]);
+            // else
+            //     applyIOStaggered(offLevel, offLevel, offLevel, offLevel);
+
+            //--------------------------------------
+            if (autoOutputsOn)
+            {
+                if (hasAutoRestore)
+                applyIO(autoRestoreState[0], autoRestoreState[1], autoRestoreState[2], autoRestoreState[3]);
+                else if (hasManualSnapshot)
                 applyIO(manualOutState[0], manualOutState[1], manualOutState[2], manualOutState[3]);
-            else
-                applyIOStaggered(offLevel, offLevel, offLevel, offLevel);    
+                else
+                applyIOStaggered(offLevel, offLevel, offLevel, offLevel);
+            }
             autoOutputsOn = false;
             return;
         }
-
+        
+        if (!autoOutputsOn)
+        {
+            for (uint8_t i = 0; i < OUT_COUNT; i++)
+            autoRestoreState[i] = outState[i];
+            hasAutoRestore = true;
+        }
+        
+        //--------------------------------------
         autoOutputsOn = true;
         // const bool onLevel = OUT_ACTIVE_LOW ? false : true;
-        // applyIO(onLevel, onLevel, onLevel, onLevel); //điều khiển toàn bộ output 
+        // applyIO(onLevel, onLevel, onLevel, onLevel); //điều khiển toàn bộ output
         // Ưu tiên bật theo thứ tự output để tránh quá tải.
-        applyIOStaggered(onLevel, onLevel, onLevel, onLevel); //điều khiển toàn bộ output 
+        applyIOStaggered(onLevel, onLevel, onLevel, onLevel); // điều khiển toàn bộ output
     }
 
     // ================= SNAPSHOT / CHANGE =================

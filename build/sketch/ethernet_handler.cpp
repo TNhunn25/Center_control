@@ -122,9 +122,9 @@ void EthernetUDPHandler::handleReceive()
     // if (opcode == 104 || opcode == 105)
     if (opcode == 101 ||opcode == 104 || opcode == 105) //FIXME: cần xem lại 
     {
-        Serial.println(rxBuf);
         serializeJson(doc, Serial);
-        Serial.println();
+        Serial.println(rxBuf);
+        // Serial.println();
     }
     getInfo.ingestFromNodeDoc(doc.as<JsonObjectConst>(), udp.remoteIP(), udp.remotePort());
     int nodeId = doc["data"]["node_id"] | 0;
