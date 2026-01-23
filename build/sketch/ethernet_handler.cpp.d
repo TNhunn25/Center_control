@@ -177,4 +177,5 @@ C:\Users\Tuyet\ Nhung-RD\Desktop\Project_He_thong_khuech_tan\master\master\build
  C:\Users\Tuyet\ Nhung-RD\AppData\Local\Arduino15\packages\esp32\tools\esp32-arduino-libs\idf-release_v5.4-858a988d-v1\esp32s3/include/esp_rom/include/esp_rom_md5.h \
  C:\Users\Tuyet\ Nhung-RD\AppData\Local\Arduino15\packages\esp32\hardware\esp32\3.2.1\cores\esp32/HashBuilder.h \
  C:\Users\Tuyet\ Nhung-RD\AppData\Local\Arduino15\packages\esp32\hardware\esp32\3.2.1\cores\esp32/HEXBuilder.h \
+ C:\Users\Tuyet\ Nhung-RD\Desktop\Project_He_thong_khuech_tan\master\master\build\sketch\net_config.h \
  C:\Users\Tuyet\ Nhung-RD\Desktop\Project_He_thong_khuech_tan\master\master\build\sketch\get_info.h

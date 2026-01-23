@@ -1,5 +1,5 @@
 {
-  "port": "COM21",
+  "port": "COM3",
   "configuration": "UploadSpeed=921600,USBMode=hwcdc,CDCOnBoot=cdc,MSCOnBoot=default,DFUOnBoot=default,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=4M,PartitionScheme=default,DebugLevel=none,PSRAM=disabled,LoopCore=1,EventsCore=1,EraseFlash=none,JTAGAdapter=default,ZigbeeMode=default",
   "output": "build",
   "board": "esp32:esp32:esp32s3",
@@ -10,7 +10,7 @@
   "compile_profile": "",
   "monitorPortSettings": {
     "settings": {
-      "port": "COM21",
+      "port": "COM3",
       "baudRate": 115200,
       "lineEnding": "\r\n",
       "dataBits": 8,

@@ -9,6 +9,8 @@
 
 #include "config.h"
 #include "md5.h"
+#include "net_config.h"
+
 struct NodeWatch
 {
     bool active = false;     // đã từng thấy node này
@@ -39,6 +41,7 @@ public:
 
     bool sendCommand(const MistCommand &cmd);
     void checkNodeTimeouts();
+    bool applyStaticConfig(const EthStaticConfig &cfg);
 
 private:
     static constexpr unsigned long broadcastInterval = 3000; // 3s
@@ -55,6 +58,16 @@ private:
     unsigned long lastSend = 0;
     char rxBuf[RX_BUF_SZ];
     void handleReceive();
+    bool startEthernet(const EthStaticConfig &cfg);
+    IPAddress calcBroadcast(const IPAddress &ip, const IPAddress &mask);
+    uint8_t csPin_ = 0;
+    uint8_t rstPin_ = 0;
+    uint8_t sckPin_ = 0;
+    uint8_t misoPin_ = 0;
+    uint8_t mosiPin_ = 0;
+    bool pinsReady_ = false;
+    uint8_t mac_[6] = {0};
+    bool macReady_ = false;
  
 };
 

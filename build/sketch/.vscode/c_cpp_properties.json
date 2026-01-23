@@ -13,9 +13,16 @@
         "C:\\Users\\Tuyet Nhung-RD\\Documents\\Arduino\\libraries\\ArduinoJson\\src/**",
         "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\libraries\\SPI\\src/**",
         "C:\\Users\\Tuyet Nhung-RD\\Documents\\Arduino\\libraries\\Ethernet\\src/**",
+        "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\libraries\\WebServer\\src/**",
+        "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\libraries\\FS\\src/**",
+        "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\libraries\\Network\\src/**",
+        "C:\\Users\\Tuyet Nhung-RD\\Documents\\Arduino\\libraries\\WebSockets\\src/**",
+        "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\libraries\\WiFi\\src/**",
+        "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\libraries\\NetworkClientSecure\\src/**",
         "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\libraries\\Wire\\src/**",
         "C:\\Users\\Tuyet Nhung-RD\\Documents\\Arduino\\libraries\\PCF8575_library/**",
-        "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\libraries\\EEPROM\\src/**"
+        "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\libraries\\EEPROM\\src/**",
+        "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\libraries\\Preferences\\src/**"
       ],
       "forcedInclude": [
         "C:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\cores\\esp32\\Arduino.h"
@@ -57,14 +64,21 @@
         "-IC:\\Users\\Tuyet Nhung-RD\\Documents\\Arduino\\libraries\\ArduinoJson\\src",
         "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\libraries\\SPI\\src",
         "-IC:\\Users\\Tuyet Nhung-RD\\Documents\\Arduino\\libraries\\Ethernet\\src",
+        "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\libraries\\WebServer\\src",
+        "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\libraries\\FS\\src",
+        "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\libraries\\Network\\src",
+        "-IC:\\Users\\Tuyet Nhung-RD\\Documents\\Arduino\\libraries\\WebSockets\\src",
+        "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\libraries\\WiFi\\src",
+        "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\libraries\\NetworkClientSecure\\src",
         "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\libraries\\Wire\\src",
         "-IC:\\Users\\Tuyet Nhung-RD\\Documents\\Arduino\\libraries\\PCF8575_library",
         "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\libraries\\EEPROM\\src",
+        "-IC:\\Users\\Tuyet Nhung-RD\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.2.1\\libraries\\Preferences\\src",
         "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/build_opt.h",
         "@C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build/file_opts",
-        "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\sketch\\MICS6814.cpp",
+        "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\sketch\\PC_handler.cpp",
         "-o",
-        "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\sketch\\MICS6814.cpp.o"
+        "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\build\\sketch\\PC_handler.cpp.o"
       ],
       "defines": [
         "F_CPU=240000000L",

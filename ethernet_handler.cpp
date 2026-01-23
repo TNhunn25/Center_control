@@ -23,6 +23,14 @@ void EthernetUDPHandler::begin(uint8_t csPin,
                                uint16_t listenPort)
 {
     port = listenPort;
+    //-------------
+    csPin_ = csPin; // neww
+    rstPin_ = rstPin;
+    sckPin_ = sckPin;
+    misoPin_ = misoPin;
+    mosiPin_ = mosiPin;
+    pinsReady_ = true;
+    //-------------
 
     // Reset W5500 (RSTn active-low)
     pinMode(rstPin, OUTPUT);
@@ -38,12 +46,20 @@ void EthernetUDPHandler::begin(uint8_t csPin,
 
     // MAC từ efuse
     uint64_t chipid = ESP.getEfuseMac();
-    uint8_t mac[6];
     for (int i = 0; i < 6; i++)
     {
-        mac[i] = (chipid >> (40 - i * 8)) & 0xFF;
+        mac_[i] = (chipid >> (40 - i * 8)) & 0xFF;
     }
 
+    //-------------
+    macReady_ = true;
+
+    EthStaticConfig cfg;
+    loadEthStaticConfig(cfg);
+    startEthernet(cfg);
+    //-------------
+
+    /*
     // IP tĩnh
     IPAddress ip(192, 168, 1, 100);
     IPAddress dns(8, 8, 8, 8);
@@ -70,13 +86,26 @@ void EthernetUDPHandler::begin(uint8_t csPin,
     {
         Serial.println(F("{\"error\":\"UDP begin failed\"}"));
     }
+    */
 }
 
-void EthernetUDPHandler::update() 
+void EthernetUDPHandler::update()
 {
 
     handleReceive();
 }
+
+//----------------------------
+bool EthernetUDPHandler::applyStaticConfig(const EthStaticConfig &cfg)
+{
+    if (!pinsReady_ || !macReady_)
+        return false;
+    if (!isValidEthStaticConfig(cfg))
+        return false;
+
+    return startEthernet(cfg);
+}
+//---------------------
 
 // Nhận gói UDP từ node, forward ACK và ingest dữ liệu
 void EthernetUDPHandler::handleReceive()
@@ -117,9 +146,9 @@ void EthernetUDPHandler::handleReceive()
         return;
     int opcode = doc["opcode"];
     // Serial.println(rxBuf);
-    
+
     // if (opcode == 104 || opcode == 105)
-    if (opcode == 101 ||opcode == 104 || opcode == 105) //FIXME: cần xem lại 
+    if (opcode == 101 || opcode == 104 || opcode == 105) // FIXME: cần xem lại
     {
         serializeJson(doc, Serial);
         Serial.println(rxBuf);
@@ -242,4 +271,47 @@ bool EthernetUDPHandler::sendCommand(const MistCommand &cmd)
     bool ok = (udp.endPacket() == 1);
 
     return ok;
+}
+
+//--------------------------------------------------------
+
+bool EthernetUDPHandler::startEthernet(const EthStaticConfig &cfg)
+{
+    if (!macReady_)
+        return false;
+
+    udp.stop();
+    Ethernet.begin(mac_, cfg.ip, cfg.dns1, cfg.gateway, cfg.mask);
+    delay(200);
+
+    broadcastIP = calcBroadcast(cfg.ip, cfg.mask);
+
+    if (Ethernet.linkStatus() == LinkOFF)
+    {
+        Serial.println(F("{\"error\":\"No link ethernet\"}"));
+    }
+
+    if (udp.begin(port))
+    {
+        Serial.print(F("{\"status\":\"ready\",\"ip\":\""));
+        Serial.print(Ethernet.localIP());
+        Serial.print(F("\",\"port\":"));
+        Serial.print(port);
+        Serial.println(F(",\"role\":\"w5500_master\"}"));
+        return true;
+    }
+
+    Serial.println(F("{\"error\":\"UDP begin failed\"}"));
+    return false;
+}
+
+IPAddress EthernetUDPHandler::calcBroadcast(const IPAddress &ip, const IPAddress &mask)
+{
+    IPAddress bcast;
+    for (uint8_t i = 0; i < 4; i++)
+    {
+        uint8_t inv = (uint8_t)(0xFF ^ mask[i]);
+        bcast[i] = (uint8_t)(ip[i] | inv);
+    }
+    return bcast;
 }

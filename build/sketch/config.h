@@ -9,10 +9,14 @@
 #define PIN_NO2 17
 #define PIN_NH3 18
 #define PIN_DHT 21
+#define CONFIG_BUTTON_PIN 12
 // #define MOTOR_COUNT 5
 // #define OUT_COUNT 4
 // #define IN_COUNT 4
 extern const String SECRET_KEY;
+
+extern bool has_mode_config_on;
+extern bool has_mode_config;
 
 static const uint8_t OUT_COUNT = 4;
 static const uint8_t IN_COUNT = 4;

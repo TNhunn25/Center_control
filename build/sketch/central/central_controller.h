@@ -139,14 +139,14 @@ public:
     // Cập nhật định kỳ: mode, auto, manual, push trạng thái, LED, EEPROM.
     void update()
     {
-        updateAutoOutputsFromVoc();
+        updateAutoOutputsFromVoc(); //man/auto đều auto_push voc
 
         bool autoMode = isAutoMode();
 
-        // if (autoMode)
+        // if (autoMode) 
         //     updateAutoOutputsFromVoc();
 
-        if (autoMode != lastAutoMode)
+        if (autoMode != lastAutoMode) 
         {
             // When switching modes, stagger ON to avoid overload.
             applyIOStaggered(outState[0], outState[1], outState[2], outState[3]);

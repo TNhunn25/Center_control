@@ -11,6 +11,8 @@ public:
         STATE_NO_DATA_SERIAL,
         STATE_NO_LINK,
         STATE_ACTIVE_DATA_ALL,
+        STATE_CONFIG_HOLD,
+        STATE_CONFIG_ACTIVE,
         STATE_OFF
 
     };

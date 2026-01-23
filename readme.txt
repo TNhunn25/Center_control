@@ -10,7 +10,7 @@ python simulator.py -p COM21 -o 6 --temp_on 55 --temp_off 45 --humi_on 54 --humi
 
 python simulator.py -p COM21 -o 5 -n 0  -i 2
 
-python simulator_motor.py -p COM21 -o 4 --motor m1,1,0,0  --repeat 10 -i 5
+python simulator_motor.py -p COM10 -o 4 --motor m1,1,0,0  --repeat 10 -i 5
 
 IO_COMMAND bật tất cả (gửi 1 lần)----------------------------------
 

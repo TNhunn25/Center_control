@@ -4,6 +4,8 @@
 #include "led_status.h"
 #include "get_info.h"
 #include "config.h"
+#include "config_portal.h"
+
 #include "central/pcf8575_io.h"
 #define CENTRAL_CONTROLLER_IMPLEMENTATION
 #include "central/central_controller.h"
@@ -13,9 +15,11 @@ EthernetUDPHandler ethHandler;
 LedStatus led_status;
 CentralController centralController;
 GetInfoAggregator getInfo;
+ConfigPortal configPortal;
+
 // Rs485Handler rs485(Serial1, RS485_RX_PIN, RS485_TX_PIN, 115200);
 
-void onNewCommand(const MistCommand &cmd) // Dispatch lệnh từ PC tới các module 
+void onNewCommand(const MistCommand &cmd) // Dispatch lệnh từ PC tới các module
 {
     getInfo.syncUnixFromPc(cmd.unix);
     if (cmd.opcode == 2)
@@ -49,6 +53,7 @@ void setup()
     led_status.setState(LedStatus ::STATE_NORMAL);
     pcHandler.onCommandReceived(onNewCommand);
     centralController.getInforCommand(getInfo);
+    configPortal.begin(CONFIG_BUTTON_PIN, &ethHandler, &led_status); // định nghĩa button
 }
 void loop()
 {
@@ -58,4 +63,5 @@ void loop()
     led_status.update();
     centralController.update();
     getInfo.update();
+    configPortal.update();
 }

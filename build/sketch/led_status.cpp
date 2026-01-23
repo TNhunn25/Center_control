@@ -43,7 +43,17 @@ void LedStatus::update()
     const uint32_t now = millis();
     // Chọn state theo link ethernet + data serial
     State newState;
-    if (!has_connect_link && !has_data_serial)
+
+    if (has_mode_config && !has_mode_config_on)
+    {
+        newState = STATE_CONFIG_HOLD;
+    }
+    else if (!has_mode_config && has_mode_config_on)
+    {
+        newState = STATE_CONFIG_ACTIVE;
+    }
+
+    else if (!has_connect_link && !has_data_serial)
     {
         newState = STATE_NO_LINK;
     }
@@ -76,7 +86,7 @@ void LedStatus::update()
             return;
         }
 
-        if(_state == STATE_ACTIVE_DATA_ALL)   // bình thường => luôn sáng
+        if (_state == STATE_ACTIVE_DATA_ALL) // bình thường => luôn sáng
         {
             _ledOn = true;
             writeLed(true); // luôn sáng
@@ -131,8 +141,16 @@ void LedStatus::getBlinkTiming(State state, uint32_t &onTimeMs, uint32_t &offTim
         offTimeMs = 200UL;
         break;
     case STATE_ACTIVE_DATA_ALL:
-        onTimeMs = 0;
-        offTimeMs = 0;
+        onTimeMs = 50UL;
+        offTimeMs = 950UL;
+        break;
+    case STATE_CONFIG_HOLD:
+        onTimeMs = 100UL;
+        offTimeMs = 100UL;
+        break;
+    case STATE_CONFIG_ACTIVE:
+        onTimeMs = 950UL;
+        offTimeMs = 50UL;
         break;
     case STATE_OFF:
         onTimeMs = 0;
