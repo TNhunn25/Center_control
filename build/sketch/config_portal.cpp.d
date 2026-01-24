@@ -324,4 +324,18 @@ C:\Users\Tuyet\ Nhung-RD\Desktop\Project_He_thong_khuech_tan\master\master\build
  C:\Users\Tuyet\ Nhung-RD\AppData\Local\Arduino15\packages\esp32\hardware\esp32\3.2.1\cores\esp32/HashBuilder.h \
  C:\Users\Tuyet\ Nhung-RD\AppData\Local\Arduino15\packages\esp32\hardware\esp32\3.2.1\cores\esp32/HEXBuilder.h \
  C:\Users\Tuyet\ Nhung-RD\Desktop\Project_He_thong_khuech_tan\master\master\build\sketch\net_config.h \
- C:\Users\Tuyet\ Nhung-RD\Desktop\Project_He_thong_khuech_tan\master\master\build\sketch\led_status.h
+ C:\Users\Tuyet\ Nhung-RD\Desktop\Project_He_thong_khuech_tan\master\master\build\sketch\led_status.h \
+ C:\Users\Tuyet\ Nhung-RD\Desktop\Project_He_thong_khuech_tan\master\master\build\sketch\central/central_controller.h \
+ C:\Users\Tuyet\ Nhung-RD\Desktop\Project_He_thong_khuech_tan\master\master/config.h \
+ C:\Users\Tuyet\ Nhung-RD\Desktop\Project_He_thong_khuech_tan\master\master\build\sketch\central/auto_man.h \
+ C:\Users\Tuyet\ Nhung-RD\Desktop\Project_He_thong_khuech_tan\master\master\build\sketch\central/pcf8575_io.h \
+ C:\Users\Tuyet\ Nhung-RD\AppData\Local\Arduino15\packages\esp32\hardware\esp32\3.2.1\libraries\Wire\src/Wire.h \
+ C:\Users\Tuyet\ Nhung-RD\AppData\Local\Arduino15\packages\esp32\hardware\esp32\3.2.1\cores\esp32/esp32-hal.h \
+ C:\Users\Tuyet\ Nhung-RD\AppData\Local\Arduino15\packages\esp32\hardware\esp32\3.2.1\cores\esp32/esp32-hal-log.h \
+ C:\Users\Tuyet\ Nhung-RD\AppData\Local\Arduino15\packages\esp32\hardware\esp32\3.2.1\cores\esp32/HardwareI2C.h \
+ C:\Users\Tuyet\ Nhung-RD\Documents\Arduino\libraries\PCF8575_library/PCF8575.h \
+ C:\Users\Tuyet\ Nhung-RD\Desktop\Project_He_thong_khuech_tan\master\master\build\sketch\central/eeprom_state.h \
+ C:\Users\Tuyet\ Nhung-RD\AppData\Local\Arduino15\packages\esp32\hardware\esp32\3.2.1\libraries\EEPROM\src/EEPROM.h \
+ C:\Users\Tuyet\ Nhung-RD\Desktop\Project_He_thong_khuech_tan\master\master/get_info.h \
+ C:\Users\Tuyet\ Nhung-RD\Desktop\Project_He_thong_khuech_tan\master\master/md5.h \
+ C:\Users\Tuyet\ Nhung-RD\Desktop\Project_He_thong_khuech_tan\master\master\build\sketch\central/led_status.h

@@ -9,6 +9,19 @@ EthernetUDPHandler::EthernetUDPHandler()
     memset(rxBuf, 0, sizeof(rxBuf));
 }
 
+namespace
+{
+    bool isMacZero(const uint8_t mac[6])
+    {
+        for (int i = 0; i < 6; i++)
+        {
+            if (mac[i] != 0)
+                return false;
+        }
+        return true;
+    }
+}
+
 void EthernetUDPHandler::begin()
 {
     // Mặc định theo sơ đồ của bạn:
@@ -46,15 +59,15 @@ void EthernetUDPHandler::begin(uint8_t csPin,
     Ethernet.init(csPin);
 
     // MAC từ efuse
-    uint64_t chipid = ESP.getEfuseMac();
-    uint8_t mac[6];
-    for (int i = 0; i < 6; i++)
+    if (!macReady_ || isMacZero(mac_))
     {
-        mac[i] = (chipid >> (40 - i * 8)) & 0xFF;
+        uint64_t chipid = ESP.getEfuseMac();
+        for (int i = 0; i < 6; i++)
+        {
+            mac_[i] = (chipid >> (40 - i * 8)) & 0xFF;
+        }
+        macReady_ = true;
     }
-
-    //-------------
-    macReady_ = true;
 
     EthStaticConfig cfg;
     loadEthStaticConfig(cfg);
@@ -153,8 +166,8 @@ void EthernetUDPHandler::handleReceive()
     if (opcode == 101 || opcode == 104 || opcode == 105) // FIXME: cần xem lại
     {
         serializeJson(doc, Serial);
-        Serial.println(rxBuf);
-        // Serial.println();
+        // Serial.println(rxBuf);
+        Serial.println();
     }
     getInfo.ingestFromNodeDoc(doc.as<JsonObjectConst>(), udp.remoteIP(), udp.remotePort());
     int nodeId = doc["data"]["node_id"] | 0;
@@ -279,7 +292,7 @@ bool EthernetUDPHandler::sendCommand(const MistCommand &cmd)
 
 bool EthernetUDPHandler::startEthernet(const EthStaticConfig &cfg)
 {
-    if (!macReady_)
+    if (!macReady_ || isMacZero(mac_))
         return false;
 
     udp.stop();

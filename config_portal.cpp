@@ -2,6 +2,7 @@
 #include <ArduinoJson.h>
 #include <WiFi.h>
 
+#include "central/central_controller.h"
 #include "central/eeprom_state.h"
 
 namespace
@@ -14,7 +15,7 @@ namespace
 
     const uint32_t kLongPressMs = 5000;
     const uint32_t kStopDelayMs = 5000;
-    const uint32_t kIdleTimeoutMs = 5UL * 60UL * 1000UL;
+    const uint32_t kIdleTimeoutMs = 5UL * 60UL * 1000UL; //time out về trạng thái bình thường 5p
 
     ConfigPortal *gPortal = nullptr;
 
@@ -146,6 +147,41 @@ namespace
         if (gPortal)
             gPortal->handleWsEvent(num, type, payload, length);
     }
+
+    bool updateThresholdsFromJson(JsonObject thresholds, Thresholds &t)
+    {
+        bool any = false;
+        auto setIf = [&](const char *key, float &field)
+        {
+            if (thresholds.containsKey(key))
+            {
+                field = thresholds[key].as<float>();
+                any = true;
+            }
+        };
+
+        setIf("temp_on", t.temp_on);
+        setIf("temp_off", t.temp_off);
+        setIf("humi_on", t.humi_on);
+        setIf("humi_off", t.humi_off);
+        setIf("nh3_on", t.nh3_on);
+        setIf("nh3_off", t.nh3_off);
+        setIf("co_on", t.co_on);
+        setIf("co_off", t.co_off);
+        setIf("no2_on", t.no2_on);
+        setIf("no2_off", t.no2_off);
+        return any;
+    }
+
+    bool loadCurrentThresholds(Thresholds &t, CentralController *controller)
+    {
+        if (controller)
+        {
+            t = controller->getThresholds();
+            return true;
+        }
+        return eepromThresholdsLoad(t);
+    }
 } // namespace
 
 ConfigPortal::ConfigPortal()
@@ -166,9 +202,10 @@ void ConfigPortal::initPortal(uint8_t buttonPin, EthernetUDPHandler *ethHandler)
     ws_.onEvent(onWsEventStatic);
 }
 
-void ConfigPortal::begin(uint8_t buttonPin, EthernetUDPHandler *ethHandler, LedStatus *ledStatus)
+void ConfigPortal::begin(uint8_t buttonPin, EthernetUDPHandler *ethHandler, LedStatus *ledStatus, CentralController *centralController)
 {
     initPortal(buttonPin, ethHandler);
+    centralController_ = centralController;
 }
 
 void ConfigPortal::update()
@@ -311,9 +348,25 @@ void ConfigPortal::handleWsText(uint8_t num, const uint8_t *payload, size_t leng
     if (strcmp(type, "set") == 0)
     {
         bool hasThresholds = false;
+        bool thresholdsApplied = false;
         JsonObject thresholds = doc["thresholds"].as<JsonObject>();
         if (!thresholds.isNull())
         {
+            hasThresholds = true;
+            Thresholds nextThresholds{};
+            if (!loadCurrentThresholds(nextThresholds, centralController_))
+            {
+                sendAck(num, false, "Thresholds unavailable");
+                return;
+            }
+            if (updateThresholdsFromJson(thresholds, nextThresholds))
+            {
+                if (centralController_)
+                    centralController_->setThresholds(nextThresholds, true);
+                else
+                    eepromThresholdsSave(nextThresholds);
+                thresholdsApplied = true;
+            }
             String raw((const char *)payload, length);
             Serial.println(raw);
             hasThresholds = true; // chuỗi in ngưỡng để so sánh
@@ -322,9 +375,10 @@ void ConfigPortal::handleWsText(uint8_t num, const uint8_t *payload, size_t leng
         JsonObject eth = doc["eth"];
         if (eth.isNull())
         {
-            if (hasThresholds)
+            if (hasThresholds && thresholdsApplied)
             {
-                sendAck(num, true, "OK");
+                sendAck(num, true, "Applied");
+                sendConfig(num);
                 return;
             }
             sendAck(num, false, "Missing eth");
@@ -351,7 +405,10 @@ void ConfigPortal::handleWsText(uint8_t num, const uint8_t *payload, size_t leng
         }
 
         const bool applied = ethHandler_ ? ethHandler_->applyStaticConfig(cfg) : false;
-        sendAck(num, applied, applied ? "Applied" : "Apply failed");
+        if (hasThresholds && thresholdsApplied && !applied)
+            sendAck(num, false, "Thresholds saved; ETH apply failed");
+        else
+            sendAck(num, applied, applied ? "Applied" : "Apply failed");
         sendConfig(num);
         if (applied)
         {
@@ -370,7 +427,7 @@ void ConfigPortal::sendConfig(uint8_t num)
     EthStaticConfig cfg;
     loadEthStaticConfig(cfg);
 
-    StaticJsonDocument<256> doc;
+    StaticJsonDocument<384> doc;
     doc["type"] = "config";
     JsonObject eth = doc.createNestedObject("eth");
     eth["ip"] = cfg.ip.toString();
@@ -378,6 +435,22 @@ void ConfigPortal::sendConfig(uint8_t num)
     eth["gateway"] = cfg.gateway.toString();
     eth["dns1"] = cfg.dns1.toString();
     eth["dns2"] = cfg.dns2.toString();
+
+    Thresholds t{};
+    if (loadCurrentThresholds(t, centralController_))
+    {
+        JsonObject thresholds = doc.createNestedObject("thresholds");
+        thresholds["temp_on"] = t.temp_on;
+        thresholds["temp_off"] = t.temp_off;
+        thresholds["humi_on"] = t.humi_on;
+        thresholds["humi_off"] = t.humi_off;
+        thresholds["nh3_on"] = t.nh3_on;
+        thresholds["nh3_off"] = t.nh3_off;
+        thresholds["co_on"] = t.co_on;
+        thresholds["co_off"] = t.co_off;
+        thresholds["no2_on"] = t.no2_on;
+        thresholds["no2_off"] = t.no2_off;
+    }
 
     String out;
     serializeJson(doc, out);

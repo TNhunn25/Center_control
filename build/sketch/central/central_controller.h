@@ -89,6 +89,18 @@ public:
         getInfo = &getInfoRef;
     }
 
+    const Thresholds &getThresholds() const
+    {
+        return thresholds;
+    }
+
+    void setThresholds(const Thresholds &t, bool persist = true)
+    {
+        thresholds = t;
+        if (persist)
+            eepromThresholdsSave(thresholds);
+    }
+
     // ================= HANDLE PC COMMAND =================
     // Xử lý lệnh từ PC (GET_INFO/IO_COMMAND/SET_THRESHOLDS).
     void handleCommand(const MistCommand &cmd)

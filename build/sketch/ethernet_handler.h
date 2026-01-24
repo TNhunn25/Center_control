@@ -48,7 +48,7 @@ private:
     static constexpr unsigned long broadcastInterval = 3000; // 3s
     static constexpr size_t RX_BUF_SZ = 512;
     static constexpr size_t TX_BUF_SZ = 512;
-    uint32_t RX_TIMEOUT_MS = 40000;
+    uint32_t RX_TIMEOUT_MS = 5UL * 60UL * 1000UL; 
     uint32_t lastRxMs = 0;
     bool timeoutTriggered = false;
     static constexpr uint16_t MAX_NODES = 10; 

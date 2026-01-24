@@ -8,11 +8,12 @@
 #include "net_config.h"
 #include "led_status.h"
 extern LedStatus ledstatus;
+class CentralController;
 class ConfigPortal
 {
 public:
     ConfigPortal();
-    void begin(uint8_t buttonPin, EthernetUDPHandler *ethHandler, LedStatus *ledStatus);
+    void begin(uint8_t buttonPin, EthernetUDPHandler *ethHandler, LedStatus *ledStatus, CentralController *centralController);
     void update();
     bool isActive() const;
     void handleWsEvent(uint8_t num, WStype_t type, uint8_t *payload, size_t length);
@@ -30,6 +31,7 @@ private:
     WebServer server_;
     WebSocketsServer ws_;
     EthernetUDPHandler *ethHandler_ = nullptr;
+    CentralController *centralController_ = nullptr;
     // LedStatus *ledStatus_ = nullptr;
     uint8_t buttonPin_ = 255;
     bool active_ = false;

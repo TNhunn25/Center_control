@@ -53,7 +53,7 @@ void setup()
     led_status.setState(LedStatus ::STATE_NORMAL);
     pcHandler.onCommandReceived(onNewCommand);
     centralController.getInforCommand(getInfo);
-    configPortal.begin(CONFIG_BUTTON_PIN, &ethHandler, &led_status); // định nghĩa button
+    configPortal.begin(CONFIG_BUTTON_PIN, &ethHandler, &led_status, &centralController); // định nghĩa button
 }
 void loop()
 {

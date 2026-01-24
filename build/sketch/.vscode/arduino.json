@@ -11,7 +11,7 @@
   "compile_profile": "",
   "monitorPortSettings": {
     "settings": {
-      "port": "COM21",
+      "port": "",
       "baudRate": 115200,
       "lineEnding": "\r\n",
       "dataBits": 8,
