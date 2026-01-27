@@ -124,7 +124,7 @@ public:
             if (!isAutoMode())
             {
                 // MAN mode: reject remote IO
-                sendResponse(cmd.id_des, IO_COMMAND + 100, cmd.unix, 1);
+                sendResponse(cmd.id_des, IO_COMMAND + 100, cmd.unix, 3);
                 return;
             }
             // 1) ACK 102

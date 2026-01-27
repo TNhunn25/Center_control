@@ -29,7 +29,7 @@ private:
     bool inTimeout = false;
     int last_hast_state = false;
     void processLine();
-    // void checkPacketTimeout();
+    // void checkPacketTimeout(); //comment mới mở 
 };
 
 #endif

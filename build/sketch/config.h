@@ -10,6 +10,9 @@
 #define PIN_NH3 18
 #define PIN_DHT 21
 #define CONFIG_BUTTON_PIN 12
+// OTA Basic Auth (change in production)
+#define OTA_AUTH_USER "admin"
+#define OTA_AUTH_PASS "admin123"
 // #define MOTOR_COUNT 5
 // #define OUT_COUNT 4
 // #define IN_COUNT 4

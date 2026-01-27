@@ -1,0 +1,20 @@
+Cách test OTA (Basic Auth) nhanh gọn:
+
+  - Build firmware .bin
+      - Arduino IDE: chọn Board đúng → Sketch → Export Compiled Binary. File .bin nằm cùng thư mục project.  
+      - PlatformIO: pio run → file ở /.pio/build/<env>/firmware.bin.
+  - Vào portal
+      - Kết nối Wi‑Fi AP cấu hình của thiết bị: CENTER-CONFIG (pass: altacenter).
+      - Mở http://192.168.4.1/ota (mặc định AP).
+      - Trình duyệt sẽ hỏi Basic Auth → nhập OTA_AUTH_USER/OTA_AUTH_PASS trong config.h.
+  - Upload
+      - Chọn file .bin vừa build → Upload.
+      - Nếu thành công: trang trả OK, thiết bị reboot.
+  - Xác nhận
+      - Kiểm tra Serial log có dòng [OTA] Start và [OTA] Done.
+      - Sau reboot, kiểm tra version/thay đổi hành vi.
+
+  Lưu ý:
+
+  - OTA chỉ chạy khi portal active (giữ nút config >5s để bật).
+  - Nếu upload lỗi, thử dùng Chrome/Edge và đảm bảo file .bin đúng board.

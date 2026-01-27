@@ -1,9 +1,11 @@
 #include "config_portal.h"
 #include <ArduinoJson.h>
 #include <WiFi.h>
+#include <Update.h>
 
 #include "central/central_controller.h"
 #include "central/eeprom_state.h"
+#include "config.h"
 
 namespace
 {
@@ -134,6 +136,32 @@ namespace
 </html>
 )html";
 
+    const char kOtaHtml[] PROGMEM = R"html(
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>OTA Update</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111; }
+    .card { max-width: 520px; padding: 16px; border: 1px solid #ddd; border-radius: 8px; }
+    button { margin-top: 12px; padding: 10px 14px; font-size: 14px; }
+  </style>
+  </head>
+<body>
+  <div class="card">
+    <h2>OTA Update</h2>
+    <form method="POST" action="/update" enctype="multipart/form-data">
+      <input type="file" name="update" accept=".bin" required />
+      <button type="submit">Upload</button>
+    </form>
+    <p>Upload file firmware .bin, device will reboot after success.</p>
+  </div>
+</body>
+</html>
+)html";
+
     bool parseIpField(JsonObject obj, const char *key, IPAddress &out)
     {
         const char *val = obj[key];
@@ -199,6 +227,67 @@ void ConfigPortal::initPortal(uint8_t buttonPin, EthernetUDPHandler *ethHandler)
 
     server_.on("/", HTTP_GET, [this]()
                { server_.send_P(200, "text/html", kIndexHtml); });
+
+    server_.on("/ota", HTTP_GET, [this]()
+               {
+                   if (!server_.authenticate(OTA_AUTH_USER, OTA_AUTH_PASS))
+                   {
+                       server_.requestAuthentication();
+                       return;
+                   }
+                   server_.send_P(200, "text/html", kOtaHtml);
+               });
+
+    server_.on(
+        "/update",
+        HTTP_POST,
+        [this]()
+        {
+            if (!server_.authenticate(OTA_AUTH_USER, OTA_AUTH_PASS))
+            {
+                server_.requestAuthentication();
+                return;
+            }
+            const bool ok = !Update.hasError();
+            server_.send(ok ? 200 : 500, "text/plain", ok ? "OK" : "FAIL");
+            if (ok)
+            {
+                delay(200);
+                ESP.restart();
+            }
+        },
+        [this]()
+        {
+            if (!server_.authenticate(OTA_AUTH_USER, OTA_AUTH_PASS))
+            {
+                server_.requestAuthentication();
+                return;
+            }
+            HTTPUpload &upload = server_.upload();
+            if (upload.status == UPLOAD_FILE_START)
+            {
+                Serial.printf("[OTA] Start: %s\n", upload.filename.c_str());
+                if (!Update.begin(UPDATE_SIZE_UNKNOWN))
+                    Update.printError(Serial);
+            }
+            else if (upload.status == UPLOAD_FILE_WRITE)
+            {
+                if (Update.write(upload.buf, upload.currentSize) != upload.currentSize)
+                    Update.printError(Serial);
+            }
+            else if (upload.status == UPLOAD_FILE_END)
+            {
+                if (Update.end(true))
+                    Serial.printf("[OTA] Done: %u bytes\n", upload.totalSize);
+                else
+                    Update.printError(Serial);
+            }
+            else if (upload.status == UPLOAD_FILE_ABORTED)
+            {
+                Update.end();
+                Serial.println("[OTA] Aborted");
+            }
+        });
     ws_.onEvent(onWsEventStatic);
 }
 

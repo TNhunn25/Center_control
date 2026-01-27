@@ -32,12 +32,14 @@ void PCHandler::update()
         if (c == '\n')
         {
             rxLine.trim();
+
+            // Serial.println(rxLine);           // ← đây là chỗ bạn cần nhìn
             if (rxLine.length() == 0)
             {
                 rxLine = "";
                 continue;
             }
-            lastRxMs = millis();
+            lastRxMs = millis();  //test
             if (inTimeout)
             {
                 inTimeout = false;
@@ -47,11 +49,12 @@ void PCHandler::update()
         }
         else
         {
-            if (rxLine.length() < 512)
+            if (rxLine.length() < 1024)
             {
                 rxLine += c;
             }
         }
+        // checkPacketTimeout(); //new test 
     }
 }
 
@@ -246,7 +249,7 @@ void PCHandler::processLine()
         commandCallback(cmd);
     }
     has_data_serial = true;
-    digitalWrite(1, HIGH);
+    digitalWrite(1, HIGH); // để nháy GPIO1 (UART0 TX)
     delay(50);
     digitalWrite(1, LOW);
     // opcode 2/3: CentralController sẽ trả response đúng opcode (2 hoặc 3)
@@ -283,7 +286,7 @@ void PCHandler::sendResponse(int id_des, int resp_opcode, uint32_t unix_time, in
     serializeJson(resp_doc, output);
     Serial.println(output);
 }
-// void PCHandler::checkPacketTimeout()
+// void PCHandler::checkPacketTimeout() // check gói tin gửi liên tục
 // {
 //     uint32_t now = millis();
 

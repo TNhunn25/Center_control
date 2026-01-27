@@ -325,6 +325,7 @@ C:\Users\Tuyet\ Nhung-RD\Desktop\Project_He_thong_khuech_tan\master\master\build
  C:\Users\Tuyet\ Nhung-RD\AppData\Local\Arduino15\packages\esp32\hardware\esp32\3.2.1\cores\esp32/HEXBuilder.h \
  C:\Users\Tuyet\ Nhung-RD\Desktop\Project_He_thong_khuech_tan\master\master\build\sketch\net_config.h \
  C:\Users\Tuyet\ Nhung-RD\Desktop\Project_He_thong_khuech_tan\master\master\build\sketch\led_status.h \
+ C:\Users\Tuyet\ Nhung-RD\AppData\Local\Arduino15\packages\esp32\hardware\esp32\3.2.1\libraries\Update\src/Update.h \
  C:\Users\Tuyet\ Nhung-RD\Desktop\Project_He_thong_khuech_tan\master\master\build\sketch\central/central_controller.h \
  C:\Users\Tuyet\ Nhung-RD\Desktop\Project_He_thong_khuech_tan\master\master/config.h \
  C:\Users\Tuyet\ Nhung-RD\Desktop\Project_He_thong_khuech_tan\master\master\build\sketch\central/auto_man.h \

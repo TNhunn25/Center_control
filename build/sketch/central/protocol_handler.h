@@ -25,20 +25,19 @@ extern bool nutVuaNhan[4];
 extern PCF8575IO pcf;
 // extern const uint8_t IN_PINS[4];
 
-inline bool verifyAuth(const JsonDocument &doc, const String &receivedHash)
-{
-    int id_des = doc["id_des"].as<int>();
-    int opcode = doc["opcode"].as<int>();
-    uint32_t unix_time = doc["time"].as<uint32_t>();
+// inline bool verifyAuth(const JsonDocument &doc, const String &receivedHash) //Không dùng. đang dùng ở PC_handler.cpp
+//     int id_des = doc["id_des"].as<int>();
+//     int opcode = doc["opcode"].as<int>();
+//     uint32_t unix_time = doc["time"].as<uint32_t>();
 
-    String data_json;
-    serializeJson(doc["data"], data_json); // compact
+//     String data_json;
+//     serializeJson(doc["data"], data_json); // compact
 
-    String combined = String(id_des) + String(opcode) + data_json + String(unix_time) + SECRET_KEY;
-    String computedHash = calculateMD5(combined);
+//     String combined = String(id_des) + String(opcode) + data_json + String(unix_time) + SECRET_KEY;
+//     String computedHash = calculateMD5(combined);
 
-    return computedHash.equalsIgnoreCase(receivedHash);
-}
+//     return computedHash.equalsIgnoreCase(receivedHash);
+// }
 
 inline String ResponseJson(int id_des, int resp_opcode, uint32_t unix_time, int status)
 {

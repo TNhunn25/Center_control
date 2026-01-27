@@ -239,7 +239,8 @@ void LedStatus::update()
     }
     else if (!has_connect_link && !has_data_serial)
     {
-        newState = STATE_OFF;
+        // newState = STATE_OFF;
+        newState = STATE_NO_DATA_SERIAL;
     }
     else if (!has_connect_link && has_data_serial)
     {
