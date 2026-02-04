@@ -17,10 +17,18 @@ inline void ledStatusBegin()
     runLed.begin(LED_RUN_PIN, true);
 }
 
+//-----------------------------------------------------
 // Giữ nguyên cấu trúc LED AUTO/MAN trong update() hiện tại (AM pin).
+// inline void setStatusLed(bool run_on, bool am_on)  //Bộ backup
+// {
+//     digitalWrite(LED_AM_PIN, am_on ? HIGH : LOW);
+//     (void)run_on;
+// }
+
+
 inline void setStatusLed(bool run_on, bool am_on)
 {
-    digitalWrite(LED_AM_PIN, am_on ? LOW : HIGH);
+    digitalWrite(LED_AM_PIN, am_on ? LOW : HIGH); // Bộ Hòa Lân
     (void)run_on;
 }
 

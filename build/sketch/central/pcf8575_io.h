@@ -11,14 +11,14 @@ class PCF8575IO
 {
 public:
     static constexpr uint8_t I2C_ADDR = 0x20;
-    static constexpr int SDA_PIN = 18; // ESP32 I2C SDA
-    static constexpr int SCL_PIN = 17; // ESP32 I2C SCL
     static constexpr uint8_t NOT_USED = 0xFF;
-
-    // Fill these mappings later (0xFF = not used).
-    const uint8_t OUT_PINS[OUT_COUNT] = {1, 2, 3, 4};
-    const uint8_t IN_PINS[IN_COUNT] = {11, 12, 13, 14};
-    const uint8_t AUTO_MAN_PIN = 10;
+    
+    static constexpr int SDA_PIN = 17; // ESP32 I2C SDA 
+    static constexpr int SCL_PIN = 18; // ESP32 I2C SCL
+    const uint8_t OUT_PINS[OUT_COUNT] = {P1, P2, P3, P4}; //Bo Hòa Lân
+    const uint8_t IN_PINS[IN_COUNT] = {P11, P12, P13, P14};
+    const uint8_t AUTO_MAN_PIN = P10;
+    
 
     void begin(bool outputsOffLevel = true)
     {

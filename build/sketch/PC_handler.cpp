@@ -25,6 +25,9 @@ void PCHandler::onCommandReceived(CommandCallback cb)
 // Đọc Serial theo dòng, gom dữ liệu đến khi gặp '\n' rồi xử lý.
 void PCHandler::update()
 {
+
+    // const uint32_t startMs = millis();
+    // const uint32_t maxWorkMs = 5;
     while (Serial.available())
     {
 
@@ -39,11 +42,11 @@ void PCHandler::update()
                 rxLine = "";
                 continue;
             }
-            lastRxMs = millis();  //test
-            if (inTimeout)
-            {
-                inTimeout = false;
-            }
+            // lastRxMs = millis(); // test
+            // if (inTimeout)
+            // {
+            //     inTimeout = false;
+            // }
             processLine();
             rxLine = "";
         }
@@ -54,7 +57,16 @@ void PCHandler::update()
                 rxLine += c;
             }
         }
-        // checkPacketTimeout(); //new test 
+        // checkPacketTimeout(); //new test
+        // if ((uint32_t)(millis() - startMs) >= maxWorkMs)
+        // {
+        //     break;
+        // }
+    }
+    if (has_data_serial && (uint32_t)(millis() - lastRxMs) >= timeoutMs)
+    {
+        has_data_serial = false;
+        inTimeout = true;
     }
 }
 
@@ -249,9 +261,14 @@ void PCHandler::processLine()
         commandCallback(cmd);
     }
     has_data_serial = true;
-    digitalWrite(1, HIGH); // để nháy GPIO1 (UART0 TX)
-    delay(50);
-    digitalWrite(1, LOW);
+    lastRxMs = millis();
+    if (inTimeout)
+    {
+        inTimeout = false;
+    }
+    // digitalWrite(1, HIGH); // để nháy GPIO1 (UART0 TX)
+    // delay(50);
+    // digitalWrite(1, LOW);
     // opcode 2/3: CentralController sẽ trả response đúng opcode (2 hoặc 3)
     if (opcode >= 2 && opcode <= 6)
     {

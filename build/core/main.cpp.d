@@ -162,5 +162,4 @@ C:\Users\Tuyet\ Nhung-RD\Desktop\Project_He_thong_khuech_tan\master\master\build
  C:\Users\Tuyet\ Nhung-RD\AppData\Local\Arduino15\packages\esp32\tools\esp32-arduino-libs\idf-release_v5.4-858a988d-v1\esp32s3/include/esp_hw_support/include/hal/cpu_ll.h \
  C:\Users\Tuyet\ Nhung-RD\AppData\Local\Arduino15\packages\esp32\hardware\esp32\3.2.1\cores\esp32\freertos_stats.h \
  C:\Users\Tuyet\ Nhung-RD\AppData\Local\Arduino15\packages\esp32\hardware\esp32\3.2.1\cores\esp32\io_pin_remap.h \
- C:\Users\Tuyet\ Nhung-RD\AppData\Local\Arduino15\packages\esp32\hardware\esp32\3.2.1\cores\esp32\USB.h \
  C:\Users\Tuyet\ Nhung-RD\AppData\Local\Arduino15\packages\esp32\hardware\esp32\3.2.1\cores\esp32\chip-debug-report.h
