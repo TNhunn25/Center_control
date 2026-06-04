@@ -1,15 +1,17 @@
-#line 1 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\led_status.h"
+#line 1 "D:\\Power_Central_v4\\led_status.h"
 #pragma once
 #include <Arduino.h>
 #include "config.h"
+
 class LedStatus
 {
 public:
     enum State : uint8_t
     {
         STATE_NORMAL,
-        STATE_NO_DATA_SERIAL,
+        STATE_NO_MQTT,
         STATE_NO_LINK,
+        STATE_WIFI_CONNECTED,
         STATE_ACTIVE_DATA_ALL,
         STATE_CONFIG_HOLD,
         STATE_CONFIG_ACTIVE,
@@ -19,23 +21,23 @@ public:
 
     LedStatus();
 
-    /**
-     * @param pin Chân LED
-     * @param activeHigh true: HIGH bật, false: LOW bật (active-low)
-     */
+    // Khoi tao chan LED va kieu kich muc logic cua LED.
     void begin(uint8_t pin, bool activeHigh = true);
 
-    /** Set trạng thái ở bất kỳ đâu, LED sẽ đổi nháy theo state mới */
+    // Gan trang thai LED mong muon de cap nhat nhip nhay tuong ung.
     void setState(State s);
 
-    /** Lấy trạng thái hiện tại */
+    // Lay trang thai LED hien tai.
     State getState() const;
 
-    /** Gọi liên tục trong loop() để LED nháy đúng theo state */
+    // Goi lien tuc trong loop() de LED nhay dung theo trang thai he thong.
     void update();
 
 private:
+    // Tra bang thoi gian sang/tat ung voi tung trang thai LED.
     void getBlinkTiming(State state, uint32_t &onTimeMs, uint32_t &offTimeMs);
+
+    // Ghi muc logic thuc te ra chan LED theo kieu active-high/active-low.
     void writeLed(bool on);
 
 private:

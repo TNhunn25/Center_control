@@ -1,0 +1,25 @@
+#line 1 "D:\\Power_Central_v4\\Hardware_esp\\auto_man.h"
+#ifndef AUTO_MAN_H
+#define AUTO_MAN_H
+
+#include <Arduino.h>
+#include "pcf8575_io.h"
+
+// Chế độ AUTO/MAN:
+// AUTO: cho phép nhận lệnh remote.
+// MAN: chặn remote, cho phép nhấn nút để toggle output.
+
+// AUTO/MAN switch
+extern PCF8575IO pcf;
+
+inline void setupAutoManMode()
+{
+}
+
+inline bool isAutoMode()
+{
+    // INPUT_PULLUP: LOW=AUTO, HIGH=MAN
+    return pcf.readAutoMan() == HIGH;
+}
+
+#endif // AUTO_MAN_H

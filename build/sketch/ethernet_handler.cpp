@@ -1,8 +1,6 @@
-#line 1 "C:\\Users\\Tuyet Nhung-RD\\Desktop\\Project_He_thong_khuech_tan\\master\\master\\ethernet_handler.cpp"
+#line 1 "D:\\Power_Central_v4\\ethernet_handler.cpp"
 #include "ethernet_handler.h"
 #include "config.h"
-#include "get_info.h"
-extern GetInfoAggregator getInfo;
 
 EthernetUDPHandler::EthernetUDPHandler()
 {
@@ -20,12 +18,17 @@ namespace
         }
         return true;
     }
+
+    void printIpField(const __FlashStringHelper *label, const IPAddress &ip)
+    {
+        Serial.print(label);
+        Serial.println(ip);
+    }
 }
 
 void EthernetUDPHandler::begin()
 {
-    // Mặc định theo sơ đồ của bạn:
-    // RST=5, CS=6, SCK=7, MISO=8, MOSI=9, port=8888
+    Serial.println(F("[ETH] begin() default pins"));
     begin(6, 5, 7, 8, 9, 8888);
 }
 
@@ -36,81 +39,43 @@ void EthernetUDPHandler::begin(uint8_t csPin,
                                uint8_t mosiPin,
                                uint16_t listenPort)
 {
+    Serial.println(F("[ETH] begin() enter"));
     port = listenPort;
-    //-------------
-    csPin_ = csPin; // neww
+    csPin_ = csPin;
     rstPin_ = rstPin;
     sckPin_ = sckPin;
     misoPin_ = misoPin;
     mosiPin_ = mosiPin;
     pinsReady_ = true;
-    //-------------
 
-    // Reset W5500 (RSTn active-low)
     pinMode(rstPin, OUTPUT);
     digitalWrite(rstPin, LOW);
     delay(100);
     digitalWrite(rstPin, HIGH);
     delay(300);
+    Serial.println(F("[ETH] reset done"));
 
-    // SPI theo chân custom
     SPI.begin(sckPin, misoPin, mosiPin, csPin);
-
     Ethernet.init(csPin);
+    Serial.println(F("[ETH] SPI/Ethernet.init done"));
 
-    // MAC từ efuse
     if (!macReady_ || isMacZero(mac_))
     {
-        uint64_t chipid = ESP.getEfuseMac();
-        for (int i = 0; i < 6; i++)
-        {
-            mac_[i] = (chipid >> (40 - i * 8)) & 0xFF;
-        }
+        memcpy(mac_, ETH_MAC, sizeof(mac_));
         macReady_ = true;
     }
 
     EthStaticConfig cfg;
     loadEthStaticConfig(cfg);
+    Serial.println(F("[ETH] config loaded"));
     startEthernet(cfg);
-    //-------------
-
-    /*
-    // IP tĩnh
-    IPAddress ip(192, 168, 1, 100);
-    IPAddress dns(8, 8, 8, 8);
-    IPAddress gateway(192, 168, 1, 1);
-    IPAddress subnet(255, 255, 255, 0);
-
-    Ethernet.begin(mac, ip, dns, gateway, subnet);
-    delay(200);
-
-    if (Ethernet.linkStatus() == LinkOFF)
-    {
-        Serial.println(F("{\"error\":\"No link ethernet\"}"));
-    }
-
-    if (udp.begin(port))
-    {
-        Serial.print(F("{\"status\":\"ready\",\"ip\":\""));
-        Serial.print(Ethernet.localIP());
-        Serial.print(F("\",\"port\":"));
-        Serial.print(port);
-        Serial.println(F(",\"role\":\"w5500_master\"}"));
-    }
-    else
-    {
-        Serial.println(F("{\"error\":\"UDP begin failed\"}"));
-    }
-    */
 }
 
 void EthernetUDPHandler::update()
 {
-
     handleReceive();
 }
 
-//----------------------------
 bool EthernetUDPHandler::applyStaticConfig(const EthStaticConfig &cfg)
 {
     if (!pinsReady_ || !macReady_)
@@ -120,12 +85,9 @@ bool EthernetUDPHandler::applyStaticConfig(const EthStaticConfig &cfg)
 
     return startEthernet(cfg);
 }
-//---------------------
 
-// Nhận gói UDP từ node, forward ACK và ingest dữ liệu
 void EthernetUDPHandler::handleReceive()
 {
-    // Chỉ check link mỗi 250ms
     static uint32_t lastLinkCheck = 0;
     uint32_t now = millis();
 
@@ -134,16 +96,38 @@ void EthernetUDPHandler::handleReceive()
         lastLinkCheck = now;
 
         bool currentLinkStatus = (Ethernet.linkStatus() == LinkON);
+        // bool currentwifi = isWiFiConnected;
         if (currentLinkStatus != has_connect_link)
         {
             has_connect_link = currentLinkStatus;
             Serial.println(has_connect_link ? F("[ETH] Link UP") : F("[ETH] Link DOWN"));
+            if (has_connect_link)
+                noLinkLogged_ = false;
+        }
+
+        if (!currentLinkStatus && !noLinkLogged_)
+        {
+            noLinkLogged_ = true;
+            Serial.println(F("[ETH] Current link status: DOWN"));
+            Serial.println(F("{\"error\":\"No link ethernet\"}"));
         }
     }
+
+    if (Ethernet.linkStatus() != LinkON)
+        return;
 
     int packetSize = udp.parsePacket();
     if (packetSize <= 0)
         return;
+    Serial.print(F("[ETH] UDP packet received, size="));
+    Serial.println(packetSize);
+    if(packetSize > sizeof(rxBuf)-1 )
+    {
+        Serial.print(F("qua gioi han, size="));
+        Serial.println(packetSize);
+        return;
+
+    }
 
     memset(rxBuf, 0, sizeof(rxBuf));
     int len = udp.read((uint8_t *)rxBuf, (int)sizeof(rxBuf) - 1);
@@ -154,31 +138,25 @@ void EthernetUDPHandler::handleReceive()
         rxBuf[len - 1] = '\0';
     else
         rxBuf[len] = '\0';
-    // ---- NEW: parse JSON để lấy node_id ----
+
     StaticJsonDocument<768> doc;
     DeserializationError err = deserializeJson(doc, rxBuf);
     if (err)
         return;
-    int opcode = doc["opcode"];
-    // Serial.println(rxBuf);
 
-    // if (opcode == 104 || opcode == 105)
-    if (opcode == 101 || opcode == 104 || opcode == 105) // FIXME: cần xem lại
-    {
-        serializeJson(doc, Serial);
-        // Serial.println(rxBuf);
-        Serial.println();
-    }
-    getInfo.ingestFromNodeDoc(doc.as<JsonObjectConst>(), udp.remoteIP(), udp.remotePort());
     int nodeId = doc["data"]["node_id"] | 0;
     if (nodeId <= 0 || nodeId > MAX_NODES)
         return;
+    Serial.print(F("[ETH] Valid node heartbeat from node_id="));
+    Serial.print(nodeId);
+    Serial.print(F(" ip="));
+    Serial.println(udp.remoteIP());
+
     nodes[nodeId].active = true;
     nodes[nodeId].lastSeenMs = now;
     nodes[nodeId].lastIP = udp.remoteIP();
     nodes[nodeId].lastPort = udp.remotePort();
 
-    // nếu trước đó timeout, giờ node hồi lại
     if (nodes[nodeId].timedOut)
     {
         nodes[nodeId].timedOut = false;
@@ -187,7 +165,6 @@ void EthernetUDPHandler::handleReceive()
         Serial.println(F(" is back"));
     }
 
-    // nếu bạn vẫn muốn timeout global “có packet hay không”
     lastRxMs = now;
     timeoutTriggered = false;
 }
@@ -199,7 +176,7 @@ void EthernetUDPHandler::checkNodeTimeouts()
     for (int id = 1; id <= (int)MAX_NODES; id++)
     {
         if (!nodes[id].active)
-            continue; // chưa từng thấy node này
+            continue;
 
         if (!nodes[id].timedOut && (now - nodes[id].lastSeenMs >= RX_TIMEOUT_MS))
         {
@@ -215,95 +192,94 @@ void EthernetUDPHandler::checkNodeTimeouts()
     }
 }
 
-// Gửi lệnh xuống các node qua UDP - protocol mới
-bool EthernetUDPHandler::sendCommand(const MistCommand &cmd)
+bool EthernetUDPHandler::sendCommand(const IoCommand &cmd)
 {
-    if (Ethernet.linkStatus() == LinkOFF)
+    if (Ethernet.linkStatus() != LinkON)
     {
-        Serial.println(F("[ETH] Link OFF"));
+        has_connect_link = false;
+        if (!noLinkLogged_)
+        {
+            noLinkLogged_ = true;
+            Serial.println(F("[ETH] Link OFF"));
+            Serial.println(F("{\"error\":\"No link ethernet\"}"));
+        }
         return false;
     }
-    // data
-    StaticJsonDocument<1024> dataDoc;
-    if (cmd.opcode == 1)
-    { // MIST_COMMAND
-        dataDoc["node_id"] = cmd.node_id;
-        dataDoc["time_phase1"] = cmd.time_phase1;
-        dataDoc["time_phase2"] = cmd.time_phase2;
-    }
-    else if (cmd.opcode == 3)
-    {
-    }
-    else if (cmd.opcode == 4)
-    {
-        for (uint8_t i = 0; i < MOTOR_COUNT; i++)
-        {
-            if ((cmd.motor_mask & (1u << i)) == 0)
-                continue;
 
-            JsonObject m = dataDoc.createNestedObject(String("m") + String(i + 1));
-            m["run"] = cmd.motors[i].run;
-            m["dir"] = cmd.motors[i].dir;
-            m["speed"] = cmd.motors[i].speed;
-        }
-    }
-    else if (cmd.opcode == 5)
+    StaticJsonDocument<1024> dataDoc;
+    if (cmd.opcode == IO_COMMAND)
     {
+        dataDoc["out1"] = cmd.out1 ? 0 : 1;
+        dataDoc["out2"] = cmd.out2 ? 0 : 1;
+        dataDoc["out3"] = cmd.out3 ? 0 : 1;
+        dataDoc["out4"] = cmd.out4 ? 0 : 1;
     }
     else
     {
         return false;
     }
-    // stringify data để tính auth
+
     String dataJson;
     dataJson.reserve(256);
     serializeJson(dataDoc, dataJson);
 
-    // auth: id_des + opcode + dataJson + time + SECRET_KEY
     String combined;
-    combined.reserve(64 + dataJson.length());
-    combined = String(cmd.id_des) + String(cmd.opcode) + dataJson + String(cmd.unix) + SECRET_KEY;
+    combined.reserve(48 + dataJson.length());
+    combined = String(cmd.opcode) + dataJson + String(cmd.unix) + PRIVATE_KEY;
 
     String auth = calculateMD5(combined);
 
-    // full doc
     StaticJsonDocument<512> doc;
-    doc["id_des"] = cmd.id_des;
     doc["opcode"] = cmd.opcode;
     doc["data"] = dataDoc;
     doc["time"] = cmd.unix;
     doc["auth"] = auth;
 
-    // serialize ra buffer
     char msg[TX_BUF_SZ];
     size_t n = serializeJson(doc, msg, sizeof(msg));
     if (n == 0 || n >= sizeof(msg))
         return false;
+    Serial.print(F("[ETH] Broadcasting command opcode="));
+    Serial.print(cmd.opcode);
+    Serial.print(F(" port="));
+    Serial.println(port);
 
-    // UDP không cần '\n'
     udp.beginPacket(broadcastIP, port);
     udp.write((const uint8_t *)msg, n);
-    bool ok = (udp.endPacket() == 1);
-
-    return ok;
+    return udp.endPacket() == 1;
 }
-
-//--------------------------------------------------------
 
 bool EthernetUDPHandler::startEthernet(const EthStaticConfig &cfg)
 {
     if (!macReady_ || isMacZero(mac_))
         return false;
 
+    Serial.println(F("[ETH] Applying static network config"));
+    printIpField(F("[ETH] IP      : "), cfg.ip);
+    printIpField(F("[ETH] MASK    : "), cfg.mask);
+    printIpField(F("[ETH] GATEWAY : "), cfg.gateway);
+    printIpField(F("[ETH] DNS1    : "), cfg.dns1);
+    printIpField(F("[ETH] DNS2    : "), cfg.dns2);
+
     udp.stop();
     Ethernet.begin(mac_, cfg.ip, cfg.dns1, cfg.gateway, cfg.mask);
     delay(200);
 
     broadcastIP = calcBroadcast(cfg.ip, cfg.mask);
+    printIpField(F("[ETH] BCAST   : "), broadcastIP);
 
-    if (Ethernet.linkStatus() == LinkOFF)
+    has_connect_link = (Ethernet.linkStatus() == LinkON);
+    Serial.println(has_connect_link ? F("[ETH] Current link status: UP") : F("[ETH] Current link status: DOWN"));
+
+    if (!has_connect_link)
     {
+        noLinkLogged_ = true;
         Serial.println(F("{\"error\":\"No link ethernet\"}"));
+        Serial.println(F("[ETH][DIAG] Check LAN cable, switch port, and W5500 SPI/power."));
+    }
+    else
+    {
+        noLinkLogged_ = false;
     }
 
     if (udp.begin(port))
@@ -313,10 +289,12 @@ bool EthernetUDPHandler::startEthernet(const EthStaticConfig &cfg)
         Serial.print(F("\",\"port\":"));
         Serial.print(port);
         Serial.println(F(",\"role\":\"w5500_master\"}"));
+        Serial.println(F("[ETH][DIAG] UDP listener started successfully."));
         return true;
     }
 
     Serial.println(F("{\"error\":\"UDP begin failed\"}"));
+    Serial.println(F("[ETH][DIAG] Ethernet is up but UDP socket could not open on listen port."));
     return false;
 }
 
